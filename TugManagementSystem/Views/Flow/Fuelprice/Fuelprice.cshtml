@@ -1,0 +1,424 @@
+﻿
+@{
+    ViewBag.Title = @Resources.Language.Fuelprice_FuelpriceManage;
+    ViewBag.MenuId = "menu3";
+    ViewBag.SubMenuIndex = 2;
+    Layout = "~/Views/Shared/_ContentLayout.cshtml";
+}
+
+<div id="main-content">
+    <!-- MODAL 增加-->
+    <div class="modal fade" id="parent-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div id="model-dlg" class="modal-dialog" style="width:800px">
+            <div class="modal-content modal-table">
+                <form class="form-horizontal" role="form" method="post">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="box border blue">
+                                    <div class="box-title">
+                                        <h4><i class="fa fa-windows"></i>燃油價格調整</h4>
+                                        <div class="tools hidden-xs">
+                                            <a href="javascript:;" class="" onclick="$('#parent-modal').modal('hide');">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="box-body big">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">*@Resources.Language.Fuelprice_EffectiveDate</label>
+                                                    <div class="col-sm-8">
+                                                        <input id="_EffectiveDate" type="text" class="form-control" placeholder="@Resources.Language.Fuelprice_EffectiveDate" onfocus="$(this).parent().removeClass('has-error')" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">*@Resources.Language.Fuelprice_Price</label>
+                                                    <div class="col-sm-8">
+                                                        <input id="_Price" type="text" class="form-control" placeholder="@Resources.Language.Fuelprice_Price" onfocus="$(this).parent().removeClass('has-error')" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+       
+
+                                        <div id="parentErrMsg" class="alert alert-block alert-warning fade in" hidden>
+                                            <i class="fa fa-exclamation-circle"></i><p style=""></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">@Resources.Language.Close</button>
+                        <button type="submit" class="btn btn-primary" onclick="OKParentModal()">@Resources.Language.UserInfor_OK</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- /MODAL 增加-->
+    <div class="container">
+        <div class="row">
+            <div id="content" class="col-lg-12">
+                <!-- PAGE HEADER-->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="">
+                            <!-- STYLER -->
+                            <!-- /STYLER -->
+                            <!-- BREADCRUMBS -->
+                            <ul class="breadcrumb">
+                                <li>
+                                    <i class="fa fa-home"></i>
+                                    <a href="#">@Resources.Language.HomePage</a>
+                                </li>
+                                <li>
+                                    <i class="fa fa-briefcase fa-fw"></i>
+                                    <a href="#">@Resources.Language.TugInfor</a>
+                                </li>
+                                <li>
+                                    @Resources.Language.Fuelprice_FuelpriceManage
+                                </li>
+                            </ul>
+                            <!-- /BREADCRUMBS -->
+                        </div>
+                    </div>
+                </div>
+              
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- BOX -->
+                        <div class="box border orange">
+                            <div class="box-title">
+                                <h4><i class="fa fa-bars"></i>@Resources.Language.Fuelprice_FuelpriceManage</h4>
+                            </div>
+                            <div id="jqGridContainerBox" class="box-body">
+                                <table id="jqGrid"></table>
+                                <div id="jqGridPager"></div>
+                            </div>
+                        </div>
+                        <!-- /BOX -->
+                    </div>
+                </div>
+                <!-- /SAMPLE -->
+                <div class="footer-tools">
+                    <span class="go-top">
+                        <i class="fa fa-chevron-up"></i> Top
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var tableConfig = null;
+    //设置jqgrid
+    if (tableConfig == null) {
+        GetTableConfig();
+    }
+    $("#jqGrid").jqGrid({
+        url: "/Fuelprice/LoadFuelprice",
+        mtype: "GET",
+        datatype: "json",
+        colModel: tableConfig.columns,
+        viewrecords: true,
+        //width: 780,
+        height: '100%', //height: $(window).height() - 300,
+        rowNum: 15,
+        autowidth: true,
+        editurl: "/Fuelprice/AddEdit",
+        pager: "#jqGridPager",
+        loadonce: true,
+        rowList: ['15', '20', '30', '40', '50'],
+        rownumbers: true,
+        shrinkToFit: false,     //指定各列宽度
+        sortable: true,          //列可移动
+        colMenu: true          //列菜单
+    });
+
+    //$('#jqGrid').jqGrid('filterToolbar', { searchResult: true, searchOperators: true });
+
+    $("#jqGrid").jqGrid('bindKeys');  //光标可以控制上下移动
+
+    $('#jqGridContainerBox').resize(function () {
+        var width = $('#jqGridContainerBox').width();
+        $("#jqGrid").setGridWidth(width);
+    });
+
+    $('#jqGrid').navGrid('#jqGridPager', { edit: false, add: false, del: false, refresh: false, view: false, search: false })
+
+        .navButtonAdd('#jqGridPager', {
+            caption: "", title: '@Resources.Language.Refresh', buttonicon: "ui-icon-refresh",
+            onClickButton: function () {
+                $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+            }
+        })
+        .navButtonAdd('#jqGridPager', {
+            caption: "", title: "'@Resources.Language.ClearSearchFilter'", buttonicon: "ui-icon-circle-minus",
+            onClickButton: function () {
+                var grid = $('#jqGrid')[0];
+                grid.clearToolbar();
+                $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+            }
+        })
+        .navSeparatorAdd("#jqGridPager", { sepclass: "ui-separator", sepcontent: '' })
+        .navButtonAdd('#jqGridPager', {
+            id: 'jqGrid_ildelete',
+            caption: "", title: '@Resources.Language.DeleteSelectedRows', buttonicon: "ui-icon-trash",
+            onClickButton: function () {
+                var rowid = jQuery('#jqGrid').jqGrid('getGridParam', 'selrow');
+                var dr = jQuery("#jqGrid").jqGrid('getRowData', rowid);//得到该行的数据
+                if (rowid != null) {
+                    if (confirm('@Resources.Language.SureDelete')) {
+                        var d = new Date();
+                        $.ajax(
+                            {
+                                type: "post",
+                                url: "/Fuelprice/DeleteFuelprice",
+                                data: { 'oper': 'delete', 'data': dr },//"oper=delete&id=" + gr,
+                                dataType: 'json',
+                                success: function (result) {
+                                    alert(result.message);
+                                    //jQuery("#jqGrid").jqGrid('delRowData', rowid);
+                                    $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                                },
+
+                            }
+                            );
+                    }
+                }
+                else {
+                    alert('选中一行');
+                }
+            },
+            position: "last"
+        })
+        .navButtonAdd('#jqGridPager', {
+            //id: 'jqGrid_ilrefresh',
+            caption: "", title: '@Resources.Language.Add', buttonicon: "ui-icon-plus",
+            onClickButton: AddParent
+        });
+
+    $('#jqGrid').inlineNav('#jqGridPager',
+        {
+            edit: true,
+            add: false,
+            del: true,
+            cancel: true,
+            editParams: {
+                keys: true,
+                successfunc: function (val) {
+                    if (val.responseText != "") {
+                        var ret = $.parseJSON(val.responseText);
+                        alert(ret.message);
+                        $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                    }
+                },
+                url: null, //'/api/values',
+                mtype: 'POST'
+            },
+
+            addParams: {
+                keys: true,
+                successfunc: function (val) {
+                    //alert("111");
+                    if (val.responseText != "") {
+                        var ret = $.parseJSON(val.responseText);
+                        alert(ret.message);
+                        $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                    }
+                },
+                errorfunc: function (rowid, xhr) {
+                    alert(xhr.responseText);
+                    $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                }
+            }
+        });
+
+    //设置jqgrid表头
+    function GetTableConfig() {
+        tableConfig = {
+            columns: [
+
+                {
+                    align: 'center', label: 'IDX', index: "IDX", name: "IDX", width: 100, editable: true, edittype: "text", key: true,
+                    editrules: { required: false }, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.Fuelprice_EffectiveDate', name: "EffectiveDate", width: 130, editable: true, edittype: "text",
+                    editrules: { required: false, date: true }, colmenu: false, hidden: false,
+                    datefmt: 'yyyy-mm-dd',
+                    sorttype: 'date',
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datepicker({
+                                dateFormat: 'yy-mm-dd',
+                                showOn: 'focus'
+                            });
+                        }
+                    }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.Fuelprice_Price', name: "Price", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: false,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.Fuelprice_Unit', name: "Unit", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: true,
+                    //searchoptions: { sopt: ["cn"] },
+                    editoptions: {
+                        defaultValue: "false"
+                    }
+                    //searchoptions: { sopt: ["ge", "le"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.Fuelprice_Type', name: "Type", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, date: true }, hidden: true,
+                    datefmt: 'yyyy-mm-dd',
+                    sorttype: 'date',
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datepicker({
+                                dateFormat: 'yy-mm-dd',
+                                showOn: 'focus'
+                            });
+                        }
+                    }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.CreateDate', name: "CreateDate", width: 120, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: false,
+                    searchoptions: { sopt: ["cn"] }
+                    //searchoptions: { sopt: ["ge", "le"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.LastUpDate', name: "LastUpDate", width:120, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: false,
+                    searchoptions: { sopt: ["cn"] }
+                    //searchoptions: { sopt: ["ge", "le"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserID', name: "UserID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: true,
+                    searchoptions: { sopt: ["cn"] }
+                    //searchoptions: { sopt: ["ge", "le"] }
+                },
+                
+              
+            
+            ]
+        };
+    }
+    //模态框
+    function AddParent() {
+        $('#parent-modal').modal()
+    }
+    function initParentModal() {
+        $('#parentErrMsg').hide();
+        $('#_EffectiveDate').parent().removeClass("has-error");
+        $('#_Price').parent().removeClass("has-error");
+        $('#_Price').val("");
+
+        $('#_EffectiveDate').datetimepicker({
+            format: 'Y-m-d',
+            validateOnBlur: true,
+            timepicker: true,
+        });
+        $('#_EffectiveDate').val(new Date().Format("yyyy-MM-dd"));
+    
+    }
+
+    $('#parent-modal').on('show.bs.modal', function (e) {
+        initParentModal();
+    });
+    $('#parent-modal').on('shown.bs.modal', function (e) {
+    });
+    $('#parent-modal').on('hide.bs.modal', function () {
+        $(this).removeData("bs.modal");
+        //alert("hide");
+    });
+    $('#parent-modal').on('hidden.bs.modal', function () {
+        $(this).removeData("bs.modal");
+        //alert("hidden");
+    });
+
+    function OKParentModal() {
+        var maxTextLength = 25;
+        var maxTextAreaLength = 500;
+
+        $('#parentErrMsg').hide();
+        $('#_EffectiveDate').parent().removeClass("has-error");
+        $('#_Price').parent().removeClass("has-error");
+        //$('#_Unit').parent().removeClass("has-error");
+        //$('#_Type').parent().removeClass("has-error");
+      
+        var _EffectiveDate = $('#_EffectiveDate').val();
+        var _Price = $('#_Price').val();
+        //var _Unit = $('#_Unit').val();
+        //var _Type = $('#_Type').val();
+      
+
+        if (_EffectiveDate.length <= 0) {
+            $('#parentErrMsg p').html('@Resources.Language.Fuelprice_EffectiveDate' + "@Resources.Language.IsNull");
+            $('#_EffectiveDate').parent().addClass("has-error");
+            $('#parentErrMsg').show();
+            return;
+        }
+        else if (_Price.length <= 0) {
+            $('#parentErrMsg p').html('@Resources.Language.Fuelprice_Price' + "@Resources.Language.IsNull");
+            $('#_Price').parent().addClass("has-error");
+            $('#parentErrMsg').show();
+            return;
+        }
+        //提交数据库
+        $.ajax({
+            type: "post",
+            url: "/Fuelprice/AddFuelprice",
+            data: {
+                'EffectiveDate': _EffectiveDate,
+                'Price': _Price,
+                //'Unit': _Unit,
+                //'Type': _Type,
+             
+            },
+            dataType: 'json',
+            success: function (result) {
+                $('#parent-modal').modal('hide')
+                alert(result.message);
+
+                $('#jqGrid').jqGrid('setGridParam',
+                {
+                    datatype: 'json',
+                    url: "/Fuelprice/LoadFuelprice",
+                }).trigger('reloadGrid');
+
+                $("#jqGrid").jqGrid('setGridParam', { editurl: "/Fuelprice/AddEdit" });
+
+            },
+            error: function (result) {
+                console.log(result)
+                try {
+                    var json = $.parseJSON(result.responseText);
+                    alert(json.errorMessage);
+                } catch (e) {
+                    alert(e.message);
+                }
+                return;
+            }
+        });
+        return false;
+
+    }
+</script>
+

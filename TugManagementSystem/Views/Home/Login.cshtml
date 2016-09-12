@@ -1,0 +1,282 @@
+﻿@using DataModel
+@model DataModel.UserInfor
+@{
+    ViewBag.Title = "Login";
+    ViewBag.MenuId = "menu3";
+    ViewBag.SubMenuIndex = 0;
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>仓储信息管理系統</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- STYLESHEETS --><!--[if lt IE 9]><script src="js/flot/excanvas.min.js"></script><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="~/Resources/css/cloud-admin.css">
+    <link href="~/Resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- DATE RANGE PICKER -->
+    <link rel="stylesheet" type="text/css" href="~/Resources/js/bootstrap-daterangepicker/daterangepicker-bs3.css" />
+    <!-- UNIFORM -->
+    <link rel="stylesheet" type="text/css" href="~/Resources/js/uniform/css/uniform.default.min.css" />
+    <!-- ANIMATE -->
+    <link rel="stylesheet" type="text/css" href="~/Resources/css/animatecss/animate.min.css" />
+    <!-- FONTS -->
+    @*<link href='http://fonts.useso.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>*@
+    <script>
+
+        function ResetForm() {
+            document.getUserById('TxtUserName').value = "";
+            document.getUserById('TxtPwd').value = "";
+            //document.getUserById('TxtPwd').value = "";
+        }
+    </script>
+</head>
+<body class="login">
+    <!-- PAGE -->
+    <section id="page">
+        <!-- HEADER -->
+        <header>
+            <!-- NAV-BAR -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-4">
+                        <div id="logo">
+                            <a href="~/Home/Index"><img src="~/Resources/img/logo-alt.png" height="40" alt="logo name" /></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/NAV-BAR -->
+        </header>
+        <!--/HEADER -->
+        <!-- LOGIN -->
+        <section id="login" class="visible">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-4">
+                        <div class="login-box-plain">
+                            <img src="~/Resources/img/TUG1.png" alt="仓储管理中心" width="50" height="50" class="center-block">
+                            <h2 class="bigintro">@Resources.Language.UserInfor_Login</h2>
+                            <div class="divide-20"></div>
+                            <div class="divide-40 ">
+                                <p id="_loginerror" style="color:red; text-align:center"><strong> @ViewBag.Message</strong></p>
+                            </div>
+                            <form role="form" name="form1" method="post" action="/Home/Login" onsubmit="return CheckLogin()">
+                                <div class="form-group">
+                                    <label for="userName1">@Resources.Language.UserInfor_UserName</label>
+                                    <i class="fa fa-user"></i>
+                                    <input type="text" class="form-control" name="userName" id="userName1" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">@Resources.Language.UserInfor_Pwd</label>
+                                    <i class="fa fa-lock"></i>
+                                    <input type="password" class="form-control" name="password" id="exampleInputPassword1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">   </label>
+                                    <button type="submit" class="btn btn-danger" id="btn_submit" @*onclick="javascript:{this.disabled=true;document.form1.submit();}"*@>@Resources.Language.UserInfor_Login</button>
+                                </div>
+                            </form>
+                            <div class="login-helpers">
+                                Don't have an account with us? <a href="#" onclick="swapScreen('register');return false;">
+                                    Register
+                                    now!
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--/LOGIN -->
+        <!-- REGISTER -->
+        <section id="register">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-4">
+                        <div class="login-box-plain">
+                            <h2 class="bigintro">@Resources.Language.UserInfor_Register</h2>
+                            <div class="divide-40 "></div>
+                            <form role="form" name="form2" action="/Home/SaveNewUser" method="post" onsubmit="return Check()">
+                                <div class="form-group">
+                                    <label for="UserName">@Resources.Language.UserInfor_UserName</label>
+                                    <i class="fa fa-user"></i>
+                                    <input type="text" class="form-control" name="UserName" id="UserName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Name1">@Resources.Language.UserInfor_Name1</label>
+                                    <i class="fa fa-user"></i>
+                                    <input type="text" class="form-control" name="Name1" id="Name1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="Email">@Resources.Language.UserInfor_Email</label>
+                                    <i class="fa fa-envelope"></i>
+                                    <input type="email" class="form-control" name="Email" id="Email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="Pwd">@Resources.Language.UserInfor_Pwd</label>
+                                    <i class="fa fa-lock"></i>
+                                    <input type="password" class="form-control" name="Pwd" id="Pwd" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Pwd2">@Resources.Language.UserInfor_RepeatPwd</label>
+                                    <i class="fa fa-check-square-o"></i>
+                                    <input type="password" class="form-control" name="Pwd2" id="Pwd2">
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-success" value="Sign Up">@Resources.Language.UserInfor_SignUp</button>
+                                </div>
+                            </form>
+                            <div class="login-helpers">
+                                <a href="#" onclick="swapScreen('login');return false;"> @Resources.Language.UserInfor_BackLogin</a> <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--/REGISTER -->
+    </section>
+    <!--/PAGE -->
+    <!-- JAVASCRIPTS -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- JQUERY -->
+    <script src="~/Resources/js/jquery/jquery-2.0.3.min.js"></script>
+    <!-- JQUERY UI-->
+    <script src="~/Resources/js/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <!-- BOOTSTRAP -->
+    <script src="~/Resources/bootstrap-dist/js/bootstrap.min.js"></script>
+    <!-- UNIFORM -->
+    <script type="text/javascript" src="~/Resources/js/uniform/jquery.uniform.min.js"></script>
+    <!-- CUSTOM SCRIPT -->
+    <script src="~/Resources/js/script.js"></script>
+    <script>
+        jQuery(document).ready(function () {
+            App.setPage("login");  //Set current page
+            App.init(); //Initialise plugins and elements
+
+        });
+    </script>
+    <script language="javascript">
+        function Check() {
+            var pwd1 = document.getElementById("Pwd").value;
+            var pwd2 = document.getElementById("Pwd2").value;
+            if (pwd1 != pwd2) {
+                alert("您两次输入的密码不一样！请重新输入.");
+                document.getElementById("Pwd").focus();
+                return false;
+            }
+            else {
+                var UserName = document.getElementById("UserName").value;
+                var Name1 = document.getElementById("Name1").value;
+                var Email = document.getElementById("Email").value;
+                var Pwd = document.getElementById("Pwd").value;
+                $.ajax(
+                   {
+                       type: "post",
+                       url: "/Home/SaveNewUser",
+                       data: { UserName: UserName, Name1: Name1, Email: Email, Pwd: Pwd },
+                       dataType: 'json',
+                       success: function (result) {
+                           console.log(result)
+                           alert(result.message);
+                           location.href = '/OrderManage/OrderManage'
+                       },
+                       error: function (result) {
+                           console.log(result)
+                           try {
+                               var json = $.parseJSON(result.responseText);
+                               alert(json.errorMessage);
+                           } catch (e) {
+                               alert(e.message);
+                           }
+                           return;
+                       }
+
+
+                   }
+);
+                return false;
+            }
+        };
+
+        function CheckLogin() {
+            var uname = document.getElementById("userName1").value;
+            var passwd = document.getElementById("exampleInputPassword1").value;
+            if (uname == '') {
+                alert("用戶名不能為空！ ");
+                document.getElementById("userName1").focus();
+                return false;
+            }
+            else {
+                $("#btn_submit").attr("disabled", true);
+                $("#btn_submit").html("登錄中...");
+                var uname = document.getElementById("userName1").value;
+                var passwd = document.getElementById("exampleInputPassword1").value;
+                $.ajax(
+                   {
+                       type: "post",
+                       url: "/Home/Login",
+                       data: { userName: uname, password: passwd },
+                       dataType: 'json',
+                       success: function (result) {
+                           console.log(result)
+                           //alert(result.message);
+                           location.href = result.message;
+                       },
+                       error: function (result) {
+                           console.log(result)
+                           try {
+                               var json = $.parseJSON(result.responseText);
+                               $("#_loginerror").html(json.errorMessage);
+                               $("#btn_submit").html("登錄");
+                               //alert(json.errorMessage);
+                               $("#btn_submit").attr("disabled", false);
+                           } catch (e) {
+                               alert(e.message);
+                           }
+                           return;
+                       }
+
+
+                   }
+);
+                return false;
+            }
+        };
+
+
+    </script>
+    <script type="text/javascript">
+        function swapScreen(id) {
+            jQuery('.visible').removeClass('visible animated fadeInUp');
+            jQuery('#' + id).addClass('visible animated fadeInUp');
+        }
+
+        function login() {
+            var email = $("input#exampleInputEmail1").val();
+            var password = $("input#exampleInputPassword1").val();
+
+            jQuery.post("/Home/Login",
+                    {
+                        'email': email,
+                        'password': password
+                    },
+                    function (data, status) {
+                        //alert(data);
+                    }, "html");
+        }
+
+        function login2() {
+            var email = $("input#exampleInputEmail1").val();
+            var password = $("input#exampleInputPassword1").val();
+            alert(email);
+        }
+    </script>
+    <!-- /JAVASCRIPTS -->
+</body>
+</html>

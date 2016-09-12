@@ -1,0 +1,17 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>報表分析</title>
+    @WebReportGlobals.Scripts()
+    @WebReportGlobals.Styles()
+</head>
+<body>
+    @ViewBag.WebReport_Amount_Customer.GetHtml()
+</body>
+</html>

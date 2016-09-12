@@ -1,0 +1,2305 @@
+﻿@{
+    ViewBag.Title = @Resources.Language.OrderManage;
+    ViewBag.MenuId = "menu5";
+    ViewBag.SubMenuIndex = 0;
+    Layout = "~/Views/Shared/_ContentLayout.cshtml";
+}
+<script src="~/Resources/handsontable-master/dist/handsontable.full.min.js"></script>
+<link href="~/Resources/handsontable-master/dist/handsontable.full.css" rel="stylesheet" />
+<script src="~/Resources/handsontable-master/demo/js/moment/moment.js"></script>
+<script src="~/Resources/handsontable-master/demo/js/pikaday/pikaday.js"></script>
+<script src="~/Resources/handsontable-master/demo/js/pikaday/css/pikaday.css"></script>
+
+@model DataModel.OrderInfor
+
+<div id="main-content">
+
+    <!-- Parent MODAL FORM-->
+    <div class="modal fade" id="parent-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div id="model-dlg" class="modal-dialog" style="width:1024px">
+            <div class="modal-content modal-table">
+                @*<div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">拖轮选择</h4>
+                    </div>*@
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box border blue">
+                                <div class="box-title">
+                                    <h4><i class="fa fa-windows"></i>@Resources.Language.OrderManage_AddOrder</h4>
+                                    <div class="tools hidden-xs">
+                                        <a href="javascript:;" class="" onclick="$('#parent-modal').modal('hide');">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="box-body big">
+                                    @*<h4 class="form-title">Supported controls</h4>*@
+                                    <form class="form-horizontal" role="form">
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">*@Resources.Language.V_OrderInfor_CustomerName</label>
+                                                    <div class="col-sm-8">
+                                                        <input id="_CustomerName" class="form-control" placeholder="@Resources.Language.V_OrderInfor_CustomerName" onfocus="$(this).parent().removeClass('has-error')" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">*@Resources.Language.V_OrderInfor_OrdDate</label>
+                                                    <div class="col-sm-8">
+                                                        <input id="_OrdDate" type="text" class="form-control" placeholder="@Resources.Language.V_OrderInfor_OrdDate" onfocus="$(this).parent().removeClass('has-error')" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">*@Resources.Language.V_OrderInfor_ShipName</label>
+                                                    <div class="col-sm-8">
+                                                        <input id="_ShipName" type="text" class="form-control" placeholder="@Resources.Language.V_OrderInfor_ShipName" onfocus="$(this).parent().removeClass('has-error')" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">*@Resources.Language.V_OrderInfor_LinkMan</label>
+                                                    <div class="col-sm-8">
+                                                        <input id="_LinkMan" type="text" class="form-control" placeholder="@Resources.Language.V_OrderInfor_LinkMan" onfocus="$(this).parent().removeClass('has-error')" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">@Resources.Language.V_OrderInfor_LinkPhone</label>
+                                                    <div class="col-sm-8">
+                                                        <input id="_LinkPhone" type="text" class="form-control" placeholder="@Resources.Language.V_OrderInfor_LinkPhone" onfocus="$(this).parent().removeClass('has-error')" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">@Resources.Language.V_OrderInfor_LinkEmail</label>
+                                                    <div class="col-sm-8">
+                                                        <input id="_LinkEmail" type="email" class="form-control" placeholder="@Resources.Language.V_OrderInfor_LinkEmail" onfocus="$(this).parent().removeClass('has-error')" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">@Resources.Language.Remark</label>
+                                                    <div class="col-sm-10">
+                                                        <textarea id="_Remark" rows="3" class="form-control" placeholder="@Resources.Language.Remark" onfocus="$(this).parent().removeClass('has-error')"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            <div class="panel panel-success">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">@Resources.Language.OrderManage_Serivces</h3>
+                                                </div>
+                                                <div class="panel-body" style="height: 300px; overflow:auto;">
+                                                    <div id="flowtable" class="hot handsontable dataTable table-striped center-block"></div>
+                                                </div>
+                                            </div>
+
+                                    </form>
+
+                                    <div id="parentErrMsg" class="alert alert-block alert-warning fade in" hidden>
+                                        @*<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>*@
+                                        <i class="fa fa-exclamation-circle"></i><p style=""></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div id="_CustomerID" hidden >-1</div>
+                    <div id="_ShipID" hidden>-1</div>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">@Resources.Language.Close</button>
+                    <button id="btn_submit" type="button" class="btn btn-primary" @*onclick="submitParentModal()"*@>@Resources.Language.Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Parent MODAL FORM-->
+
+    
+    <div class="container">
+        <div class="row">
+            <div id="content" class="col-lg-12">
+                <!-- PAGE HEADER-->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="">
+                            <!-- STYLER -->
+                            <!-- /STYLER -->
+                            <!-- BREADCRUMBS -->
+                            <ul class="breadcrumb">
+                                <li>
+                                    <i class="fa fa-home"></i>
+                                    <a href="#">@Resources.Language.HomePage</a>
+                                </li>
+                                <li>
+                                    <i class="fa fa-shopping-cart"></i>
+                                    <a href="#">领料</a>
+                                </li>
+                                <li>
+                                    领料申请
+                                </li>
+                            </ul>
+                            <!-- /BREADCRUMBS -->
+                            @*<div class="clearfix">
+                                <h3 class="content-title pull-left">Grid Test</h3>
+                            </div>
+                            <div class="description">Table</div>*@
+
+                            @*<div><button class="btn btn-danger" onclick="AddParent()">Add Parent</button></div>*@
+                        </div>
+                    </div>
+                </div>
+                <!-- /PAGE HEADER -->
+                @*<div class="row">
+                        <div class="col-md-12">
+                            <div class="box border orange">
+                                <div class="box-title">
+                                </div>
+                                <div class="box-body">
+                                    <div>
+                                        <ul>
+                                            <li>@Model.Code</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+                <!-- SAMPLE -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- BOX -->
+                        <div class="box border orange">
+                            <div class="box-title">
+                                <h3 class="panel-title">   @*标识增加还是修改及ID*@
+                                    <span hidden></span>
+                                    <span hidden></span>
+                                </h3>
+                                <h4><i class="fa fa-bars"></i>领料申请</h4>
+
+                                <div class="tools">
+                                    <a href="javascript:;" class="hover-link" onclick="goToScheduler()" >
+                                        <i class="fa fa-share"></i><strong>去排船</strong>
+                                    </a>
+
+                                </div>
+
+                            </div>
+                            <div id="jqGridContainerBox" class="box-body">
+                                <table id="jqGrid"></table>
+                                <div id="jqGridPager"></div>
+                            </div>
+                        </div>
+                        <!-- /BOX -->
+                    </div>
+                </div>
+                <!-- /SAMPLE -->
+
+                @*<div class="footer-tools">
+                    <button id="go_to_scheduler" class="btn btn-pink" onclick="goToScheduler()"><i class="fa fa-share"></i>去排船</button>
+                </div>*@
+
+
+                <div class="footer-tools">
+                    <span class="go-top">
+                        <i class="fa fa-chevron-up"></i> Top
+                    </span>
+                </div>
+
+                
+
+            </div>
+        </div>
+        
+        @*<div id="services" class="row" hidden> 
+            @{
+                List<DataModel.CustomField> list = ViewBag.Services;
+                for (int i = 0; i < list.Count; i++)
+                {
+                    string s_id = "service" + i.ToString();
+                    <div id='@s_id'>
+                        <span>@list[i].IDX</span>
+                        <span>@list[i].CustomValue</span>
+                        <span>@list[i].CustomLabel</span>
+                    </div>
+                }
+                
+            }
+            
+        </div>*@
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    //服务项，handsontable 相关
+    var
+        $$ = function (id) { return document.getElementById(id); },
+        container = $$('flowtable'),
+        //tjflow = $$('btnflow'),
+        //autosaveNotification,
+        hot;
+
+    hot = new Handsontable(container, {
+        //data: getCarData(),
+        startRows: 2,
+        startCols: 7,
+        colHeaders: ['服務項', '工作日期', '工作時間', '大拖輪', '5000BHP', '小拖輪', '工作地點'],
+        contextMenu: true,
+        minSpareRows: 1,
+        rowHeaders: true,
+        columnSorting: false,
+        contextMenu: ['row_below', 'remove_row'],
+        removeRowPlugin: true,
+        //heigth: 500,
+        //colWidths: [100, 100, 100, 50, 50, 50, 100],
+        //stretchH: 'last',
+        //manualColumnResize: true,
+        columns: [
+          {
+              type: 'dropdown',
+              //source: ['创建', '校对', '审核', '会签'],
+              source: eval('@Html.Raw(@ViewBag.ServiceLabels)'),
+              strict: false,
+              width: 100
+          },
+          {
+              type: 'date',
+              dateFormat: 'MM/DD/YYYY',
+              correctFormat: true,
+              defaultDate: '@DateTime.Now.ToShortDateString()',
+              width: 100
+          },
+          {
+              //type: 'date',
+              //dateFormat: 'hh:mm',
+              //correctFormat: true,
+              //defaultDate: function () { var time = new Date(); return time.Format('hh:mm') },
+              type: 'text',
+              width: 100
+          },
+           {
+               type: 'numeric',
+               correctFormat: true,
+               width: 50
+           },
+            {
+                type: 'numeric',
+                vcorrectFormat: true,
+                width: 50
+            },
+           {
+               type: 'numeric',
+               correctFormat: true,
+               width: 50
+           },
+           {
+               type: 'autocomplete',
+               source: eval('@Html.Raw(@ViewBag.Locations)'),
+               strict: false,
+               width: 410
+           }
+        ],
+        afterChange: function (change, source) {
+            //alert(change);
+            //alert(source);
+
+            if (source === 'loadData') {
+                return; //don't save this change
+            }
+            if (change != null) {
+                var chs = change[0];
+                var rct = hot.countRows();
+                //判断是否存在
+                //if (chs[1] == 1) {
+                //    var vlperson = hot.getDataAtCell(chs[0], 1);
+                //    if (vlperson !=null && vlperson != "")
+                //    {
+                //        jQuery.ajax({
+                //            url: '/Flow/UserValid',
+                //            type: "POST",
+                //            dataType: "json",
+                //            data: { 'vlperson': vlperson },//JSON.stringify(hot.getChangeData()),
+                //            success: function (result) {
+                //                if (result.rvalid == false) {
+                //                    alert(vlperson + "不存在! ")
+                //                    hot.setDataAtRowProp(chs[0], 1, "");
+                //                }
+                //            },
+                //            error: function (xhr) {
+                //                //alert('error');
+                //            }
+                //        });
+                //    }
+                //}
+            }
+        },
+        afterRemoveRow: function (index, amount) {
+            //alert(index);
+            //alert(amount);
+        }
+    });
+    //end 服务项，handsontable 相关
+
+
+    var tableConfig = null;
+
+    $(document).ready(Init);
+
+    function Init() {
+        {
+            if (tableConfig == null) {
+                GetTableConfig();
+            }
+
+            $("#jqGrid").jqGrid({
+                //url: 'http://trirand.com/blog/phpjqgrid/examples/jsonp/getjsonp.php?callback=?&qwery=longorders',
+                url: '@Url.Action("GetData", "OrderManage")',
+                mtype: "GET",
+                datatype: "json",
+                colModel: tableConfig.columns,
+                viewrecords: true,
+                //width: 780,
+                height: '100%', //'auto', //350,
+                rowNum: 15,
+                autowidth: true,
+                //editurl: '@Url.Action("AddEdit", "OrderManage")',//编辑按钮是自定义的
+                pager: "#jqGridPager",
+                //loadonce: true,
+                rowList: ['15', '20', '30', '40', '50'],
+                rownumbers: true,
+                shrinkToFit: false,     //指定各列宽度
+                sortable: true,          //列可移动
+                //footerrow: true,
+                colMenu: false,          //列菜单
+
+
+                onSelectRow: function (rowid, status, e) {
+                    var id = $('#jqGrid').jqGrid('getGridParam', 'selrow');
+                    var rowData = $('#jqGrid').jqGrid('getRowData', id);
+                    var orderId = rowData.IDX;
+                    var ordermark = rowData.UserDefinedCol1;
+
+                    $.ajax({
+                        //url: '@Url.Action("IsScheduler", "OrderManage")',
+                        url: '@Url.Action("IsWanGong", "OrderManage")',
+                        type: "POST",
+                        data: {
+                            //'orderId': orderId
+                            'ordermark': ordermark
+                        },
+                        dataType: 'json',
+                        success: function (result) {
+                            if (result.message == true) {
+                                $('#jqGrid_ilView').removeClass('ui-state-disabled');
+                                $('#jqGrid_ilEdit').addClass('ui-state-disabled');
+                                $('#jqGrid_ildelete').addClass('ui-state-disabled');
+                            }
+                            else {
+                                $('#jqGrid_ilView').addClass('ui-state-disabled');
+                                $('#jqGrid_ilEdit').removeClass('ui-state-disabled');
+                                $('#jqGrid_ildelete').removeClass('ui-state-disabled');
+                            }
+                        },
+                    });
+                },
+
+
+                gridComplete: function () {
+                    var ids = $(this).getDataIDs();
+                    for (var i = 0; i < ids.length; i++) {
+                        var hasInvoice = $(this).getCell(ids[i], 'HasInvoice');
+                        var hasInFlow = $(this).getCell(ids[i], 'HasInFlow');
+
+                        if (hasInvoice == null || hasInvoice == "" || hasInvoice == "否") { //没有账单
+                            //$("#" + ids[i] + " td").css("background-color", "grey");
+                        }
+                        else {//有账单
+
+                            if (hasInFlow == null || hasInFlow == "" || hasInFlow == "否") { //有账单，还没进入审批流程
+                                $("#" + ids[i] + " td").css("background-color", "#CCFF99");
+                            }
+                            else { //有账单在审批流程中
+                                $("#" + ids[i] + " td").css("background-color", "#99ccff");
+                            }
+                        }
+
+                    }
+                },
+
+            });
+
+            $('#jqGrid').jqGrid('filterToolbar',
+                {
+                    searchResult: true, searchOperators: true,
+                    beforeSearch: function () {
+                        //alert(1);
+                        //alert($("#gs_Code").val());
+                        var util = new Util();
+
+                        var ret = true;
+                        //时间
+                        //if ($("#gs_WorkTime").val() != null && $("#gs_WorkTime").val() != "")
+                        //    ret = ret && util.isTime('@Resources.Language.V_OrderInfor_WorkTime', $("#gs_WorkTime").val());
+                        //if ($("#gs_EstimatedCompletionTime").val() != null && $("#gs_EstimatedCompletionTime").val() != "")
+                        //    ret = ret && util.isTime('@Resources.Language.V_OrderInfor_EstimatedCompletionTime', $("#gs_EstimatedCompletionTime").val());
+
+                        //日期
+                        if ($("#gs_OrdDate").val() != null && $("#gs_OrdDate").val() != "")
+                            ret = ret && util.isDateTime('@Resources.Language.V_OrderInfor_OrdDate', $("#gs_OrdDate").val());
+                        //if ($("#gs_WorkDate").val() != null && $("#gs_WorkDate").val() != "")
+                        //    ret = ret && util.isDate('@Resources.Language.V_OrderInfor_WorkDate', $("#gs_WorkDate").val());
+                        if ($("#gs_CreateDate").val() != null && $("#gs_CreateDate").val() != "")
+                            ret = ret && util.isDateTime('@Resources.Language.CreateDate', $("#gs_CreateDate").val());
+                        if ($("#gs_LastUpDate").val() != null && $("#gs_LastUpDate").val() != "")
+                            ret = ret && util.isDateTime('@Resources.Language.LastUpDate', $("#gs_LastUpDate").val());
+
+
+                        @*if ($("#gs_BigTugNum").val() != null && $("#gs_BigTugNum").val() != "")
+                            ret = ret && util.isValidNaturalNumber('@Resources.Language.V_OrderInfor_BigTugNum', $("#gs_BigTugNum").val());
+                        if ($("#gs_MiddleTugNum").val() != null && $("#gs_MiddleTugNum").val() != "")
+                            ret = ret && util.isValidNaturalNumber('@Resources.Language.V_OrderInfor_MiddleTugNum', $("#gs_MiddleTugNum").val());
+                        if ($("#gs_SmallTugNum").val() != null && $("#gs_SmallTugNum").val() != "")
+                            ret = ret && util.isValidNaturalNumber('@Resources.Language.V_OrderInfor_SmallTugNum', $("#gs_SmallTugNum").val());*@
+                        if ($("#gs_Length").val() != null && $("#gs_Length").val() != "")
+                            ret = ret && util.isValidNaturalNumber('客戶船長', $("#gs_Length").val());
+
+                        //自定义字段
+                        if ($("#gs_UserDefinedCol5").val() != null && $("#gs_UserDefinedCol5").val() != "")
+                            ret = ret && util.isValidFloat('@Resources.Language.UserDefinedCol5', $("#gs_UserDefinedCol5").val());
+                        if ($("#gs_UserDefinedCol6").val() != null && $("#gs_UserDefinedCol6").val() != "")
+                            ret = ret && util.isValidinteger('@Resources.Language.UserDefinedCol5', $("#gs_UserDefinedCol6").val());
+                        if ($("#gs_UserDefinedCol7").val() != null && $("#gs_UserDefinedCol7").val() != "")
+                            ret = ret && util.isValidinteger('@Resources.Language.UserDefinedCol5', $("#gs_UserDefinedCol7").val());
+                        if ($("#gs_UserDefinedCol8").val() != null && $("#gs_UserDefinedCol8").val() != "")
+                            ret = ret && util.isValidinteger('@Resources.Language.UserDefinedCol5', $("#gs_UserDefinedCol8").val());
+                        if ($("#gs_UserDefinedCol9").val() != null && $("#gs_UserDefinedCol9").val() != "")
+                            ret = ret && util.isDateTime('@Resources.Language.UserDefinedCol5', $("#gs_UserDefinedCol9").val());
+                        if ($("#gs_UserDefinedCol10").val() != null && $("#gs_UserDefinedCol10").val() != "")
+                            ret = ret && util.isDateTime('@Resources.Language.UserDefinedCol5', $("#gs_UserDefinedCol10").val());
+
+                        //alert(ret); //ret为true，说明验证客户端验证通过，需要进行搜索；反之，不进行搜索
+                        return !ret; //beforeSearch 返回true不触发搜索，false出发搜索
+                    }
+                });
+
+
+            $("#jqGrid").jqGrid('bindKeys');  //光标可以控制上下移动
+
+            $('#jqGridContainerBox').resize(function () {
+                var width = $('#jqGridContainerBox').width();
+                $("#jqGrid").setGridWidth(width);
+            });
+
+            $('#jqGrid').navGrid('#jqGridPager', { edit: false, add: false, del: false, refresh: false, view: false, search: false })
+
+                .navButtonAdd('#jqGridPager', {
+                    id: 'jqGrid_ilrefresh',
+                    caption: "", title: '@Resources.Language.Refresh', buttonicon: "ui-icon-refresh",
+                    onClickButton: function () {
+                        $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                    }
+                })
+                .navButtonAdd('#jqGridPager', {
+                    caption: "", title: "'@Resources.Language.ClearSearchFilter'", buttonicon: "ui-icon-circle-minus",
+                    onClickButton: function () {
+                        var grid = $('#jqGrid')[0];
+                        grid.clearToolbar();
+                        $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                    }
+                })
+                .navSeparatorAdd("#jqGridPager", { sepclass: "ui-separator", sepcontent: '' })
+                .navButtonAdd('#jqGridPager', {
+                    id: 'jqGrid_ildelete',
+                    caption: "", title: '@Resources.Language.DeleteSelectedRows', buttonicon: "ui-icon-trash",
+                    onClickButton: function () {
+                        var rowid = jQuery('#jqGrid').jqGrid('getGridParam', 'selrow');
+                        var dr = jQuery("#jqGrid").jqGrid('getRowData', rowid);//得到该行的数据
+                        if (rowid != null) {
+                            if (confirm('@Resources.Language.SureDelete')) {
+                                var d = new Date();
+                                $.ajax(
+                                    {
+                                        type: "post",
+                                        url: '@Url.Action("Delete", "OrderManage")',
+                                        data: { 'oper': 'delete', 'data': dr },//"oper=delete&id=" + gr,
+                                        dataType: 'json',
+                                        success: function (result) {
+                                            alert(result.message);
+                                            //jQuery("#jqGrid").jqGrid('delRowData', rowid);
+                                            $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                                        },
+
+                                    }
+                                    );
+                            }
+                        }
+                        else {
+                            alert('选中一行');
+                        }
+                    },
+                    position: "last"
+                })
+                .navButtonAdd('#jqGridPager', {
+                    //id: 'jqGrid_ilrefresh',
+                    caption: "", title: '@Resources.Language.Add', buttonicon: "ui-icon-plus",
+                    onClickButton: function () {
+                        $('.panel-title span:first').html("add");
+                        $('.panel-title span:last').html(-1);
+                        $("form input").prop("readonly", false);
+                        $("#btn_submit").attr("disabled", false);
+                        $("form textarea").prop("readonly", false);
+                        hot.updateSettings({
+                            cells: function (row, col, prop) {
+                                var cellProperties = {};
+                                cellProperties.readOnly = false;
+                                return cellProperties;
+                            }
+                        })
+                        AddParent();
+                    }
+                })
+                 .navButtonAdd('#jqGridPager', {
+                    id: 'jqGrid_ilEdit',
+                    caption: "", title: "'@Resources.Language.Edit'", buttonicon: "ui-icon-pencil",
+                    onClickButton: function () {
+                        var rowid = jQuery('#jqGrid').jqGrid('getGridParam', 'selrow');
+                        //编辑
+                        if (rowid != null) {
+                            var ordermark = jQuery('#jqGrid').jqGrid('getCell', rowid, "UserDefinedCol1");
+                            $('.panel-title span:first').html("edit");
+                            $('.panel-title span:last').html(ordermark);
+
+
+                            var selectedOrderIDs = "";
+                            var hasInvoceNotInFlowingResult = ""; //保存选择的已有账单，但不在流程中的记录
+                            var inFlowingResult = ""; //保存选择的已有账单，但已处于流程中的账单的记录
+                            var noinvoiceResult = ""; //保存选择的没有账单的记录
+
+                             $("form input").prop("readonly", false);
+                             $("form textarea").prop("readonly", false);
+                             $("#btn_submit").attr("disabled", false);
+                             hot.updateSettings({
+                                 cells: function (row, col, prop) {
+                                     var cellProperties = {};
+                                     cellProperties.readOnly = false;
+                                     return cellProperties;
+                                 }
+                             })
+
+                             //编辑
+                             EditOrder();
+
+                             //selectedOrderIDs = rowid + ":" + orderId;
+                             @*$.ajax({
+                                url: '@Url.Action("CheckOrderInvoiceStatus", "Finance")',
+                                type: "POST",
+                                data: {
+                                    'selectedOrderIDs': selectedOrderIDs
+                                },//"oper=delete&id=" + gr,
+                                dataType: 'json',
+                                success: function (result) {
+                                    //for (key in result.dic_has_no_invoice) {
+
+                                    //    var value = result.dic_has_no_invoice[key];
+                                    //    noinvoiceResult += key + ",";
+                                    //}
+
+                                    //if (noinvoiceResult != "") {
+                                    //    noinvoiceResult = noinvoiceResult.substr(0, noinvoiceResult.length - 1);
+                                    //    alert('所选的记录中，第' + noinvoiceResult + '行记录没有账单，无法编辑，请先生成账单！');
+                                    //    return;
+                                    //}
+                                  
+                                    ////if (result.ret == "該訂單已排船,不可編輯！") {
+                                    ////    $("form input").prop("readonly", true);
+                                    ////    $("form textarea").prop("readonly", true);
+                                    ////    $("#btn_submit").attr("disabled", true);
+                                    ////    hot.updateSettings({
+                                    ////        cells: function (row, col, prop) {
+                                    ////            var cellProperties = {};
+                                    ////            cellProperties.readOnly = true;
+                                    ////            return cellProperties;
+                                    ////        }
+                                    ////    })
+                                    ////}
+                                    ////else
+                                    ////{
+                                    ////    $("form input").prop("readonly", false);
+                                    ////    $("form textarea").prop("readonly", false);
+                                    ////    $("#btn_submit").attr("disabled", false);
+                                    ////    hot.updateSettings({
+                                    ////        cells: function (row, col, prop) {
+                                    ////            var cellProperties = {};
+                                    ////        }
+                                    ////    });
+                                    ////}
+                                    //for (key in result.dic_has_invoice_in_fow) {
+
+                                    //    var value = result.dic_has_invoice_in_fow[key];
+                                    //    inFlowingResult += key + ",";
+                                    //}
+
+                                    //if (inFlowingResult != "") {
+                                    //    inFlowingResult = inFlowingResult.substr(0, inFlowingResult.length - 1);
+                                    //    alert('所選的記錄中，第' + inFlowingResult + '行帳單已處於審核流程中，無法編輯！');
+                                    //    return;
+                                    //}
+                                    //else if (result.ret == "該訂單已排船,不可編輯！")
+                                    //{
+                                    //    alert("該訂單已排船,不可編輯！");
+                                    //    return;
+                                    //}
+
+                                },
+                            });*@
+
+
+                                    }
+                        else {
+                            alert('选中一行');
+                                    }
+                    }
+                 })
+            .navButtonAdd('#jqGridPager', {
+                id: 'jqGrid_ilView',
+               caption: "", title: "查看訂單", buttonicon: "ui-icon-search",
+               onClickButton: function () {
+                    var rowid = jQuery('#jqGrid').jqGrid('getGridParam', 'selrow');
+                    //查看
+                    if (rowid != null) {
+                        var ordermark = jQuery('#jqGrid').jqGrid('getCell', rowid, "UserDefinedCol1");
+                        $('.panel-title span:first').html("edit");
+                        $('.panel-title span:last').html(ordermark);
+
+                        var selectedOrderIDs = "";
+                        var hasInvoceNotInFlowingResult = ""; //保存选择的已有账单，但不在流程中的记录
+                        var inFlowingResult = ""; //保存选择的已有账单，但已处于流程中的账单的记录
+                        var noinvoiceResult = ""; //保存选择的没有账单的记录
+                            
+                        $("form input").prop("readonly", true);
+                        $("form textarea").prop("readonly", true);
+                        $("#btn_submit").attr("disabled", true);
+                        hot.updateSettings({
+                            cells: function (row, col, prop) {
+                                var cellProperties = {};
+                                cellProperties.readOnly = true;
+                                return cellProperties;
+                            }
+                        })
+                        //查看
+                        EditOrder();
+                        }
+                        else {
+                            alert('选中一行');
+                        }
+                    }
+                });
+
+            $('#jqGrid').inlineNav('#jqGridPager',
+                {
+                    edit: false,
+                    add: false,
+                    del: true,
+                    cancel: true,
+                    editParams: {
+                        keys: true,
+                        successfunc: function (val) {
+                            if (val.responseText != "") {
+                                var ret = $.parseJSON(val.responseText);
+                                alert(ret.message);
+                                $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                            }
+                        },
+                        url: null, //'/api/values',
+                        mtype: 'POST'
+                    },
+
+                    addParams: {
+                        keys: true,
+                        successfunc: function (val) {
+                            if (val.responseText != "") {
+                                var ret = $.parseJSON(val.responseText);
+                                alert(ret.message);
+                                $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                            }
+                        },
+                        errorfunc: function (rowid, xhr) {
+                            alert(xhr.responseText);
+                            $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                        }
+                    }
+                });
+
+            //最后调用，冻结列
+            //$("#jqGrid").jqGrid("setFrozenColumns");
+        }
+    }
+
+    function GetTableConfig() {
+        tableConfig = {
+            columns: [
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_IDX', index: "IDX", name: "IDX", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_CustomerID', name: "CustomerID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: true, integer: true },
+                    hidden: true,
+                    editoptions: {
+                        defaultValue: -1
+                    }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_CustomerName', name: "CustomerName", width: 250, editable: true, edittype: "text",
+                    editrules: { required: true }, hidden: false,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                    editoptions: {
+                        dataInit: function (element) {
+                            window.setTimeout(function () {
+                                $(element).autocomplete({
+                                    id: 'AutoComplete',
+                                    source: function (request, response) {
+                                        this.xhr = $.ajax({
+                                            url: '@Url.Action("GetCustomer", "OrderManage")',
+                                            data: request,
+                                            type: 'GET',
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                response($.map(data.list, function (item) {
+                                                    return {
+                                                        id: item.CustomerID,
+                                                        label: item.CustomerName1,
+                                                        value: item.CustomerName1
+                                                    };
+                                                }));
+                                            },
+
+                                            error: function (model, response, options) {
+                                                response([]);
+                                            }
+                                        });
+                                    },
+                                    select: function (event, ui) {
+                                    },
+                                    change: function (event, ui) {
+
+                                        var rowid = jQuery("#jqGrid").jqGrid('getGridParam', 'selrow');//得到最后一次选择的行
+
+                                        if (ui.item != null) {
+                                            var customerId_id = rowid + "_CustomerID";
+                                            $('#' + customerId_id).val(ui.item.id);
+                                            //jQuery("#jqGrid").setCell(rowid, 'CustomerID', ui.item.id);
+                                        }
+                                        else {
+                                            var customerId_id = rowid + "_CustomerID";
+                                            $('#' + customerId_id).val(-1);
+                                            //jQuery("#jqGrid").setCell(rowid, 'CustomerID', -1);
+                                        }
+
+                                        //var dr = jQuery("#jqGrid").jqGrid('getRowData', rowid);//得到该行的数据
+                                    },
+                                    autoFocus: false
+                                });
+                            }, 100);
+                        }
+
+                    }
+
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_ShipID', name: "ShipID", width: 100, editable: true, edittype: "text",
+                    hidden: true,
+                    editrules: { required: true, integer: true },
+                    editoptions: {
+                        defaultValue: -1
+                    }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_ShipName', name: "ShipName", width: 150, editable: true, edittype: "text",
+                    editrules: { required: true }, hidden: false,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                    editoptions: {
+                        dataInit: function (element) {
+                            window.setTimeout(function () {
+                                $(element).autocomplete({
+                                    id: 'AutoComplete',
+                                    source: function (request, response) {
+                                        this.xhr = $.ajax({
+                                            url: '@Url.Action("GetCustomerShips", "OrderManage")',
+                                            data: request,
+                                            type: 'GET',
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                response($.map(data.list, function (item) {
+                                                    return {
+                                                        id: item.ShipID,
+                                                        label: item.ShipName1,
+                                                        value: item.ShipName1
+                                                    };
+                                                }));
+                                            },
+
+                                            error: function (model, response, options) {
+                                                response([]);
+                                            }
+                                        });
+                                    },
+                                    select: function (event, ui) {
+
+                                    },
+                                    change: function (event, ui) {
+
+                                        var rowid = jQuery("#jqGrid").jqGrid('getGridParam', 'selrow');//得到最后一次选择的行
+
+                                        if (ui.item != null) {
+                                            var shipId_id = rowid + "_ShipID";
+                                            $('#' + shipId_id).val(ui.item.id);
+
+                                            //jQuery("#jqGrid").setCell(rowid, 'ShipID', ui.item.id);
+                                        }
+                                        else {
+                                            var shipId_id = rowid + "_ShipID";
+                                            $('#' + shipId_id).val(-1);
+                                            //jQuery("#jqGrid").setCell(rowid, 'ShipID', -1);
+                                        }
+
+                                        //var dr = jQuery("#jqGrid").jqGrid('getRowData', rowid);//得到该行的数据
+                                    },
+                                    autoFocus: false
+                                });
+                            }, 100);
+                        }
+
+                    }
+
+                },
+                {
+                    align: 'center', label: '客戶船長', name: "Length", width: 100, editable: false, edittype: "text",
+                    editrules: { required: false }, hidden: false,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["eq", "lt", "le", "gt", "ge"] },
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_IsGuest', name: "IsGuest", width: 120, editable: false, edittype: "checkbox",
+                    editrules: { required: true }, /*colmenu: false,*/
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    editoptions: { value: "是:否" },  //yes:是， no:否
+                    hidden: true,
+                    stype: 'select',
+
+                    searchoptions: {
+                        //sopt: ["ge", "le"],
+                        value: "全部:全部;是:是;否:否",
+                        //dataEvents: [
+                        //    {
+                        //        type: 'change',
+                        //        fn: function (e) {
+                        //            //alert(e);
+                        //            var grid = $('#jqGrid')[0];
+                        //            grid.triggerToolbar();
+
+                        //        }
+                        //    }
+                        //]
+                    }
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_OrdDate', name: "OrdDate", width: 120, editable: true, edittype: "text",
+                    editrules: {
+                        required: true,
+                        //custom_func: function (value, column) {
+                        //    var r = value.match(/^(\d{4})(-|\/)(\d{2})\2(\d{2}) (\d{2}):(\d{2}):(\d{2})$/);
+                        //    if (r == null) {
+                        //        //alert(column + ':不是正确的时间格式(hh:mm)');
+                        //        return [false, column + ":" + "不是正确的时间格式(yyyy-MM-dd hh:mm:ss)"];
+                        //    }
+
+                        //    var d = new Date(r[1], r[3] - 1, r[4], r[5], r[6], r[7]);
+                        //    if (false == (d.getFullYear() == r[4] && (d.getMonth() + 1) == r[3] && d.getDate() == r[1] && d.getHours() == r[5] && d.getMinutes() == r[6] && d.getSeconds() == r[7])) {
+                        //        return [false, column + ":" + "输入的日期时间无效"];
+                        //    }
+
+                        //    return [true, ""];
+                        //},
+                        //custom: true
+                    }, hidden: false,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    //datefmt: 'dd.mm.yyyy',
+                    //sorttype: 'date',
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d H:i:s',
+                                //format: 'd.m.Y H:i:s',
+                                validateOnBlur: true,
+                                step: 1,
+                                timepicker: true
+                            });
+                        },
+
+                        defaultValue: function () { var date = new Date(); return date.Format('yyyy-MM-dd hh:mm:ss') }
+                        //defaultValue: function () { var date = new Date(); return date.Format('dd.MM.yyyy hh:mm:ss') }
+                    },
+                    searchoptions: {
+                        sopt: ["eq", "lt", "le", "gt", "ge"],
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d H:i:s',
+                                //format: 'd.m.Y H:i:s',
+                                validateOnBlur: true,
+                                step: 1,
+                                timepicker: true
+                            });
+                        },
+
+                        dataEvents: [
+                            {
+                                type: 'change',
+                                fn: function (e) {
+                                    var grid = $('#jqGrid')[0];
+                                    grid.triggerToolbar();
+
+                                }
+                            }
+                        ]
+                    }
+                },
+
+                @*{
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_WorkDate', name: "WorkDate", width: 120, editable: true, edittype: "text",
+                    editrules: { required: true, date: true }, hidden: false,
+                    //datefmt: 'yyyy-mm-dd',
+                    //sorttype: 'date',
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d',
+                                //format: 'd.m.Y',
+                                validateOnBlur: true,
+                                step: 1,
+                                timepicker: false
+                            });
+                        },
+
+                        defaultValue: function () { var date = new Date(); return date.Format('yyyy-MM-dd') }
+                    },
+                    searchoptions: {
+                        sopt: ["eq", "lt", "le", "gt", "ge"],
+
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d',
+                                //format: 'd.m.Y',
+                                validateOnBlur: true,
+                                step: 1,
+                                timepicker: false
+                            });
+                        },
+
+                        dataEvents: [
+                            {
+                                type: 'change',
+                                fn: function (e) {
+                                    var grid = $('#jqGrid')[0];
+                                    grid.triggerToolbar();
+
+                                }
+                            }
+                        ]
+                    }
+                },*@
+                @*{
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_WorkTime', name: "WorkTime", width: 100, editable: true, edittype: "text",
+                    editrules: {
+                        required: true,
+                        custom_func: function (value, column) {
+                            var ret = value.match(/^(\d{2})(:)?(\d{2})$/);
+                            if (ret == null) {
+                                //alert(column + ':不是正确的时间格式(hh:mm)');
+                                return [false, column + ":不是正确的时间格式(hh:mm)"];
+                            }
+                            if (ret[1] >= 24 || ret[3] >= 60) {
+                                //alert(column + ":输入的时间无效");
+                                return [false, column + ":输入的时间无效"];
+                            }
+                            return [true, ""];
+                        },
+                        custom: true
+                    }, hidden: false,
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'H:i',
+                                step: 1,
+                                datepicker: false
+                            });
+                        },
+
+                        defaultValue: function () { var time = new Date(); return time.Format('hh:mm') }
+                    },
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: {
+                        sopt: ["eq", "lt", "le", "gt", "ge"],
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'H:i',
+                                step: 1,
+                                datepicker: false
+                            });
+                        },
+
+                        dataEvents: [
+                            {
+                                type: 'change',
+                                fn: function (e) {
+                                    var grid = $('#jqGrid')[0];
+                                    grid.triggerToolbar();
+
+                                }
+                            }
+                        ]
+                    }
+                },*@
+                @*{
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_EstimatedCompletionTime', name: "EstimatedCompletionTime", width: 120,
+                    editable: true, edittype: "text",
+                    editrules: {
+                        required: false,
+                        custom_func: function (value, column) {
+                            var ret = value.match(/^(\d{2})(:)?(\d{2})$/);
+                            if (ret == null) {
+                                //alert(column + ':不是正确的时间格式(hh:mm)');
+                                return [false, column + ":不是正确的时间格式(hh:mm)"];
+                            }
+                            if (ret[1] >= 24 || ret[3] >= 60) {
+                                //alert(column + ":输入的时间无效");
+                                return [false, column + ":输入的时间无效"];
+                            }
+                            return [true, ""];
+                        },
+                        custom: true
+                    }, hidden: true,
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'H:i',
+                                step: 1,
+                                datepicker: false
+                            });
+                        },
+                        defaultValue: function () { var time = new Date(); return time.Format('hh:mm') }
+                    },
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: {
+                        sopt: ["eq", "lt", "le", "gt", "ge"],
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'H:i',
+                                step: 1,
+                                datepicker: false
+                            });
+                        },
+                        dataEvents: [
+                            {
+                                type: 'change',
+                                fn: function (e) {
+                                    var grid = $('#jqGrid')[0];
+                                    grid.triggerToolbar();
+
+                                }
+                            }
+                        ]
+                    }
+
+                },*@
+                @*{
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_WorkPlace', name: "WorkPlace", width: 100, editable: true, edittype: "text",
+                    editrules: { required: true }, hidden: false,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                },*@
+                @*{
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_ServiceNatureIDS', name: "ServiceNatureIDS", width: 100, editable: true, edittype: "text",
+                    editrules: { required: true }, hidden: true,
+                    editoptions: {
+                        defaultValue: "/"
+                    }
+                },*@
+                @*{
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_ServiceNatureNames', name: "ServiceNatureNames", width: 260, editable: true, edittype: "custom",
+                    editrules: { required: true }, hidden: false,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                    editoptions: {
+                        custom_value: getServiceNatureElementValue,
+                        custom_element: createServiceNatureEditElement
+                    }
+                },*@
+
+                @*{
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_BigTugNum', name: "BigTugNum", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, integer: true, minValue: 0 }, hidden: false,
+                    editoptions: {
+                        defaultValue: 0
+                    },
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["eq", "lt", "le", "gt", "ge"] }
+                },*@
+                @*{
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_MiddleTugNum', name: "MiddleTugNum", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, integer: true, minValue: 0 }, hidden: false,
+                    editoptions: {
+                        defaultValue: 0
+                    },
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["eq", "lt", "le", "gt", "ge"] }
+                },*@
+                @*{
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_SmallTugNum', name: "SmallTugNum", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, integer: true, minValue: 0 }, hidden: false,
+                    editoptions: {
+                        defaultValue: 0
+                    },
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["eq", "lt", "le", "gt", "ge"] }
+                },*@
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_LinkMan', name: "LinkMan", width: 100, editable: true, edittype: "text",
+                    editrules: { required: true }, hidden: false,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_LinkPhone', name: "LinkPhone", width: 90, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: false,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_LinkEmail', name: "LinkEmail", width: 90, editable: true, edittype: "text",
+                    editrules: { required: false, email: true }, hidden: false,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                },
+
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_WorkStateID', name: "WorkStateID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: true, custom_func: function () { return [true, ""]; }/*validateTugID*/, custom: true }, hidden: true,
+                    editoptions: {
+                        defaultValue: -1
+                    }
+
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_WorkStateValue', name: "WorkStateValue", width: 100, editable: true, edittype: "text",
+                    editrules: { required: true, custom_func: function () { return [true, ""]; }/*validateTugID*/, custom: true }, hidden: true,
+                    editoptions: {
+                        defaultValue: -1
+                    }
+
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_WorkStateLabel', name: "WorkStateLabel", width: 120, editable: false, edittype: "select",
+                    editrules: { required: true }, hidden: true,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    editoptions: {
+                        //multiple: true,
+                        dataUrl: '@Url.Action("GetCustomField", "Base", new { CustomName = "OrderInfor.WorkStateID" })',
+                        //value: "-1:请选择;1:One;2:Two",
+                        dataEvents: [
+                            {
+                                type: 'change',
+                                fn: function (e) {
+                                    var rowid = jQuery("#jqGrid").jqGrid('getGridParam', 'selrow');//得到最后一次选择的行
+                                    if (rowid != null) {
+                                        var workStateID_id = rowid + "_WorkStateID";
+                                        var workStateValue_id = rowid + "_WorkStateValue";
+                                        $('#' + workStateID_id).val($(this).val().split("~")[0]);
+                                        $('#' + workStateValue_id).val($(this).val().split("~")[1]);
+                                        //$('#' + workStateID_id).val($(this).find("option:selected").text());
+                                    }
+                                }
+                            }
+                        ]
+                    },
+
+                    stype: "select",
+                    searchoptions: {
+                        dataUrl: '@Url.Action("GetCustomField", "Base", new { CustomName = "OrderInfor.WorkStateID"})',
+                    }
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.Remark', name: "Remark", width: 200, editable: true, edittype: "textarea",
+                    editrules: { required: false }, hidden: false,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_Code', name: "Code", width: 100, editable: false, edittype: "text",
+                    editrules: { required: false }, hidden: false,
+                    editoptions: {
+                        //defaultValue: function () { return Date().toString(); }
+                    },
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                },
+                {
+                    align: 'center', label: '@Resources.Language.OwnerID', name: "OwnerID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                    editoptions: {
+                        defaultValue: -1
+                    }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserID', name: "UserID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true
+                },
+                {
+                    align: 'center',
+                    label: '@Resources.Language.CreateDate', name: "CreateDate", width: 200, editable: false, edittype: "text",
+                    editrules: { required: false, date: true },
+                    hidden: true,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    //searchoptions: { sopt: ["eq", "lt", "le", "gt", "ge"] },
+                    //formatter: 'date',
+                    //formatoptions: { srcformat: 'yyyy-mm-dd', newformat: 'yyyy-mm-dd' },
+                    //datefmt: 'yyyy-mm-dd',
+                    //sorttype: 'date',
+
+                    editoptions: {
+
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d H:i:s',
+                                //format: 'd.m.Y H:i:s',
+                                validateOnBlur: true,
+                                step: 1,
+                                //timepicker: false
+                            });
+                        },
+                    },
+
+                    searchoptions: {
+                        sopt: ["eq", "lt", "le", "gt", "ge"],
+
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d H:i:s',
+                                //format: 'd.m.Y H:i:s',
+                                validateOnBlur: true,
+                                step: 1,
+                                //timepicker: false
+                            });
+                        },
+
+                        dataEvents: [
+                            {
+                                type: 'change',
+                                fn: function (e) {
+                                    var grid = $('#jqGrid')[0];
+                                    grid.triggerToolbar();
+
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    align: 'center',
+                    label: '@Resources.Language.LastUpDate', name: "LastUpDate", width: 200, editable: false, edittype: "text",
+                    editrules: { required: false, date: true },
+                    hidden: true,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    //searchoptions: { sopt: ["eq", "lt", "le", "gt", "ge"] },
+                    //formatter: 'date',
+                    //datefmt: 'yyyy-mm-dd',
+                    //sorttype: 'date',
+                    editoptions: {
+
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d H:i:s',
+                                //format: 'd.m.Y H:i:s',
+                                validateOnBlur: true,
+                                step: 1,
+                                //timepicker: false
+                            });
+                        },
+                    },
+                    searchoptions: {
+                        sopt: ["eq", "lt", "le", "gt", "ge"],
+
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d H:i:s',
+                                //format: 'd.m.Y H:i:s',
+                                validateOnBlur: true,
+                                step: 1,
+                                //timepicker: false
+                            });
+                        },
+
+                        dataEvents: [
+                            {
+                                type: 'change',
+                                fn: function (e) {
+                                    var grid = $('#jqGrid')[0];
+                                    grid.triggerToolbar();
+
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_HasInvoice', name: "HasInvoice", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_HasInFlow', name: "HasInFlow", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol1', name: "UserDefinedCol1", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol2', name: "UserDefinedCol2", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol3', name: "UserDefinedCol3", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol4', name: "UserDefinedCol4", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol5', name: "UserDefinedCol5", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, number: true }, hidden: true,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["eq", "lt", "le", "gt", "ge"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol6', name: "UserDefinedCol6", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, integer: true }, hidden: true,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["eq", "lt", "le", "gt", "ge"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol7', name: "UserDefinedCol7", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, integer: true }, hidden: true,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["eq", "lt", "le", "gt", "ge"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol8', name: "UserDefinedCol8", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, integer: true }, hidden: true,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["eq", "lt", "le", "gt", "ge"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol9', name: "UserDefinedCol9", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, date: true }, hidden: true,
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol10', name: "UserDefinedCol10", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, date: true }, hidden: true,
+                    datefmt: 'yyyy-mm-dd',
+                    sorttype: 'date',
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datepicker({
+                                dateFormat: 'yy-mm-dd',
+                                showOn: 'focus'
+                            });
+                        }
+                    },
+                    searchoptions: {
+                        sopt: ["eq", "lt", "le", "gt", "ge"],
+
+                        dataInit: function (element) {
+                            $(element).datepicker({
+                                //id: 'orderCreateDate_datePicker',
+                                dateFormat: 'yy-mm-dd',
+                                showOn: 'focus'
+                            });
+                        },
+
+                        dataEvents: [
+                            {
+                                type: 'change',
+                                fn: function (e) {
+                                    var grid = $('#jqGrid')[0];
+                                    grid.triggerToolbar();
+
+                                }
+                            }
+                        ]
+                    }
+                },
+                { align: 'center', label: 'Billing', name: "Billing", width: 100, editable: true, edittype: "text", editrules: { required: false }, hidden: true },
+                { align: 'center', label: 'Scheduler', name: "Scheduler", width: 100, editable: true, edittype: "text", editrules: { required: false }, hidden: true }
+
+            ]
+        };
+    }
+
+    function createServiceNatureEditElement(value, editOptions) {
+        var services = $('#services div');
+
+
+        if (value == "" || value == "/") {
+            if (services != null) {
+
+                var span = $("<span />");
+
+                for (var i = 0; i < services.length; ++i) {
+                    var label = $("<span />", { html: $($(services[i]).children('span')[2]).html() });
+                    var checkbox = $("<input>",
+                        {
+                            type: "checkbox",
+                            value: $($(services[i]).children('span')[0]).html() + '~' + $($(services[i]).children('span')[1]).html() + '~' + $($(services[i]).children('span')[2]).html(),
+                            name: "service" + i.toString()
+                        });
+
+                    if ((i + 1) % (services.length / 2 + 1) == 0) {
+                        var br = $("<br />");
+                        span.append(br);
+                    }
+
+                    span.append(label).append(checkbox);
+                }
+                return span;
+            }
+        }
+        else {
+            var span = $("<span />");
+
+            var list = value.split("/");
+
+            if (list.length > 0) {
+
+                var labels = new Array(services.length);
+                for (var i = 0; i < services.length; ++i) {
+                    labels[i] = $($(services[i]).children('span')[2]).html();
+                }
+                var flags = new Array(services.length);
+                for (var i = 0; i < services.length; i++) {
+                    flags[i] = false;
+                }
+
+                for (var i = 0; i < list.length; ++i) {
+                    for (var j = 0; j < flags.length; j++) {
+                        if (list[i] == labels[j])
+                            flags[j] = true;
+                    }
+                }
+
+                for (var i = 0; i < services.length; ++i) {
+                    var label = $("<span />", { html: $($(services[i]).children('span')[2]).html() });
+                    var checkbox = $("<input>",
+                        {
+                            type: "checkbox",
+                            value: $($(services[i]).children('span')[0]).html() + '~' + $($(services[i]).children('span')[1]).html() + '~' + $($(services[i]).children('span')[2]).html(),
+                            name: "service" + i.toString(),
+                            checked: flags[i]
+                        });
+
+                    if ((i + 1) % (services.length / 2 + 1) == 0) {
+                        var br = $("<br />");
+                        span.append(br);
+                    }
+
+                    span.append(label).append(checkbox);
+                }
+            }
+
+            return span;
+        }
+
+    }
+
+    // The javascript executed specified by JQGridColumn.EditTypeCustomGetValue when EditType = EditType.Custom
+    // One parameter passed - the custom element created in JQGridColumn.EditTypeCustomCreateElement
+    function getServiceNatureElementValue(elem, oper, value) {
+        if (oper === "set") {
+        }
+
+        if (oper === "get") {
+            var checkboxes = $(elem).find("input:checkbox:checked");
+            var str_values = "";
+            //var str_labels = "/";
+            for (var i = 0; i < checkboxes.length; ++i) {
+                str_values += $(checkboxes[i]).val() + "/";
+            }
+            if (checkboxes.length > 0) {
+                str_values = str_values.substr(0, str_values.length - 1);
+            }
+
+            //for (var i = 0; i < checkboxes.length; ++i) {
+            //    str_labels += $(checkboxes[i]).prev('span').html() + "/";
+            //}
+            //return $(elem).find("input:checkbox:checked").val();
+
+            //alert(str_values);
+            return str_values;
+        }
+    }
+
+
+    function validateTugID(value, column) {
+        var re = /^[0-9]+[0-9]*]*$/;  //判断输入是否是正整数和0
+        if (!re.test(value))
+            return [false, "請選擇一個工作狀態"];
+        else
+            return [true, ""];
+    }
+
+
+
+    //模态框,新增
+    function AddParent() {
+        $('#parent-modal').modal()
+    }
+    //模态框,编辑
+    function EditOrder() {
+        $('#parent-modal').modal()
+    }
+
+    function initParentModal() {
+        $("#btn_submit").attr("disabled", false);
+
+        $('#parentErrMsg').hide();
+        $('#_CustomerName').parent().removeClass("has-error");
+        $('#_OrdDate').parent().removeClass("has-error");
+        
+        //$('#_WorkDate').parent().removeClass("has-error");
+        //$('#_WorkTime').parent().removeClass("has-error");
+        //$('#_EstimatedCompletionTime').parent().removeClass("has-error");
+
+        $('#_ShipName').parent().removeClass("has-error");
+        //$('#_WorkPlace').parent().removeClass("has-error");
+        //$('#_ServiceNatureNames').removeClass("has-error");
+
+        //$('#_BigTugNum').parent().removeClass("has-error");
+        //$('#_MiddleTugNum').parent().removeClass("has-error");
+        //$('#_SmallTugNum').parent().removeClass("has-error");
+
+
+        $('#_LinkMan').parent().removeClass("has-error");
+        $('#_LinkPhone').parent().removeClass("has-error");
+        $('#_LinkEmail').parent().removeClass("has-error");
+        $('#_Remark').parent().removeClass("has-error");
+
+        $("#_ShipID").text(-1);
+        $("#_CustomerID").text(-1);
+        
+
+        $('#_CustomerName').autocomplete({
+            source: function (request, response) {
+                this.xhr = $.ajax({
+                    url: '@Url.Action("GetCustomer", "OrderManage")',
+                    data: request,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        response($.map(data.list, function (item) {
+                            //alert(item.ContactPerson)
+                            return {
+                                id: item.CustomerID,
+                                label: item.CustomerName1,
+                                value: item.CustomerName1,
+                                contact_person: item.ContactPerson,
+                                telephone: item.Telephone,
+                                email: item.Email
+                            };
+                        }));
+                    },
+
+                    error: function (model, response, options) {
+                        response([]);
+                    }
+                });
+            },
+            select: function (event, ui) {
+                if (ui.item != null) {
+                    //alert(ui.item.contact_person);
+                    $("#_CustomerID").text(ui.item.id);
+                    $("#_LinkMan").val(ui.item.contact_person);
+                    $("#_LinkPhone").val(ui.item.telephone);
+                    $("#_LinkEmail").val(ui.item.email);
+                }
+                else {
+                    $("#_CustomerID").text(-1);
+                    $("#_LinkMan").val("");
+                    $("#_LinkPhone").val("");
+                    $("#_LinkEmail").val("");
+                }
+            },
+            change: function (event, ui) {
+
+                if (ui.item != null) {
+                    $("#_CustomerID").text(ui.item.id);
+                    $("#_LinkMan").val(ui.item.contact_person);
+                    $("#_LinkPhone").val(ui.item.telephone);
+                    $("#_LinkEmail").val(ui.item.email);
+                }
+                else {
+                    $("#_CustomerID").text(-1);
+                    $("#_LinkMan").val("");
+                    $("#_LinkPhone").val("");
+                    $("#_LinkEmail").val("");
+                }
+
+            },
+            autoFocus: true
+        });
+
+
+        $('#_ShipName').autocomplete({
+            source: function (request, response) {
+                this.xhr = $.ajax({
+                    url: '@Url.Action("GetCustomerShips", "OrderManage")' + '?customerId=' + $("#_CustomerID").text(),
+                    data: request,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        response($.map(data.list, function (item) {
+                            return {
+                                id: item.ShipID,
+                                label: item.ShipName1,
+                                value: item.ShipName1
+                            };
+                        }));
+                    },
+
+                    error: function (model, response, options) {
+                        response([]);
+                    }
+                });
+            },
+            select: function (event, ui) {
+                if (ui.item != null)
+                    $("#_ShipID").text(ui.item.id);
+                else
+                    $("#_ShipID").text(-1);
+            },
+            change: function (event, ui) {
+
+                if (ui.item != null)
+                    $("#_ShipID").text(ui.item.id);
+                else
+                    $("#_ShipID").text(-1);
+            },
+            autoFocus: true
+        });
+
+        $('#_OrdDate').datetimepicker({
+            //format: 'Y-m-d H:i:s',
+            format: 'Y-m-d H:i:s',
+            //format: 'd.m.Y H:i:s',
+            validateOnBlur: true,
+            timepicker: true,
+        });
+
+        //$('#_WorkDate').datetimepicker({
+        //    //format: 'Y-m-d H:i:s',
+        //    format: 'Y-m-d',
+        //    //format: 'd.m.Y',
+        //    validateOnBlur: true,
+        //    timepicker: false,
+        //});
+
+        //$('#_WorkTime').datetimepicker({
+        //    format: 'H:i',
+        //    step: 1,
+        //    datepicker: false,
+        //});
+
+        //$('#_EstimatedCompletionTime').datetimepicker({
+        //    format: 'H:i',
+        //    step: 1,
+        //    datepicker: false
+        //});
+
+        $('#_CustomerName').val("");
+
+        $('#_OrdDate').val(new Date().Format("yyyy-MM-dd hh:mm:ss"));
+        //$('#_WorkDate').val(new Date().Format("yyyy-MM-dd"));
+        //$('#_WorkTime').val(new Date().Format("hh:mm"));
+        //$('#_EstimatedCompletionTime').val(new Date().Format("hh:mm"));
+
+        $('#_ShipName').val("");
+        //$('#_WorkPlace').val("");
+
+        //$("input[name='serviceCheckbox']").each(function () {
+        //    $(this).attr("checked", false);
+        //});
+
+        //$('#_BigTugNum').val("");
+        //$('#_MiddleTugNum').val("");
+        //$('#_SmallTugNum').val("");
+
+        $('#_LinkMan').val("");
+        $('#_LinkPhone').val("");
+        $('#_LinkEmail').val("");
+        $('#_Remark').val("");
+    }
+
+    function initEditModal() {
+        //$("#btn_submit").attr("disabled", false);
+        $('#parentErrMsg').hide();
+        $('#_CustomerName').parent().removeClass("has-error");
+        $('#_OrdDate').parent().removeClass("has-error");
+
+        $('#_ShipName').parent().removeClass("has-error");
+
+        $('#_LinkMan').parent().removeClass("has-error");
+        $('#_LinkPhone').parent().removeClass("has-error");
+        $('#_LinkEmail').parent().removeClass("has-error");
+        $('#_Remark').parent().removeClass("has-error");
+
+
+
+        $('#_CustomerName').autocomplete({
+            source: function (request, response) {
+                this.xhr = $.ajax({
+                    url: '@Url.Action("GetCustomer", "OrderManage")',
+                    data: request,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        response($.map(data.list, function (item) {
+                            return {
+                                id: item.CustomerID,
+                                label: item.CustomerName1,
+                                value: item.CustomerName1
+                            };
+                        }));
+                    },
+
+                    error: function (model, response, options) {
+                        response([]);
+                    }
+                });
+            },
+            select: function (event, ui) {
+                if (ui.item != null)
+                    $("#_CustomerID").text(ui.item.id);
+                else
+                    $("#_CustomerID").text(-1);
+            },
+            change: function (event, ui) {
+
+                if (ui.item != null)
+                    $("#_CustomerID").text(ui.item.id);
+                else
+                    $("#_CustomerID").text(-1);
+
+            },
+            autoFocus: true
+        });
+
+
+        $('#_ShipName').autocomplete({
+            source: function (request, response) {
+                this.xhr = $.ajax({
+                    url: '@Url.Action("GetCustomerShips", "OrderManage")' + '?customerId=' + $("#_CustomerID").text(),
+                    data: request,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        response($.map(data.list, function (item) {
+                            return {
+                                id: item.ShipID,
+                                label: item.ShipName1,
+                                value: item.ShipName1
+                            };
+                        }));
+                    },
+
+                    error: function (model, response, options) {
+                        response([]);
+                    }
+                });
+            },
+            select: function (event, ui) {
+                if (ui.item != null)
+                    $("#_ShipID").text(ui.item.id);
+                else
+                    $("#_ShipID").text(-1);
+            },
+            change: function (event, ui) {
+
+                if (ui.item != null)
+                    $("#_ShipID").text(ui.item.id);
+                else
+                    $("#_ShipID").text(-1);
+            },
+            autoFocus: true
+        });
+
+        $('#_OrdDate').datetimepicker({
+            //format: 'Y-m-d H:i:s',
+            format: 'Y-m-d H:i:s',
+            //format: 'd.m.Y H:i:s',
+            validateOnBlur: true,
+            timepicker: true,
+        });
+        //赋默认值
+        $.ajax({
+            type: "get",
+            url: '@Url.Action("GetOrder", "OrderManage")',
+            data: {
+                'ordermark': $('.panel-title span:last').html()
+            },
+            dataType: 'json',
+            success: function (result) {
+                //alert(result.CustomerID);
+                 
+                $('#_CustomerID').text(result.CustomerID);
+                $('#_CustomerName').val(result.CustomerName);
+                $('#_OrdDate').val(result.OrdDate);
+                $('#_ShipID').text(result.ShipID);
+                $('#_ShipName').val(result.ShipName);
+                $('#_LinkMan').val(result.LinkMan);
+                $('#_LinkPhone').val(result.LinkPhone);
+                $('#_LinkEmail').val(result.LinkEmail);
+                $('#_Remark').val(result.Remark);
+            }
+        });
+    }
+
+
+    $('#parent-modal').on('show.bs.modal', function (e) {
+
+        //alert($('.panel-title span:first').html());
+        if ($('.panel-title span:first').html() == 'add') initParentModal();
+        else if ($('.panel-title span:first').html() == 'edit') initEditModal();
+        //if ($('.panel-title span:first').html() == 'add') inithandsontable();//初始化handsontable
+        //else if ($('.panel-title span:first').html() == 'edit') loadservicetable();
+    });
+
+    $('#parent-modal').on('shown.bs.modal', function (e) {    
+        if ($('.panel-title span:first').html() == 'add') inithandsontable();//初始化handsontable
+        else if ($('.panel-title span:first').html() == 'edit') loadservicetable();
+    });
+    $('#parent-modal').on('hide.bs.modal', function () {
+        $(this).removeData("bs.modal");
+    });
+    $('#parent-modal').on('hidden.bs.modal', function () {
+        $(this).removeData("bs.modal");
+    });
+
+    function inithandsontable() {
+        jQuery.ajax({
+            url: '/OrderManage/GetInitServiceData', //Controller to Get the
+            //JsonResult From -- Json(jsonData, JsonRequestBehavior.AllowGet);
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json",
+            charset: "utf-8", // dataType and contentType should be json
+            async: true,
+            processData: false,
+            cache: false,
+            success: function (data) {      // on Success send the Json data
+                // to the table by using loaddata function""
+                //alert("ok");
+                hot.loadData(data);
+                //exampleConsole.innerHTML = 'Data loaded';
+            },
+            error: function (xhr) {
+                alert('error');
+            }
+        });
+    }
+
+    function loadservicetable() {
+        jQuery.ajax({
+            url: '/OrderManage/GetOrderServiceData' + '?ordermark=' + $('.panel-title span:last').html(),
+            //JsonResult From -- Json(jsonData, JsonRequestBehavior.AllowGet);
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json",
+            charset: "utf-8", // dataType and contentType should be json
+            async: true,
+            processData: false,
+            cache: false,
+            success: function (data) {      // on Success send the Json data
+                // to the table by using loaddata function""
+                //alert("ok");
+                hot.loadData(data);
+                //exampleConsole.innerHTML = 'Data loaded';
+            },
+            error: function (xhr) {
+                alert('error');
+            }
+        });
+    }
+
+    Handsontable.Dom.addEvent(btn_submit, 'click', function () {
+    //function submitParentModal() {
+
+        $('#parentErrMsg').hide();
+        $('#_CustomerName').parent().removeClass("has-error");
+        $('#_OrdDate').parent().removeClass("has-error");
+        //$('#_WorkDate').parent().removeClass("has-error");
+        //$('#_WorkTime').parent().removeClass("has-error");
+        //$('#_EstimatedCompletionTime').parent().removeClass("has-error");
+
+        $('#_ShipName').parent().removeClass("has-error");
+        //$('#_WorkPlace').parent().removeClass("has-error");
+        //$('#_ServiceNatureNames').removeClass("has-error");
+
+        //$('#_BigTugNum').parent().removeClass("has-error");
+        //$('#_MiddleTugNum').parent().removeClass("has-error");
+        //$('#_SmallTugNum').parent().removeClass("has-error");
+
+
+        $('#_LinkMan').parent().removeClass("has-error");
+        $('#_LinkPhone').parent().removeClass("has-error");
+        $('#_LinkEmail').parent().removeClass("has-error");
+        $('#_Remark').parent().removeClass("has-error");
+
+
+        var maxTextLength = 50;
+        var maxTextAreaLength = 500;
+
+
+        var customerId = $("#_CustomerID").text();
+        var customerName = $("#_CustomerName").val().trim();
+        var ordDate = $("#_OrdDate").val().trim();
+        //var workDate = $("#_WorkDate").val().trim();
+        //var workTime = $("#_WorkTime").val().trim();
+        //var estimatedCompletionTime = $("#_EstimatedCompletionTime").val().trim();
+        var shipId = $("#_ShipID").text();
+        var shipName = $("#_ShipName").val().trim();
+        //var workPlace = $("#_WorkPlace").val().trim();
+        //var bigTugNum = $("#_BigTugNum").val().trim();
+        //var middleTugNum = $("#_MiddleTugNum").val().trim();
+        //var smallTugNum = $("#_SmallTugNum").val().trim();
+        var linkMan = $("#_LinkMan").val().trim();
+        var linkPhone = $("#_LinkPhone").val().trim();
+        var linkEmail = $("#_LinkEmail").val().trim();
+        var remark = $("#_Remark").val().trim();
+
+        if (customerName.length <= 0) {
+            $('#parentErrMsg p').html('@Resources.Language.V_OrderInfor_CustomerName' + "必填");
+            $('#_CustomerName').parent().addClass("has-error");
+            $('#parentErrMsg').show();
+            return;
+        }
+        @*else if (customerName.length > maxTextLength) {
+            $('#parentErrMsg p').html('@Resources.Language.V_OrderInfor_CustomerName' + "长度不能超过" + maxTextLength);
+            $('#_CustomerName').parent().addClass("has-error");
+            $('#parentErrMsg').show();
+            return;
+        }*@
+
+            @*else if (workDate.length <= 0) {
+            $('#parentErrMsg p').html('@Resources.Language.V_OrderInfor_OrdDate' + "必填");
+            $('#_OrdDate').parent().addClass("has-error");
+            $('#parentErrMsg').show();
+            return;
+        }
+        else if (workDate.length <= 0) {
+            $('#parentErrMsg p').html('@Resources.Language.V_OrderInfor_WorkDate' + "必填");
+            $('#_WorkDate').parent().addClass("has-error");
+            $('#parentErrMsg').show();
+            return;
+        }
+
+        else if (workTime.length <= 0) {
+            $('#parentErrMsg p').html('@Resources.Language.V_OrderInfor_WorkTime' + "必填");
+            $('#_WorkTime').parent().addClass("has-error");
+            $('#parentErrMsg').show();
+            return;
+        }*@
+
+            @*else if (estimatedCompletionTime.length <= 0) {
+            $('#parentErrMsg p').html('@Resources.Language.V_OrderInfor_EstimatedCompletionTime' + "必填");
+            $('#_EstimatedCompletionTime').parent().addClass("has-error");
+            $('#parentErrMsg').show();
+            return;
+        }*@
+
+        else if (shipName.length <= 0) {
+            $('#parentErrMsg p').html('@Resources.Language.V_OrderInfor_ShipName' + "必填");
+            $('#_ShipName').parent().addClass("has-error");
+            $('#parentErrMsg').show();
+            return;
+        } else if (shipName.length > maxTextLength) {
+            $('#parentErrMsg p').html('@Resources.Language.V_OrderInfor_ShipName' + "長度不能超多" + maxTextLength);
+            $('#_ShipName').parent().addClass("has-error");
+            $('#parentErrMsg').show();
+            return;
+        }
+
+
+            @*else if (workPlace.length <= 0) {
+            $('#parentErrMsg p').html('@Resources.Language.V_OrderInfor_WorkPlace' + "必填");
+            $('#_WorkPlace').parent().addClass("has-error");
+            $('#parentErrMsg').show();
+            return;
+        } else if (workPlace.length > maxTextLength) {
+            $('#parentErrMsg p').html('@Resources.Language.V_OrderInfor_WorkPlace' + "长度不能超过" + maxTextLength);
+            $('#_WorkPlace').parent().addClass("has-error");
+            $('#parentErrMsg').show();
+            return;
+        }*@
+
+            //var hasChecked = false;
+            //var serviceNatureIds = '', serviceNatureNames = '';
+            //$("input[name='serviceCheckbox']").each(function () {
+            //    if ($(this).is(':checked')) {
+
+            //        hasChecked = true;
+            //        serviceNatureIds += $(this).val().toString().split('~')[0] + '/';
+            //        serviceNatureNames += $(this).val().toString().split('~')[2] + '/';
+            //    }
+            //});
+
+            @*if (hasChecked == true){
+            serviceNatureIds = serviceNatureIds.substr(0, serviceNatureIds.length - 1);
+            serviceNatureNames = serviceNatureNames.substr(0, serviceNatureNames.length - 1)
+        }
+        else {
+            $('#parentErrMsg p').html('@Resources.Language.V_OrderInfor_ServiceNatureNames' + ":至少选择一项服务内容");
+            $('#_ServiceNatureNames').addClass("has-error");
+            $('#parentErrMsg').show();
+            return;
+        }*@
+            //alert(serviceNatureIds);
+            //alert(serviceNatureNames);
+
+
+            @*if (bigTugNum.length > 0) {
+            var r = bigTugNum.match("^\\d+$");
+            if (r == null) {
+                $('#parentErrMsg p').html('@Resources.Language.V_OrderInfor_BigTugNum' + ":请输入大于或等于0的整数");
+                $('#_BigTugNum').parent().addClass("has-error");
+                $('#parentErrMsg').show();
+                return;
+            }
+        }
+
+        else if (middleTugNum.length > 0) {
+            var r = middleTugNum.match("^\\d+$");
+            if (r == null) {
+                $('#parentErrMsg p').html('@Resources.Language.V_OrderInfor_MiddleTugNum' + ":请输入大于或等于0的整数");
+                $('#_MiddleTugNum').parent().addClass("has-error");
+                $('#parentErrMsg').show();
+                return;
+            }
+        }*@
+
+            @*else if (smallTugNum.length > 0) {
+            var r = smallTugNum.match("^\\d+$");
+            if (r == null) {
+                $('#parentErrMsg p').html('@Resources.Language.V_OrderInfor_SmallTugNum' + ":请输入大于或等于0的整数");
+                $('#_SmallTugNum').parent().addClass("has-error");
+                $('#parentErrMsg').show();
+                return;
+            }
+        }*@
+
+        else if (linkMan.length <= 0) {
+            $('#parentErrMsg p').html('@Resources.Language.V_OrderInfor_LinkMan' + "必填");
+            $('#_LinkMan').parent().addClass("has-error");
+            $('#parentErrMsg').show();
+            return;
+        } else if (linkMan.length > maxTextLength) {
+            $('#parentErrMsg p').html('@Resources.Language.V_OrderInfor_LinkMan' + "長度不能超多" + maxTextLength);
+            $('#_LinkMan').parent().addClass("has-error");
+            $('#parentErrMsg').show();
+            return;
+        }
+
+            @*else if (linkPhone.length <= 0) {
+            $('#parentErrMsg p').html('@Resources.Language.V_OrderInfor_LinkPhone' + "必填");
+            $('#_LinkPhone').parent().addClass("has-error");
+            $('#parentErrMsg').show();
+            return;
+        }*@
+        else if (linkPhone.length > maxTextLength) {
+            $('#parentErrMsg p').html('@Resources.Language.V_OrderInfor_LinkPhone' + "長度不能超多" + maxTextLength);
+            $('#_LinkPhone').parent().addClass("has-error");
+            $('#parentErrMsg').show();
+            return;
+        }
+
+
+        else if (linkEmail.length > 0) {
+            var util = new Util();
+
+            if (false == util.isEmail2(linkEmail)) {
+                $('#parentErrMsg p').html('@Resources.Language.V_OrderInfor_LinkEmail' + ":輸入的電子郵件無效");
+                $('#_LinkEmail').parent().addClass("has-error");
+                $('#parentErrMsg').show();
+                return;
+            }
+
+        }
+
+        else if (remark.length > maxTextAreaLength) {
+            $('#parentErrMsg p').html('@Resources.Language.Remark' + "長度不能超多" + maxTextAreaLength);
+            $('#_Remark').parent().addClass("has-error");
+            $('#parentErrMsg').show();
+            return;
+        }
+        //服务内容服务项、工作日期不能为空
+        var rct = hot.countRows();
+        //alert(rct);
+        for (var i = 0; i < rct - 1; i++) {
+            //alert(hot.getDataAtCell(i, 0));//[A1,B1]
+            var vlserv = hot.getDataAtCell(i, 0)
+            //alert(vlserv);
+            if (vlserv == null || vlserv == '' || vlserv == undefined) {
+                //alert("第" + (i + 1) + "行流程节点为空! ");
+                $('#parentErrMsg p').html("第" + (i + 1) + "行服務項為空! ");
+                //$('#_XX').parent().addClass("has-error");
+                $('#parentErrMsg').show();
+                return;
+            }
+            var vldate = hot.getDataAtCell(i, 1)
+            if (vldate == null || vldate == '' || vldate == undefined) {
+                //alert("第" + (i + 1) + "行人员为空! ");
+                $('#parentErrMsg p').html("第" + (i + 1) + "工作日期為空! ");
+                //$('#_XX').parent().addClass("has-error");
+                $('#parentErrMsg').show();
+                return;
+            }
+            var vltime = hot.getDataAtCell(i, 2)
+            if (vltime == null || vltime == '' || vltime == undefined) {
+                //alert("第" + (i + 1) + "行人员为空! ");
+                $('#parentErrMsg p').html("第" + (i + 1) + "工作時間為空! ");
+                //$('#_XX').parent().addClass("has-error");
+                $('#parentErrMsg').show();
+                return;
+            }
+            else {
+                var err = false;
+                var tm = vltime.split(":");
+                //alert(tm.length)
+                if (tm.length == 1)
+                    err = true;
+                else {
+                    var rv1 = parseInt(tm[0]);
+                    //alert(rv1);
+                    //alert(rv1.toString() == 'NaN');
+                    if (rv1.toString() == 'NaN')
+                    { err = true; }
+                    else {
+                        if (rv1 < 0 || rv1 > 24) err = true;
+                    }
+                    var rv2 = parseInt(tm[1]);
+                    //alert(rv2);
+                    if (rv2.toString() == 'NaN')
+                    { err = true; }
+                    else {
+                        if (rv2 < 0 || rv2 > 59) err = true;
+                    }
+                }
+                //alert(err);
+                if (err == true) {
+                    $('#parentErrMsg p').html("第" + (i + 1) + "工作格式錯誤，請參照格式 13：30 ! ");
+                    $('#parentErrMsg').show();
+                    return;
+                }
+            }
+
+        }
+
+        $("#btn_submit").attr("disabled", true);
+
+
+        //提交数据库
+        $.ajax({
+            type: "post",
+            url: '/OrderManage/Add_EditOrder?oper=' + $('.panel-title span:first').html() + '&ordermark=' + $('.panel-title span:last').html() + '&customerId=' + customerId + '&customerName=' + customerName + '&ordDate=' + ordDate
+             + '&shipId=' + shipId + '&shipName=' + shipName + '&linkMan=' + linkMan + '&linkPhone=' + linkPhone + '&linkEmail=' + linkEmail
+             + '&remark=' + remark,
+            data: JSON.stringify(hot.getSourceData()),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            processData: false,
+            cache: false,
+            success: function (result) {
+
+                $('#parent-modal').modal('hide')
+                //jQuery("#jqGrid").jqGrid('delRowData', rowid);
+                //$('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                alert(result.message);
+
+                $('#jqGrid').jqGrid('setGridParam',
+                {
+                    datatype: 'json',
+                    url: '@Url.Action("GetData", "OrderManage")',
+                }).trigger('reloadGrid');
+
+                $("#jqGrid").jqGrid('setGridParam', { editurl: '@Url.Action("AddEdit", "OrderManage")' });
+
+            },
+            error: function (xhr) {
+                $("#btn_submit").attr("disabled", false);
+            }
+        });
+
+    });
+
+</script>
+
+
+<script>
+    function goToScheduler() {
+        window.location.href = '@Url.Action("ServiceScheduler2", "OrderManage")';
+    }
+</script>

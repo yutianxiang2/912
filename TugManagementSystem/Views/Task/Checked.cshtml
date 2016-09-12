@@ -1,0 +1,503 @@
+﻿@{
+    ViewBag.Title = "已完成";
+    ViewBag.MenuId = "menu7";
+    ViewBag.SubMenuIndex = 1;
+    ViewBag.user_name = User.Identity.Name;
+    Layout = "~/Views/Shared/_ContentLayout.cshtml";
+}
+
+<div id="main-content">
+    <div class="container">
+        <div class="row">
+            <div id="content" class="col-lg-12">
+                <!-- PAGE HEADER-->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="">
+                            <!-- BREADCRUMBS -->
+                            <ul class="breadcrumb">
+                                <li>
+                                    <i class="fa fa-home"></i>
+                                    <a href="#">@Resources.Language.HomePage</a>
+                                </li>
+                                <li>
+                                    <i class="fa fa-tasks fa-fw"></i>
+                                    <a href="#">@Resources.Language.Task_Task</a>
+                                </li>
+                                <li>
+                                    @Resources.Language.Task_TaskManage
+                                </li>
+                            </ul>
+                            <!-- /BREADCRUMBS -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- BOX -->
+                        <div class="box border orange">
+                            <div class="box-title">
+                                <h4><i class="fa fa-bars"></i>@Resources.Language.Task_Approved</h4>
+                            </div>
+                            <div id="jqGridContainerBox" class="box-body">
+
+                                @*<input type="button" class='btn btn-warning btn-xs' id="RepealSubmit_btn" value="撤销提交" />
+                                <input type="button" class='btn btn-warning btn-xs' id="RepealPass_btn" value="撤销通过" />*@
+
+                                <table id="jqGrid"></table>
+                                <div id="jqGridPager"></div>
+                            </div>
+                        </div>
+                        <!-- /BOX -->
+                    </div>
+                </div>
+                <!-- /SAMPLE -->
+                <div class="footer-tools">
+                    <span class="go-top">
+                        <i class="fa fa-chevron-up"></i> Top
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var tableConfig = null;
+
+    $(document).ready(Init);
+
+    function Init() {
+        {
+
+            if (tableConfig == null) {
+                GetTableConfig();
+            }
+
+            $("#jqGrid").jqGrid({
+                url: "/Task/GetCheckedData",
+                mtype: "GET",
+                datatype: "json",
+                colModel: tableConfig.columns,
+                viewrecords: true,
+                //width: 780,
+                height: '100%', //height: $(window).height() - 300,
+                rowNum: 30,
+                autowidth: true,
+                editurl: '@Url.Action("", "")',
+                pager: "#jqGridPager",
+                loadonce: true,
+                rowList: ['30', '50', '80', '100'],
+                rownumbers: true,
+                shrinkToFit: false,     //指定各列宽度
+                sortable: true,          //列可移动
+                colMenu: false,          //列菜单
+                onSelectRow: function (rowid, status, e) {
+                    //alert(rowid)
+                    //alert(status);
+                    var grid = $("#jqGrid");
+                    var rowKey = grid.getGridParam("selrow");
+
+                    if (!rowKey) {
+                        $('#jqGrid_RepealSubmit').addClass('ui-state-disabled');
+                        $('#jqGrid_RepealPass').addClass('ui-state-disabled');
+                    }
+                    else {
+                        var id = $('#jqGrid').jqGrid('getGridParam', 'selrow');
+                        var rowData = $('#jqGrid').jqGrid('getRowData', id);
+                        var curPhase = rowData.Phase;
+                        if (curPhase != -1)
+                        {
+                            $('#jqGrid_RepealSubmit').removeClass('ui-state-disabled');
+                            $('#jqGrid_RepealPass').removeClass('ui-state-disabled');
+
+                        }
+
+                        //var selectedIDs = grid.getGridParam("selarrrow");
+                        //if (selectedIDs.length != 1) {
+                        //    $('#jqGrid_ilAdd').addClass('ui-state-disabled');
+                        //    $('#jqGrid_ilView').addClass('ui-state-disabled');
+                        //}
+                        //else {
+                        //    $('#jqGrid_ilAdd').removeClass('ui-state-disabled');
+                        //    $('#jqGrid_ilView').removeClass('ui-state-disabled');
+                        //}
+
+                    }
+                },
+            });
+
+            // 撤销通过
+            $("#RepealPass_btn").click(function () {
+                var id = $('#jqGrid').jqGrid('getGridParam', 'selrow');
+                var rowData = $('#jqGrid').jqGrid('getRowData', id);
+                var curPhase = rowData.Phase;
+                if (rowData.length) {
+                    if (curPhase == -1) {
+                        alert("已完成全部审核，无法撤销！");
+                    }
+                    else {
+                        $.ajax(
+                                                      {
+                                                          type: "post",
+                                                          url: "/Task/RepealPass",
+                                                          data: { 'data': rowData },
+                                                          traditional: true,
+                                                          dataType: 'json',
+                                                          success: function (result) {
+                                                              alert(result.message);
+                                                              $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                                                          },
+                                                          error: function (result) {
+                                                              console.log(result)
+                                                              alert(result.message);
+                                                          }
+                                                      });
+                    }
+
+                }
+                else { alert("未选择需要操作的数据！"); }
+            })
+
+            // 撤销提交
+            $("#RepealSubmit_btn").click(function () {
+                var rowid = jQuery('#jqGrid').jqGrid('getGridParam', 'selrow');
+                var dr = jQuery('#jqGrid').jqGrid('getRowData', rowid);//选中行的数据
+                if (rowid != null) {
+                    if (confirm('确定要撤销提交吗?')) {
+                        var d = new Date();
+                        $.ajax(
+                           {
+                               type: "post",
+                               url: "/Task/RepealSubmit",
+                               data: { 'data': dr },
+                               //traditional: true,
+                               dataType: 'json',
+                               success: function (result) {
+                                   alert(result.message);
+                                   $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                               },
+                               error: function (result) {
+                                   console.log(result)
+                                   alert(result.message);
+                               }
+                           });
+                    }
+
+                }
+                else { alert("未选择需要操作的数据！"); }
+            })
+
+            $('#jqGrid').jqGrid('filterToolbar', { searchResult: true, searchOperators: true });//搜索框
+
+            $("#jqGrid").jqGrid('bindKeys');  //光标可以控制上下移动
+
+            $('#jqGridContainerBox').resize(function () {
+                var width = $('#jqGridContainerBox').width();
+                $("#jqGrid").setGridWidth(width);
+            });
+
+            $('#jqGrid').navGrid('#jqGridPager', { edit: false, add: false, del: false, refresh: false, view: false, search: false })
+                .navButtonAdd('#jqGridPager', {
+                    caption: "", title: '@Resources.Language.Refresh', buttonicon: "ui-icon-refresh",
+                    onClickButton: function () {
+                        $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                    }
+                })
+                .navButtonAdd('#jqGridPager', {
+                    caption: "", title: '@Resources.Language.ClearSearchFilter', buttonicon: "ui-icon-circle-minus",
+                onClickButton: function () {
+                    var grid = $('#jqGrid')[0];
+                    grid.clearToolbar();
+                    $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                }
+            })
+            .navSeparatorAdd("#jqGridPager", { sepclass: "ui-separator", sepcontent: '' })
+            .navButtonAdd('#jqGridPager', {
+                id: 'jqGrid_ilView',
+                caption: "查看", title: "查看账单和回扣单", buttonicon: "ui-icon-search",
+                onClickButton: function () {
+
+                    var rowid = jQuery('#jqGrid').jqGrid('getGridParam', 'selrow');
+
+                    var BillingID = jQuery('#jqGrid').jqGrid('getCell', rowid, "IDX"); //
+                    var InvoiceType = jQuery('#jqGrid').jqGrid('getCell', rowid, "InvoiceType"); //
+                    var TimeTypeValue = jQuery('#jqGrid').jqGrid('getCell', rowid, "TimeTypeValue"); //
+                    var BillingTemplateTypeLabel = jQuery('#jqGrid').jqGrid('getCell', rowid, "BillingTemplateTypeLabel"); //
+
+                    if (InvoiceType=="普通账单" && (BillingTemplateTypeLabel == "全包" || BillingTemplateTypeLabel == "半包")) {
+                        //alert("全包或半包报表预览");
+                        //location.href = '/Report/Invoice_qborbb' + '?OrderID=' + orderId + '&TimeTypeValue=' + timeTypeId
+                        open('/Report/Invoice_qborbb' + '?BillingID=' + BillingID + '&TimeTypeValue=' + TimeTypeValue)
+                    }
+
+                    else if (InvoiceType == "普通账单" && BillingTemplateTypeLabel == "计时") {
+                        //alert("计时报表预览");
+                        open('/Report/Invoice_tk' + '?BillingID=' + BillingID + '&TimeTypeValue=' + TimeTypeValue)
+                    }
+                    else if(InvoiceType == "特殊账单")
+                    {
+                        open('/Report/Invoice_Special' + '?BillingID=' + BillingID)
+                    }
+                },
+
+            })
+        .navButtonAdd('#jqGridPager', {
+            id: 'jqGrid_RepealSubmit',
+            caption: "撤销提交", title: "撤销提交", buttonicon: "ui-icon-cancel",
+            onClickButton: function () {
+                var rowid = jQuery('#jqGrid').jqGrid('getGridParam', 'selrow');
+                var dr = jQuery('#jqGrid').jqGrid('getRowData', rowid);//选中行的数据
+                if (rowid != null) {
+                    if (confirm('确定要撤销提交吗?')) {
+                        var d = new Date();
+                        $.ajax(
+                           {
+                               type: "post",
+                               url: "/Task/RepealSubmit",
+                               data: { 'data': dr },
+                               //traditional: true,
+                               dataType: 'json',
+                               success: function (result) {
+                                   alert(result.message);
+                                   $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                               },
+                               error: function (result) {
+                                   console.log(result)
+                                   alert(result.message);
+                               }
+                           });
+                    }
+                }
+            },
+
+        })
+        .navButtonAdd('#jqGridPager', {
+            id: 'jqGrid_RepealPass',
+            caption: "撤销通过", title: "撤销通过", buttonicon: "ui-icon-close",
+            onClickButton: function () {
+                var id = $('#jqGrid').jqGrid('getGridParam', 'selrow');
+                var rowData = $('#jqGrid').jqGrid('getRowData', id);
+                var curPhase = rowData.Phase;
+                if (rowData != null) {
+                    if (curPhase == -1) {
+                        alert("已完成全部审核，无法撤销！");
+                    }
+                    else {
+                        $.ajax(
+                                                      {
+                                                          type: "post",
+                                                          url: "/Task/RepealPass",
+                                                          data: { 'data': rowData },
+                                                          //traditional: true,
+                                                          dataType: 'json',
+                                                          success: function (result) {
+                                                              alert(result.message);
+                                                              $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                                                          },
+                                                          error: function (result) {
+                                                              console.log(result)
+                                                              alert(result.message);
+                                                          }
+                                                      });
+                    }
+
+                }
+                else { alert("未选择需要操作的数据！"); }
+            },
+
+        });
+
+        $('#jqGrid').inlineNav('#jqGridPager',
+            {
+                edit: false,
+                add: false,
+                del: false,
+                cancel: false,
+                save:false,
+                editParams: {
+                    keys: true,
+                    successfunc: function (val) {
+                        if (val.responseText != "") {
+                            var ret = $.parseJSON(val.responseText);
+                            alert(ret.message);
+                            $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                        }
+                    },
+                    url: null, //'/api/values',
+                    mtype: 'POST'
+                },
+
+                addParams: {
+                    keys: true,
+                    successfunc: function (val) {
+                        if (val.responseText != "") {
+                            var ret = $.parseJSON(val.responseText);
+                            alert(ret.message);
+                            $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                        }
+                    },
+                    errorfunc: function (rowid, xhr) {
+                        alert(xhr.responseText);
+                        $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                    }
+                }
+            });
+
+        //最后调用，冻结列
+    }
+    }
+    function GetTableConfig() {
+        tableConfig = {
+            columns: [
+                            {
+                                align: 'center', label: '@Resources.Language.V_OrderBilling_BillingID', index: "IDX", name: "IDX", width: 80, editable: true, edittype: "text",
+                                hidden: true,
+                            },
+                            {
+                                align: 'center', label: '@Resources.Language.V_OrderBilling_BillingTypeLabel', name: "InvoiceType", width: 100, editable: true, edittype: "text",
+                                coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                                searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                                hidden: false
+                            },
+
+                            {
+                                align: 'center', label: '@Resources.Language.CustomerName', name: "CustomerName", width: 200, editable: true, edittype: "text",
+                                coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                                searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                                hidden: false
+                            },
+                            {
+                                align: 'center', label: '@Resources.Language.V_OrderInfor_ShipName', name: "ShipName", width: 200, editable: true, edittype: "text",
+                                coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                                searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                                hidden: false
+                            },
+                            {
+                                align: 'center', label: '@Resources.Language.V_OrderBilling_JobNo', name: "JobNo", width: 120, editable: true, edittype: "text",
+                                coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                                searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                                hidden: false
+                            },
+                            {
+                                align: 'center', label: '@Resources.Language.V_Billing_BillingCode', name: "BillingCode", width: 120, editable: true, edittype: "text",
+                                coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                                searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                                hidden: false
+                            },
+                           
+
+                            {
+                                align: 'center', label: '@Resources.Language.V_Billing_BillingTemplateTypeLabel', name: "BillingTemplateTypeLabel", width: 100, editable: true, edittype: "text",
+                                hidden: false,
+                                coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                                //stype: 'select',
+                                searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                              
+                            },
+                            {
+                                align: 'center', label: 'TimeTypeValue', name: "TimeTypeValue", width: 120, editable: true, edittype: "text",
+                                coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                                searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                                hidden: true
+                            },
+                            {
+                                align: 'center', label: '@Resources.Language.V_Billing_TimeTypeLabel', name: "TimeTypeLabel", width: 100, editable: true, edittype: "text",
+                                hidden: false,
+                                coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                                //stype: 'select',
+                                searchoptions: { sopt: ["cn", "eq", "bw", "ew"] }
+                                   
+                            },
+                            
+                            {
+                            align: 'center', label: '@Resources.Language.V_Billing_Amount', name: "Amount", width: 100, editable: true, edittype: "text",
+                            hidden: false,
+                            coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                            searchoptions: { sopt: ["eq", "lt", "le", "gt", "ge"] },
+                            },
+
+                            {
+                            align: 'center', label: '@Resources.Language.V_Billing_Status', name: "Status", width: 120, editable: false, edittype: "text",
+                            hidden: false,
+                            coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                            searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                            },
+                            {
+                            align: 'center', label: '@Resources.Language.Remark', name: "Remark", width: 200, editable: true, edittype: "textarea",
+                            hidden: false,
+                            coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                            searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                            },
+                            {
+                            align: 'center',
+                                label: '@Resources.Language.CreateDate', name: "CreateDate", width: 120, editable: false, edittype: "text",
+                            hidden: false,
+                          
+                            datefmt: 'yyyy-mm-dd',
+                            sorttype: 'date',
+                            coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                            searchoptions: {
+                                    sopt: ["eq", "lt", "le", "gt", "ge"],
+
+                                    dataInit: function (element) {
+                                        $(element).datetimepicker({
+                                            format: 'Y-m-d H:i:s',
+                                            step: 1,
+                                            //timepicker: false
+                                        });
+                                    },
+
+                                    dataEvents: [
+                                        {
+                                            type: 'change',
+                                            fn: function (e) {
+                                                var grid = $('#jqGrid')[0];
+                                                grid.triggerToolbar();
+
+                                            }
+                                        }
+                                    ]
+                            }
+                            },
+                            {
+                                align: 'center',
+                                label: '@Resources.Language.LastUpDate', name: "LastUpDate", width: 120, editable: false, edittype: "text",
+                                hidden: false,
+                                //formatter: 'date',
+                                datefmt: 'yyyy-mm-dd',
+                                sorttype: 'date',
+                                coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                                searchoptions: {
+                                        sopt: ["eq", "lt", "le", "gt", "ge"],
+
+                                        dataInit: function (element) {
+                                            $(element).datetimepicker({
+                                                format: 'Y-m-d H:i:s',
+                                                step: 1,
+                                                //timepicker: false
+                                            });
+                                        },
+
+                                        dataEvents: [
+                                            {
+                                                type: 'change',
+                                                fn: function (e) {
+                                                    var grid = $('#jqGrid')[0];
+                                                    grid.triggerToolbar();
+
+                                                }
+                                            }
+                                        ]
+                                }
+                            },
+                            {
+                                align: 'center', label: 'UserID', name: "UserID", width: 80, editable: true, edittype: "text",
+                                hidden: true,
+                            },
+            ]
+        };
+    }
+    
+
+</script>

@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="07/21/2016 22:06:29" ReportInfo.Modified="08/13/2016 13:42:31" ReportInfo.CreatorVersion="2013.3.3.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlq+rW0RkboK+/8CKGGYUID3ctBV8q9SvKYxl3iiE7vBnh7Tgou0+4WFf3NfmPSvHVFNt5PNzfElyWYAH7pmiWas1IwJ1aTDtSgtRzvwNamGpACjVXGf1SFmwyUs1HN1tS6XHwUs2IJdgUAn/QiEr5wANzfunNWU6MQ2pM+hJ/llQxKEz7ZcXQhrGsfZEqSnZdv1XDXXtlEvFKj7dz1Sg50nQ==">
+      <TableDataSource Name="V_AmountSum_Billing" DataType="System.Int32" Enabled="true" TableName="V_AmountSum_Billing">
+        <Column Name="ID" DataType="System.Int32"/>
+        <Column Name="TugID" DataType="System.Int32"/>
+        <Column Name="TugName1" DataType="System.String"/>
+        <Column Name="Amount" DataType="System.Int32"/>
+        <Column Name="Currency" DataType="System.String"/>
+        <Column Name="BillingID" DataType="System.Int32"/>
+        <Column Name="BillingCode" DataType="System.String"/>
+        <Column Name="CustomerID" DataType="System.Int32"/>
+        <Column Name="CustomerName1" DataType="System.String"/>
+        <Column Name="CustomerShipID" DataType="System.Int32"/>
+        <Column Name="CustomerShipName1" DataType="System.String"/>
+        <Column Name="BillingTypeID" DataType="System.Int32"/>
+        <Column Name="BillingType" DataType="System.String"/>
+        <Column Name="TimeTypeID" DataType="System.Int32"/>
+        <Column Name="TimeType" DataType="System.String"/>
+        <Column Name="BillTotalAmount" DataType="System.Double"/>
+        <Column Name="FinanceMonth" DataType="System.String"/>
+        <Column Name="BillingYear" DataType="System.String"/>
+        <Column Name="BillingMonth" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8"/>
+    <PageHeaderBand Name="PageHeader1" Top="41.8" Width="718.2" Height="28.35">
+      <TextObject Name="Text1" Left="226.8" Width="94.5" Height="18.9" Text="每月营业额" Font="宋体, 12pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="74.15" Width="718.2" Height="75.74">
+      <MatrixObject Name="Matrix1" Left="9.45" Width="529.2" Height="75.74" FixedRows="1" FixedColumns="1" DataSource="V_AmountSum_Billing" Style="Orange">
+        <MatrixColumns>
+          <Header Expression="[V_AmountSum_Billing.BillingType]"/>
+        </MatrixColumns>
+        <MatrixRows>
+          <Header Expression="[V_AmountSum_Billing.BillingMonth]"/>
+        </MatrixRows>
+        <MatrixCells>
+          <Cell Expression="[V_AmountSum_Billing.Amount]"/>
+        </MatrixCells>
+        <TableColumn Name="Column1" MinWidth="151.2" Width="151.2" AutoSize="true"/>
+        <TableColumn Name="Column2" MinWidth="226.8" Width="226.8" AutoSize="true"/>
+        <TableColumn Name="Column3" MinWidth="151.2" Width="151.2" AutoSize="true"/>
+        <TableRow Name="Row1" Height="25.87" AutoSize="true">
+          <TableCell Name="Cell1" Border.Lines="All" Border.Color="White" Fill.Color="255, 218, 70" Text=" 月" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell2" Border.Lines="All" Border.Color="White" Fill.Color="255, 218, 70" Text="[BillingType]" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell5" Border.Lines="All" Border.Color="White" Fill.Color="255, 218, 70" Text="合计" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row2" Height="24" AutoSize="true">
+          <TableCell Name="Cell3" Border.Lines="All" Border.Color="White" Fill.Color="255, 218, 70" Text="[BillingMonth]" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell4" Border.Lines="All" Border.Color="White" Fill.Color="255, 235, 155" Text="[Amount]" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell6" Border.Lines="All" Border.Color="White" Fill.Color="255, 235, 155" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row3" Height="25.87" AutoSize="true">
+          <TableCell Name="Cell7" Border.Lines="All" Border.Color="White" Fill.Color="255, 218, 70" Text="合计" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell8" Border.Lines="All" Border.Color="White" Fill.Color="255, 235, 155" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell9" Border.Lines="All" Border.Color="White" Fill.Color="255, 235, 155" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+      </MatrixObject>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="153.89" Width="718.2" Height="18.9"/>
+  </ReportPage>
+</Report>

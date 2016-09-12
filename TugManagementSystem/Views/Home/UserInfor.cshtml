@@ -1,0 +1,176 @@
+﻿@model DataModel.UserInfor
+@{
+    ViewBag.Title = "UserInfor";
+    ViewBag.MenuId = "menu5";
+    ViewBag.SubMenuIndex = 0;
+    Layout = "~/Views/Shared/_ContentLayout.cshtml";
+}
+
+<h2>UserInfor</h2>
+
+<div id="main-content">
+    <div class="container">
+        <div class="row">
+            <div id="content" class="col-lg-12">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-header">
+                            <!-- BREADCRUMBS -->
+                            <ul class="breadcrumb">
+                                @*<li>
+                                        <i class="fa fa-home"></i>
+                                        <a href="#">@Resources.Language.HomePage</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">@Resources.Language.Order</a>
+                                    </li>
+                                    <li>
+                                        @Resources.Language.OrderManage
+                                    </li>*@
+                            </ul>
+                            <!-- /BREADCRUMBS -->
+                            <div class="clearfix">
+                                <h3 class="content-title pull-left"> @Resources.Language.UserInfor_UserInfor </h3>
+                            </div>
+                            <div class="description">Table</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="col-sm-12">
+                            <div class="box border orange">
+                                <div class="box-title">
+                                    <h4><i class="fa fa-bitbucket"></i>@Resources.Language.UserInfor_UserInfor</h4>
+                                </div>
+                                <form class="form-horizontal " action="/Home/UpdateUserInfor" onsubmit="return Update();">
+                                    <div class="box-body col-xs-6 pull-right">
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                @Resources.Language.UserInfor_Name1:
+                                            </label>
+                                            <div class="col-md-6">
+                                                <input type="text" name="Name1" id="Name1" class="form-control" value="@Model.Name1">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                @Resources.Language.UserInfor_Dept:
+                                            </label>
+                                            <div class="col-md-6">
+                                                <input type="text" name="Dept" id="Dept" class="form-control" disabled="disabled" value="@Model.Dept">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                @Resources.Language.UserInfor_WorkNumber:
+                                            </label>
+                                            <div class="col-md-6">
+                                                <input type="text" name="WorkNumber" id="WorkNumber" class="form-control" disabled="disabled" value="@Model.WorkNumber">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                @Resources.Language.UserInfor_Tel:
+                                            </label>
+                                            <div class="col-md-6">
+                                                <input type="text" name="Tel" id="Tel" class="form-control" value="@Model.Tel">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                            </label>
+                                            <div class="col-md-6">
+                                                <button type="submit" class="btn  btn-warning btn-lg btn-block pull-right" title="Tooltip at left"> @Resources.Language.UserInfor_OK </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="box-body col-xs-6 pull-left">
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                @Resources.Language.UserInfor_UserName:
+                                            </label>
+                                            <div class="col-md-6">
+                                                <input type="text" name="UserName" id="UserName" class="form-control" disabled="disabled" value="@Model.UserName">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                @Resources.Language.UserInfor_Name2:
+                                            </label>
+                                            <div class="col-md-6">
+                                                <input type="text" name="Name2" id="Name2" class="form-control" value="@Model.Name2">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                @Resources.Language.UserInfor_Sec:
+                                            </label>
+                                            <div class="col-md-6">
+                                                <input type="text" name="Sec" id="Sec" class="form-control" disabled="disabled" value="@Model.Sec">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                @Resources.Language.UserInfor_Sex:
+                                            </label>
+                                            <div class="col-md-6">
+                                                <input type="text" name="Sex" id="Sex" class="form-control" value="@Model.Sex">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                @Resources.Language.UserInfor_Email:
+                                            </label>
+                                            <div class="col-md-6">
+                                                <input type="email" name="Email" id="Email" class="form-control" value="@Model.Email">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script language="javascript">
+    function Update() {
+        var UserName = document.getElementById("UserName").value;
+        var Name1 = document.getElementById("Name1").value;
+        var Name2 = document.getElementById("Name2").value;
+        var Sex = document.getElementById("Sex").value;
+        var Tel = document.getElementById("Tel").value;
+        var Email = document.getElementById("Email").value;
+
+        $.ajax(
+           {
+               type: "post",
+               url: "/Home/UpdateUserInfor",
+               data: { UserName: UserName, Name1: Name1, Name2: Name2, Sex: Sex, Tel: Tel, Email: Email },
+               dataType: 'json',
+               success: function (result) {
+                   console.log(result)
+                   alert(result.message);
+               },
+               error: function (result) {
+                   console.log(result)
+                   alert(result.responseJSON.message);
+               }
+
+           });
+        return false;
+    };
+</script>

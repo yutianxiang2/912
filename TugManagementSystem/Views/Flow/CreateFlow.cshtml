@@ -1,0 +1,620 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- 最新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="~/Resources/Frame/bootstrap-dist/css/bootstrap.min.css">
+
+    <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="~/Resources/Frame/bootstrap-dist/css/bootstrap-theme.min.css">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="~/Resources/Frame/bootstrap-dist/js/bootstrap.min.js"></script>
+
+    <!-- The jQuery library is a prerequisite for all jqSuite products -->
+    <script type="text/ecmascript" src="~/Resources/JqGrid/js/jquery-1.11.0.min.js"></script>
+    <!-- This is the Javascript file of jqGrid -->
+    <script type="text/ecmascript" src="~/Resources/JqGrid/js/jquery.jqGrid.min.js"></script>
+    <!-- This is the localization file of the grid controlling messages, labels, etc.
+    <!-- We support more than 40 localizations -->
+    <script type="text/ecmascript" src="~/Resources/JqGrid/js/i18n/grid.locale-en.js"></script>
+    <!-- The link to the CSS that the grid needs -->
+    <link rel="stylesheet" type="text/css" media="screen" href="~/Resources/JqGrid/css/ui.jqgrid.css" />
+
+    <!-- A link to a jQuery UI ThemeRoller theme, more than 22 built-in and many more custom -->
+    <link rel="stylesheet" type="text/css" media="screen" href="~/Resources/jquery-ui-1.11.4.custom/jquery-ui.css" />
+
+    <link rel="stylesheet" type="text/css" href="~/Resources/Frame/css/cloud-admin.css">
+    <link rel="stylesheet" type="text/css" href="~/Resources/Frame/css/themes/default.css" id="skin-switcher">
+    <link rel="stylesheet" type="text/css" href="~/Resources/Frame/css/responsive.css">
+    <title>CreateFlow</title>
+    <script src='你的js文件名'></script>
+</head>
+<body>
+    <nav class="navbar navbar-default" role="navigation">
+        @*<div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Brand</a>
+            </div>*@
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li @*class="active"*@><a href="#"><span class="glyphicon glyphicon-hand-up"></span>提交审核</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-check"></span>保存为模板</a></li>
+                @*<li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                    </li>*@
+            </ul>
+            <form class="navbar-form">
+                <div class="form-group">
+                    <input type="text" list="node" class="form-control col-lg-2" placeholder="流程节点">
+                    <datalist id="node">
+                        <option label="创建" value="创建"></option>
+                        <option label="校对" value="校对"></option>
+                        <option label="审核" value="审核"></option>
+                    </datalist>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>增加</button>
+                    <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-chevron-up"></span>上移</button>
+                    <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-chevron-down"></span>下移</button>
+                </div>
+                @*</form>
+                    <form class="navbar-form navbar-right">*@
+            </form>
+        </div><!-- /.navbar-collapse -->
+    </nav>
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BOX -->
+            <div class="box border green">
+                <div class="box-title">
+                    <h4><i class="fa fa-envelope"></i>创建流程</h4>
+                    <div class="tools hidden-xs">
+                        <a href="#box-config" data-toggle="modal" class="config">
+                            <i class="fa fa-cog"></i>
+                        </a>
+                        <a href="javascript:;" class="reload">
+                            <i class="fa fa-refresh"></i>
+                        </a>
+                        <a href="javascript:;" class="collapse">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a href="javascript:;" class="remove">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <form>
+                            <div style="float:left">
+                                <table id="tree"></table>
+                                <div id="pager"></div>
+                            </div>
+                            <div style="float:left;margin-left:10px;">
+                                <table id="jqGrid"></table>
+                                <div id="jqGridPager"></div>
+                            </div>
+                            <div style="float:left;margin-left:10px;">
+                                <table id="jqGrid2"></table>
+                                <div id="jqGridPager2"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- /BOX -->
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+
+    var tableConfig = null;
+    //设置treegrid
+    jQuery(document).ready(function ($) {
+        jQuery('#tree').jqGrid({
+            "url": "/Flow/LoadOrganizationOnce",
+            "editurl": "/Flow/AddEdit",
+            "datatype": "json",
+            "colModel": [
+                {
+                    "name": "IDX",
+                    "index": "IDX",
+                    "sorttype": "int",
+                    "key": true,
+                    "hidden": true
+                },
+
+                {
+                    "name": "Name1",
+                    "index": "Name1",
+                    "sorttype": "string",
+                    "label": "组织结构",
+                    "editable": true,
+                    "width": 50
+                },
+                {
+                    "name": "InCode",
+                    "index": "InCode",
+                    "sorttype": "string",
+                    "label": "InCode",
+                    "editable": true,
+                    "hidden": true,
+                    "width": 50
+                },
+                {
+                    "name": "FatherID",
+                    "hidden": true
+                },
+                //{
+                //    "name": "IsLeaf",
+                //    "editable": true,
+                //    "hidden": true
+                //},
+                {
+                    "name": "LevelValue",
+                    "editable": true,
+                    "hidden": true
+                }
+            ],
+            "width": 300,
+            //"caption": "组织结构",
+            "mtype": "POST",
+            "hoverrows": false,
+            "viewrecords": false,
+            "gridview": true,
+            "height": 335,//"auto",
+            "sortname": "Name1",
+            "scrollrows": true,
+
+            "treeGrid": true,
+            "ExpandColumn": "Name1",
+            "treedatatype": "json",
+            "treeGridModel": "adjacency",
+            "loadonce": true,
+            "rowNum": 100,
+            "treeReader": {
+                "parent_id_field": "FatherID",
+                "level_field": "LevelValue",
+                "leaf_field": "IsLeaf",
+                "expanded_field": "expanded",
+                "loaded": "loaded",
+                "icon_field": "icon"
+            },
+            //"treeIcons": {
+            //    "plus": "ui-icon-circlesmall-plus",
+            //    "minus": "ui-icon-circlesmall-minus",
+            //    "leaf": "ui-icon-document"
+            //},
+            "sortorder": "asc",
+            "pager": "#pager",
+            "onSelectRow": function (rowid) {
+                if (rowid != null) {
+                    var dr = $('#tree').jqGrid('getRowData', rowid);
+                    //alert(dr.IsLeaf);
+                    //if (dr.IsLeaf === 'true') {
+                    id = dr.IDX;
+                    incode = dr.InCode;
+                    level = dr.LevelValue;
+                    //$("#InCode").html(dr.InCode);
+                    //$("#Name1").html(dr.Name1);
+                    $('#jqGrid').jqGrid('setGridParam', { mtype: 'POST', datatype: 'json', url: '@(Url.Action("LoadUsersFilter", "Flow"))?incode=' + incode }).trigger('reloadGrid');
+                    //}
+                }
+                //else {
+                //    alert('选中一行');
+                //}
+            },
+        });
+        //设置treegrid的导航
+        jQuery('#tree').jqGrid('navGrid', '#pager',
+        {
+            "edit": true,
+            "add": true,
+            "del": true,
+            "search": true,
+            "refresh": true,
+            "view": false,
+            "excel": false,
+            "pdf": false,
+            "csv": false,
+            "columns": false
+        },
+        { "drag": true, "resize": true, "closeOnEscape": true, "dataheight": 150 },
+        { "drag": true, "resize": true, "closeOnEscape": true, "dataheight": 150 }
+        );
+        jQuery('#tree').jqGrid('bindKeys');
+
+        //设置人员jqgrid
+        if (tableConfig == null) {
+            GetTableConfig();
+        }
+
+        $("#jqGrid").jqGrid({
+            //url: 'http://trirand.com/blog/phpjqgrid/examples/jsonp/getjsonp.php?callback=?&qwery=longorders',
+            url: '@Url.Action("LoadUsers", "Flow")',
+            mtype: "GET",
+            datatype: "json",
+            colModel: tableConfig.columns,
+            viewrecords: true,
+            //width: 500,
+            height: 300,//$(window).height() - 300,//300,
+            rowNum: 10,
+            //autowidth: true,
+            editurl: '@Url.Action("UserAddEdit", "Flow")',
+            pager: "#jqGridPager",
+            loadonce: true,
+            rowList: ['10', '20', '30'],
+            rownumbers: true,
+            shrinkToFit: false,     //指定各列宽度
+            sortable: true,          //列可移动
+            colMenu: true          //列菜单
+        });
+
+        $('#jqGrid').jqGrid('filterToolbar', { searchResult: true, searchOperators: true });
+
+        $('#jqGrid').navGrid('#jqGridPager', { edit: false, add: false, del: false, refresh: false, view: false, search: false })
+
+            .navButtonAdd('#jqGridPager', {
+                caption: "", title: '@Resources.Language.Refresh', buttonicon: "ui-icon-refresh",
+                onClickButton: function () {
+                    //alert("haha");
+                    @*$.ajax(
+                        {
+                            type: "get",
+                            url: '@Url.Action("GetDataForLoadOnce", "Customer")',
+                            dataType: 'json',
+                            type: 'get',
+                            data:{'_search':false, 'sidx':'', 'sord':'', 'page':1, 'rows':10},
+                            success: function (result) {
+
+                                $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                            },
+                        }
+                        );*@
+
+                    $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                }
+            })
+            .navSeparatorAdd("#jqGridPager", { sepclass: "ui-separator", sepcontent: '' })
+            .navButtonAdd('#jqGridPager', {
+                caption: "", title: '@Resources.Language.DeleteSelectedRows', buttonicon: "ui-icon-trash",
+                onClickButton: function () {
+                    var rowid = jQuery('#jqGrid').jqGrid('getGridParam', 'selrow');
+                    var dr = jQuery("#jqGrid").jqGrid('getRowData', rowid);//得到该行的数据
+                    if (rowid != null) {
+                        if (confirm('@Resources.Language.SureDelete')) {
+                            var d = new Date();
+                            $.ajax(
+                                {
+                                    type: "post",
+                                    url: '@Url.Action("", "")',
+                                    data: { 'oper': 'delete', 'data': dr },//"oper=delete&id=" + gr,
+                                    dataType: 'json',
+                                    success: function (result) {
+                                        alert(result.message);
+                                        //jQuery("#jqGrid").jqGrid('delRowData', rowid);
+                                        $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                                    },
+
+                                }
+                                );
+                        }
+                    }
+                    else {
+                        alert('选中一行');
+                    }
+                },
+                position: "last"
+            });
+
+        $('#jqGrid').inlineNav('#jqGridPager',
+            {
+                edit: true,
+                add: true,
+                del: true,
+                cancel: true,
+                editParams: {
+                    keys: true,
+                    successfunc: function (val) {
+                        if (val.responseText != "") {
+                            var ret = $.parseJSON(val.responseText);
+                            alert(ret.message);
+                            $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                        }
+                    },
+                    url: null, //'/api/values',
+                    mtype: 'POST'
+                },
+
+                addParams: {
+                    keys: true,
+                    successfunc: function (val) {
+                        if (val.responseText != "") {
+                            var ret = $.parseJSON(val.responseText);
+                            alert(ret.message);
+                            $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                        }
+                    },
+                    errorfunc: function (rowid, xhr) {
+                        alert(xhr.responseText);
+                        $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                    }
+                }
+            });
+
+    });
+    //设置人员jqgrid表头
+    function GetTableConfig() {
+        tableConfig = {
+            columns: [
+                {
+                    align: 'center', label: 'IDX', index: "IDX", name: "IDX", width: 100, editable: true, edittype: "text", key: true,
+                    editrules: { required: false }, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_Users_UserName', name: "UserName", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: false,
+                    searchoptions: { sopt: ["cn"] }
+                    //searchoptions: { sopt: ["ge", "le"] }
+                },
+                {
+                    align: 'center', label: 'IsGuest', name: "IsGuest", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_Users_Name1', name: "Name1", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: false,
+                    editoptions: {},
+                },
+                {
+                    align: 'center', label: 'TreeID', name: "TreeID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                    editoptions: {},
+                },
+                {
+                    align: 'center', label: 'TreeName1', name: "TreeName1", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false },
+                    hidden: true,
+                },
+                {
+                    align: 'center', label: 'FatherID', name: "FatherID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                    editoptions: {},
+                },
+            {
+                align: 'center', label: 'InCode', name: "InCode", width: 100, editable: true, edittype: "text",
+                editrules: { required: false },
+                hidden: true,
+            }
+            ]
+        };
+    }
+
+    var tableConfig2 = null;
+    //设置流程grid
+    $(document).ready(function () {
+
+        if (tableConfig2 == null) {
+            GetTableConfig2();
+        }
+
+        $("#jqGrid2").jqGrid({
+            url: '@Url.Action("LoadFlow", "Flow")',
+            mtype: "GET",
+            datatype: "json",
+            colModel: tableConfig2.columns,
+            viewrecords: true,
+            width: 700,
+            height: $(window).height() - 300,//300,
+            rowNum: 5,
+            //autowidth: true,
+            editurl: '@Url.Action("FlowAddEdit", "Flow")',
+            pager: "#jqGridPager2",
+            loadonce: true,
+            rowList: ['5', '10', '15'],
+            rownumbers: true,
+            shrinkToFit: false,     //指定各列宽度
+            sortable: true,          //列可移动
+            colMenu: true          //列菜单
+        });
+
+        $('#jqGrid2').jqGrid('filterToolbar', { searchResult: true, searchOperators: true });
+
+        $('#jqGrid2').navGrid('#jqGridPager2', { edit: false, add: false, del: false, refresh: false, view: false, search: false })
+
+            .navButtonAdd('#jqGridPager2', {
+                caption: "", title: '@Resources.Language.Refresh', buttonicon: "ui-icon-refresh",
+                onClickButton: function () {
+                    //alert("haha");
+                    @*$.ajax(
+                        {
+                            type: "get",
+                            url: '@Url.Action("GetDataForLoadOnce", "Customer")',
+                            dataType: 'json',
+                            type: 'get',
+                            data:{'_search':false, 'sidx':'', 'sord':'', 'page':1, 'rows':10},
+                            success: function (result) {
+
+                                $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                            },
+                        }
+                        );*@
+
+                    $('#jqGrid2').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                }
+            })
+            .navSeparatorAdd("#jqGridPager2", { sepclass: "ui-separator", sepcontent: '' })
+            .navButtonAdd('#jqGridPager2', {
+                caption: "", title: '@Resources.Language.DeleteSelectedRows', buttonicon: "ui-icon-trash",
+                onClickButton: function () {
+                    var rowid = jQuery('#jqGrid2').jqGrid('getGridParam', 'selrow');
+                    var dr = jQuery("#jqGrid2").jqGrid('getRowData', rowid);//得到该行的数据
+                    if (rowid != null) {
+                        if (confirm('@Resources.Language.SureDelete')) {
+                            var d = new Date();
+                            $.ajax(
+                                {
+                                    type: "post",
+                                    url: '@Url.Action("Delete", "Customer")',
+                                    data: { 'oper': 'delete', 'data': dr },//"oper=delete&id=" + gr,
+                                    dataType: 'json',
+                                    success: function (result) {
+                                        alert(result.message);
+                                        //jQuery("#jqGrid").jqGrid('delRowData', rowid);
+                                        $('#jqGrid2').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                                    },
+
+                                }
+                                );
+                        }
+                    }
+                    else {
+                        alert('选中一行');
+                    }
+                },
+                position: "last"
+            });
+
+        $('#jqGrid2').inlineNav('#jqGridPager2',
+            {
+                edit: true,
+                add: true,
+                del: true,
+                cancel: true,
+                editParams: {
+                    keys: true,
+                    successfunc: function (val) {
+                        if (val.responseText != "") {
+                            var ret = $.parseJSON(val.responseText);
+                            alert(ret.message);
+                            $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                        }
+                    },
+                    url: null, //'/api/values',
+                    mtype: 'POST'
+                },
+
+                addParams: {
+                    keys: true,
+                    successfunc: function (val) {
+                        if (val.responseText != "") {
+                            var ret = $.parseJSON(val.responseText);
+                            alert(ret.message);
+                            $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                        }
+                    },
+                    errorfunc: function (rowid, xhr) {
+                        alert(xhr.responseText);
+                        $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                    }
+                }
+            });
+
+        //最后调用，冻结列
+        //$("#jqGrid2").jqGrid("setFrozenColumns");
+    });
+
+    //设置流程节点jqgrid表头
+    function GetTableConfig2() {
+        tableConfig2 = {
+            columns: [
+                {
+                    align: 'center', label: 'IDX', index: "IDX", name: "IDX", width: 100, editable: true, edittype: "text", key: true,
+                    editrules: { required: false }, hidden: true,
+                },
+                {
+                    align: 'center', label: "任务", name: "Task", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: false,
+                    searchoptions: { sopt: ["cn"] }
+                    //searchoptions: { sopt: ["ge", "le"] }
+                },
+                {
+                    align: 'center', label: 'FlowUserID', name: "FlowUserID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                },
+                {
+                    align: 'center', label: "人员", name: "Name1", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: false,
+                    editoptions: {},
+                },
+                {
+                    align: 'center', label: "开始日期", name: "StDate", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, date: true }, hidden: false,
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datepicker({
+                                dateFormat: 'yy-mm-dd',
+                                showOn: 'focus'
+                            });
+                        }
+                    }
+                },
+                {
+                    align: 'center', label: "结束日期", name: "EndDate", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, date: true }, hidden: false,
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datepicker({
+                                dateFormat: 'yy-mm-dd',
+                                showOn: 'focus'
+                            });
+                        }
+                    }
+                }
+                //{
+                //    align: 'center', label: '开始日期', name: "StDate", width: 100, editable: true, edittype: "text",
+                //    editrules: { required: false, date: true }, hidden: false,
+                //    datefmt: 'yyyy-mm-dd',
+                //    sorttype: 'date',
+                //    editoptions: {
+                //        dataInit: function (element) {
+                //            $(element).datepicker({
+                //                dateFormat: 'yy-mm-dd',
+                //                showOn: 'focus'
+                //            });
+                //        }
+                //    }
+                //},
+                //{
+                //    align: 'center', label: '开始日期', name: "EndDate", width: 100, editable: true, edittype: "text",
+                //    editrules: { required: false, date: true }, hidden: false,
+                //    datefmt: 'yyyy-mm-dd',
+                //    sorttype: 'date',
+                //    editoptions: {
+                //        dataInit: function (element) {
+                //            $(element).datepicker({
+                //                dateFormat: 'yy-mm-dd',
+                //                showOn: 'focus'
+                //            });
+                //        }
+                //    }
+                //}
+            ]
+        };
+    }
+</script>

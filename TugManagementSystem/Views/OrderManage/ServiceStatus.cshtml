@@ -1,0 +1,2284 @@
+﻿@{
+    ViewBag.Title = @Resources.Language.ServiceStatus;
+    Layout = "~/Views/Shared/_ContentLayout.cshtml";
+    ViewBag.MenuId = "menu5";
+    ViewBag.SubMenuIndex = 3;
+}
+
+<!-- Add Scheduler MODAL FORM-->
+<div class="modal fade" id="child-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div id="child-model-dlg" class="modal-dialog" style="width:500px">
+        <div class="modal-content modal-table">
+            @*<div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">拖轮选择</h4>
+                </div>*@
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box border blue">
+                            <div class="box-title">
+                                <h4><i class="fa fa-windows"></i>@Resources.Language.ServiceStatus_AddScheduler</h4>
+                                <div class="tools hidden-xs">
+                                    <a href="javascript:;" class="" onclick="$('#child-modal').modal('hide');">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="box-body big">
+                                @*<h4 class="form-title">Supported controls</h4>*@
+                                <form class="form-horizontal" role="form">
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">*@Resources.Language.V_OrderScheduler_ChooseTug</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <input id="_ChooseTug" type="text" class="form-control" disabled>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" onclick="$('#table-modal').modal()" onfocus="$(this).parent().parent().removeClass('has-error')">@Resources.Language.V_OrderScheduler_ChooseTug...</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">@Resources.Language.V_OrderScheduler_IsCaptainConfirm</label>
+                                        <div id="_IsCaptainConfirm" class="col-sm-9">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" onfocus="$(this).parent().parent().removeClass('has-error')">
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" hidden>
+                                        <label class="col-sm-3 control-label">@Resources.Language.V_OrderScheduler_InformCaptainTime</label>
+                                        <div class="col-sm-9">
+                                            <input id="_InformCaptainTime" type="text" class="form-control" placeholder="@Resources.Language.V_OrderScheduler_InformCaptainTime" onfocus="$(this).parent().removeClass('has-error')" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group" hidden>
+                                        <label class="col-sm-3 control-label">@Resources.Language.V_OrderScheduler_CaptainConfirmTime</label>
+                                        <div class="col-sm-9">
+                                            <input id="_CaptainConfirmTime" type="text" class="form-control" placeholder="@Resources.Language.V_OrderScheduler_CaptainConfirmTime" onfocus="$(this).parent().removeClass('has-error')" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" hidden>
+                                        <label class="col-sm-3 control-label">@Resources.Language.V_OrderScheduler_RopeUsed</label>
+                                        <div id="_RopeUsed" class="col-sm-9">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" checked onfocus="$(this).parent().parent().removeClass('has-error')" onchange="ropeUsedCheck()">
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" hidden>
+                                        <label class="col-sm-3 control-label">@Resources.Language.V_OrderScheduler_RopeNum</label>
+                                        <div class="col-sm-9">
+                                            <input id="_RopeNum" type="text" value="0" class="form-control" placeholder="@Resources.Language.V_OrderScheduler_RopeNum" onfocus="$(this).parent().removeClass('has-error')" disabled />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">@Resources.Language.Remark</label>
+                                        <div class="col-sm-9">
+                                            <textarea id="_Remark" rows="3" class="form-control" placeholder="@Resources.Language.Remark" onfocus="$(this).parent().removeClass('has-error')"></textarea>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div id="childErrMsg" class="alert alert-block alert-warning fade in" hidden>
+                                    @*<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>*@
+                                    <i class="fa fa-exclamation-circle"></i><p style=""></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div id="_TugID" hidden>-1</div>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">@Resources.Language.Close</button>
+                <button id="add_btn_sumbit" type="button" class="btn btn-primary" onclick="submitChildModal()">@Resources.Language.Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Scheduler MODAL FORM-->
+<!-- 拖轮选择模态框-->
+<div class="modal fade" id="table-modal" tabindex="-2" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+    <div id="table-model-dlg" class="modal-dialog" style="width:1000px">
+        <div class="modal-content modal-table">
+            @*<div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">拖轮选择</h4>
+                </div>*@
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- BOX -->
+                        <div class="box border blue">
+                            <div class="box-title">
+                                <h4><i class="fa fa-windows"></i>@Resources.Language.ServiceStatus_ChooseTug</h4>
+                                <div class="tools hidden-xs">
+                                    <a href="javascript:;" class="" onclick="$('#table-modal').modal('hide');">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <label for="search_cells">
+                                    @Resources.Language.Search:
+                                </label>
+                                <input id="search_cells" type="search" class="control-group" placeholder="輸入拖輪名稱" />
+                                <table id="jqGrid2" style="padding:inherit"></table>
+                                <div id="jqGridPager2"></div>
+                                <div id="cur_operate_chid_grid" hidden></div>
+                            </div>
+                        </div>
+                        <!-- /BOX -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">@Resources.Language.Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="chooseMutilTugs(g_mode)">@Resources.Language.Choose</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /拖轮选择模态框-->
+
+
+
+<div id="main-content">
+    <div class="container">
+        <div class="row">
+            <div id="content" class="col-lg-12">
+                <!-- PAGE HEADER-->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div @*class="page-header"*@>
+                            <!-- STYLER -->
+                            <!-- /STYLER -->
+                            <!-- BREADCRUMBS -->
+                            <ul class="breadcrumb">
+                                <li>
+                                    <i class="fa fa-home"></i>
+                                    <a href="#">@Resources.Language.HomePage</a>
+                                </li>
+                                <li>
+                                    <i class="fa fa-users"></i>
+                                    <a href="#">@Resources.Language.Order</a>
+                                </li>
+                                <li>
+                                    @Resources.Language.ServiceStatus
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- /PAGE HEADER -->
+                @*<div class="row">
+                        <div class="col-md-12">
+                            <div class="box border orange">
+                                <div class="box-title">
+                                </div>
+                                <div class="box-body">
+                                    <div>
+                                        <ul>
+                                            <li>@Model.Code</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+                <!-- SAMPLE -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- BOX -->
+                        <div class="box border orange">
+                            <div class="box-title">
+                                <h4><i class="fa fa-bars"></i>@Resources.Language.ServiceStatus</h4>
+                            </div>
+                            <div id="jqGridContainerBox" class="box-body">
+                                <table id="jqGrid"></table>
+                                <div id="jqGridPager"></div>
+                            </div>
+                        </div>
+                        <!-- /BOX -->
+                    </div>
+                </div>
+                <!-- /SAMPLE -->
+                <div class="footer-tools">
+                    <span class="go-top">
+                        <i class="fa fa-chevron-up"></i> Top
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--父Grid-->
+<script type="text/javascript">
+    var tableConfig = null;
+
+    $(document).ready(function () {
+
+        if (tableConfig == null) {
+            GetTableConfig();
+        }
+
+        $("#jqGrid").jqGrid({
+            //url: 'http://trirand.com/blog/phpjqgrid/examples/jsonp/getjsonp.php?callback=?&qwery=longorders',
+            url: '@Url.Action("GetServiceState", "OrderManage")',
+            mtype: "GET",
+            datatype: "json",
+            colModel: tableConfig.columns,
+            viewrecords: true,
+            //width: 780,
+            height: '100%', //height: $(window).height() - 300,
+            rowNum: 15,
+            autowidth: true,
+            editurl: '@Url.Action("AddEditService", "OrderManage")',
+            pager: "#jqGridPager",
+            loadonce: true,
+            rowList: ['15', '20', '30', '40', '50'],
+            rownumbers: true,
+            shrinkToFit: false,     //指定各列宽度
+            sortable: true,          //列可移动
+            colMenu: false,          //列菜单
+
+            subGrid: true,
+            subGridRowExpanded: showChildGrid,
+            subGridOptions: {
+                "plusicon": "ui-icon-triangle-1-e",
+                "minusicon": "ui-icon-triangle-1-s",
+                "openicon": "ui-icon-arrowreturn-1-e"
+            },
+
+            //gridComplete: function () {
+            //    var ids = $(this).getDataIDs();
+            //    for (var i = 0; i < ids.length; i++) {
+            //        var hasInvoice = $(this).getCell(ids[i], 'HasInvoice');
+
+            //        if (hasInvoice == null || hasInvoice == "" || hasInvoice == "否") { //没有账单
+            //            //$("#" + ids[i] + " td").css("background-color", "grey");
+            //        }
+            //        else {//有账单
+            //            $("#" + ids[i] + " td").css("background-color", "#CCFF99");
+            //        }
+
+            //    }
+            //},
+        });
+
+        $('#jqGrid').jqGrid('filterToolbar', {
+            searchResult: true, searchOperators: true,
+            beforeSearch: function () {
+                var util = new Util();
+
+                var ret = true;
+                if ($("#gs_ServiceWorkTime").val() != null && $("#gs_ServiceWorkTime").val() != "")
+                    ret = ret && util.isTime('@Resources.Language.V_OrderScheduler_ServiceWorkTime', $("#gs_ServiceWorkTime").val());
+
+                if ($("#gs_ServiceWorkDate").val() != null && $("#gs_ServiceWorkDate").val() != "")
+                    ret = ret && util.isDate('@Resources.Language.V_OrderScheduler_ServiceWorkDate', $("#gs_ServiceWorkDate").val());
+
+                if ($("#gs_BigTugNum").val() != null && $("#gs_BigTugNum").val() != "")
+                    ret = ret && util.isValidNaturalNumber('@Resources.Language.V_OrderInfor_BigTugNum', $("#gs_BigTugNum").val());
+                if ($("#gs_MiddleTugNum").val() != null && $("#gs_MiddleTugNum").val() != "")
+                    ret = ret && util.isValidNaturalNumber('@Resources.Language.V_OrderInfor_MiddleTugNum', $("#gs_MiddleTugNum").val());
+                if ($("#gs_SmallTugNum").val() != null && $("#gs_SmallTugNum").val() != "")
+                    ret = ret && util.isValidNaturalNumber('@Resources.Language.V_OrderInfor_SmallTugNum', $("#gs_SmallTugNum").val());
+
+                return !ret; //beforeSearch 返回true不触发搜索，false出发搜索
+            },
+        });
+
+        $("#jqGrid").jqGrid('bindKeys');  //光标可以控制上下移动
+
+        $('#jqGridContainerBox').resize(function () {
+            var width = $('#jqGridContainerBox').width();
+            $("#jqGrid").setGridWidth(width);
+        });
+
+        $('#jqGrid').navGrid('#jqGridPager', { edit: false, add: false, del: false, refresh: false, view: false, search: false })
+
+            .navButtonAdd('#jqGridPager', {
+                caption: "", title: '@Resources.Language.Refresh', buttonicon: "ui-icon-refresh",
+                onClickButton: function () {
+                    $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                }
+            })
+            .navButtonAdd('#jqGridPager', {
+                caption: "", title: "'@Resources.Language.ClearSearchFilter'", buttonicon: "ui-icon-circle-minus",
+                onClickButton: function () {
+                    var grid = $('#jqGrid')[0];
+                    grid.clearToolbar();
+                    $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                }
+            })
+            
+
+        $('#jqGrid').inlineNav('#jqGridPager',
+            {
+                edit: false,
+                add: false,
+                del: false,
+                save: false,
+                cancel:false,
+
+                editParams: {
+                    keys: true,
+                    successfunc: function (val) {
+                        if (val.responseText != "") {
+                            var ret = $.parseJSON(val.responseText);
+                            alert(ret.message);
+                            $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                        }
+                    },
+                    url: null, //'/api/values',
+                    mtype: 'POST'
+                },
+
+                addParams: {
+                    keys: true,
+                    successfunc: function (val) {
+                        //alert("111");
+                        if (val.responseText != "") {
+                            var ret = $.parseJSON(val.responseText);
+                            alert(ret.message);
+                            $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                        }
+                    },
+                    errorfunc: function (rowid, xhr) {
+                        alert(xhr.responseText);
+                        //$(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                    }
+                }
+            });
+
+        //最后调用，冻结列
+        //$("#jqGrid").jqGrid("setFrozenColumns");
+
+        modalDialogGridInit();
+    });
+
+    function GetTableConfig() {
+        tableConfig = {
+            columns: [
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_IDX', index: "OrderID", name: "OrderID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_HasInvoice', name: "HasInvoice", width: 100, editable: false, edittype: "text",
+                    editrules: { required: true }, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_HasInFlow', name: "HasInFlow", width: 100, editable: false, edittype: "text",
+                    editrules: { required: true }, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_ServiceWorkDate', name: "ServiceWorkDate", width: 100, editable: true, edittype: "text",
+                    editrules: { required: true }, hidden: false,
+                    colmenu: true, coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: {
+                        sopt: ["eq", "lt", "le", "gt", "ge"],
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d',
+                                //step: 1,
+                                timepicker: false
+                            });
+                        },
+                        dataEvents: [
+                            {
+                                type: 'change',
+                                fn: function (e) {
+                                    var grid = $('#jqGrid')[0];
+                                    grid.triggerToolbar();
+
+                                }
+                            }
+                        ]
+                    },
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d',
+                                step: 1,
+                                datepicker: true,
+                                timepicker: false
+                            });
+                        },
+                        defaultValue: function () { var time = new Date(); return time.Format('hh:mm') }
+                    }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_ServiceWorkTime', name: "ServiceWorkTime", width: 75, editable: true, edittype: "text",
+                    editrules: { required: true }, hidden: false,
+                    colmenu: true, coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: {
+                        sopt: ["eq", "lt", "le", "gt", "ge"],
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d',
+                                step: 1,
+                                timepicker: true,
+                                datepicker: false
+                            });
+                        },
+                        dataEvents: [
+                            {
+                                type: 'change',
+                                fn: function (e) {
+                                    var grid = $('#jqGrid')[0];
+                                    grid.triggerToolbar();
+
+                                }
+                            }
+                        ]
+                    },
+                },
+
+                
+                {
+                    align: 'center', label: 'CustomerShipID', name: "ShipID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.CustomerShip', name: "ShipName", width: 150, editable: false, edittype: "text",
+                    editrules: { required: true }, hidden: false,
+                    colmenu: true, coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_OrderServiceID', name: "OrderServiceID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_ServiceNatureID', name: "ServiceNatureID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_ServiceNatureNames', name: "ServiceNatureLabel", width: 100, editable: false, edittype: "text",
+                    editrules: { required: true }, hidden: false,
+                    colmenu: true, coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_ServiceWorkPlace', name: "ServiceWorkPlace", width: 150, editable: true, edittype: "text",
+                    editrules: { required: true }, hidden: false,
+                    colmenu: true, coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                    editoptions: {
+                        dataInit: function (element) {
+                            window.setTimeout(function () {
+                                $(element).autocomplete({
+                                    id: 'AutoComplete',
+                                    source: function (request, response) {
+                                        this.xhr = $.ajax({
+                                            url: '@Url.Action("GetServiceLocations", "OrderManage")',
+                                            data: request,
+                                            type: 'GET',
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                response($.map(data.list, function (item) {
+                                                    return {
+                                                        id: item.CustomerID,
+                                                        label: item.CustomerName1,
+                                                        value: item.CustomerName1
+                                                    };
+                                                }));
+                                            },
+
+                                            error: function (model, response, options) {
+                                                response([]);
+                                            }
+                                        });
+                                    },
+                                    //select: function (event, ui) {
+                                    //},
+                                    //change: function (event, ui) {
+
+                                    //    var rowid = jQuery("#jqGrid").jqGrid('getGridParam', 'selrow');//得到最后一次选择的行
+
+                                    //    if (ui.item != null) {
+                                    //        var customerId_id = rowid + "_CustomerID";
+                                    //        $('#' + customerId_id).val(ui.item.id);
+                                    //        //jQuery("#jqGrid").setCell(rowid, 'CustomerID', ui.item.id);
+                                    //    }
+                                    //    else {
+                                    //        var customerId_id = rowid + "_CustomerID";
+                                    //        $('#' + customerId_id).val(-1);
+                                    //        //jQuery("#jqGrid").setCell(rowid, 'CustomerID', -1);
+                                    //    }
+
+                                    //    //var dr = jQuery("#jqGrid").jqGrid('getRowData', rowid);//得到该行的数据
+                                    //},
+                                    autoFocus: false
+                                });
+                            }, 100);
+                        }
+
+                    }
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_MiddleTugNum', name: "MiddleTugNum", width: 70, editable: true, edittype: "text",
+                    editrules: { required: false, integer: true, minValue: 0 }, hidden: false,
+                    editoptions: {
+                        defaultValue: 0
+                    },
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["eq", "lt", "le", "gt", "ge"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_BigTugNum', name: "BigTugNum", width: 70, editable: true, edittype: "text",
+                    editrules: { required: false, integer: true, minValue: 0 }, hidden: false,
+                    editoptions: {
+                        defaultValue: 0
+                    },
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["eq", "lt", "le", "gt", "ge"] }
+                },
+                
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_SmallTugNum', name: "SmallTugNum", width: 70, editable: true, edittype: "text",
+                    editrules: { required: false, integer: true, minValue: 0 }, hidden: false,
+                    editoptions: {
+                        defaultValue: 0
+                    },
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["eq", "lt", "le", "gt", "ge"] }
+                },
+
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_ServiceJobStateID', name: "ServiceJobStateID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_ServiceJobStateLabel', name: "ServiceJobStateLabel", width: 80, editable: false, edittype: "text",
+                    editrules: { required: true }, hidden: false,
+                    colmenu: true, coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+
+                    //stype: "select",
+                    searchoptions: {
+                        sopt: ["cn", "eq", "bw", "ew"],
+                        @*dataUrl: '@Url.Action("GetCustomField", "Base", new { CustomName = "OrderService.JobStateID" })',
+
+                        dataEvents: [
+                            {
+                                type: 'change',
+                                fn: function (e) {
+                                    //alert(e);
+                                    var grid = $('#jqGrid')[0];
+                                    grid.triggerToolbar();
+
+                                }
+                            }
+                        ]*@
+                    },
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_TugID', name: "TugIDs", width: 150, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                    colmenu: true, coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.TugName', name: "TugNames", width: 200, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: false,
+                    colmenu: true, coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                    editoptions: {
+                        dataInit: function (element) {
+                        },
+
+                        dataEvents: [
+                            {
+                                type: 'focus',
+                                fn: function (e) {
+                                    $('#table-modal').modal()
+                                }
+                            }
+                        ]
+
+                    }
+
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.Customer_IDX', name: "CustomerID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                },
+
+
+
+                {
+                    align: 'center', label: '@Resources.Language.CustomerName', name: "CustomerName", width: 200, editable: false, edittype: "text",
+                    editrules: { required: true }, hidden: false,
+                    colmenu: true, coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                },
+
+
+            ]
+        };
+    }
+
+</script>
+
+
+
+<!--子Grid-->
+<script>
+
+    function showChildGrid(parentRowID, parentRowKey) {
+        var childGridID = parentRowID + "_table";
+        var childGridPagerID = parentRowID + "_pager";
+
+        var dr = jQuery("#jqGrid").jqGrid('getRowData', parentRowKey);
+
+        var childGridURL = '@Url.Action("GetServiceSubSchedulerData", "OrderManage")' + "?orderServiceId=" + dr.OrderServiceID;
+
+        $('#' + parentRowID).append('<table id=' + childGridID + '></table><div id=' + childGridPagerID + ' class=scroll></div>');
+
+
+        $("#" + childGridID).jqGrid({
+            url: childGridURL,
+            mtype: "GET",
+            datatype: "json",
+            //page: 1,
+            viewrecords: true,
+            editurl: '@Url.Action("AddEditScheduler", "OrderManage")',
+            colModel: [
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_IDX', index: "IDX", name: "IDX", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_OrderID', name: "OrderID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                    editoptions: {
+                        defaultValue: dr.IDX
+                    }
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_OrderServiceID', name: "OrderServiceID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                    editoptions: {
+                        //defaultValue: dr.IDX
+                    }
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_ServiceNatureID', name: "ServiceNatureID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: true }, hidden: true,
+                    editoptions: {
+                        //defaultValue: serviceNatureIds[0]
+                    }
+
+                },
+
+
+
+
+                @*{
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_ServiceJobStateID', name: "ServiceJobStateID", width: 100, editable: true, edittype: "text",
+                    editrules: {
+                        required: true,
+                        custom_func: function validateJobStateID(value, column) {
+                            var re = /^[0-9]+[0-9]*]*$/;  //判断输入是否是正整数和0
+                            if (!re.test(value))
+                                return [false, "请选择一个调度作业状态"];
+                            else
+                                return [true, ""];
+                        },
+                        custom: true
+                    }, hidden: false,
+                    editoptions: {
+                        defaultValue: -1
+                    }
+
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_ServiceJobStateLabel', name: "ServiceJobStateLabel", width: 100, editable: true, edittype: "select",
+                    editrules: { required: true }, hidden: false,
+                    editoptions: {
+                        dataUrl: '@Url.Action("GetCustomField", "Base", new { CustomName = "OrderService.JobStateID" })',
+                        dataEvents: [
+                            {
+                                type: 'change',
+                                fn: function (e) {
+                                    var rowid = jQuery("#" + childGridID).jqGrid('getGridParam', 'selrow');//得到最后一次选择的行
+                                    if (rowid != null) {
+                                        var serviceJobStateID_id = rowid + "_ServiceJobStateID";
+                                        $('#' + serviceJobStateID_id).val($(this).val().split("~")[0]);
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                },*@
+
+                @*{
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_SchedulerWorkPlace', name: "SchedulerWorkPlace", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true
+                },*@
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_TugID', name: "TugID", width: 100, editable: true, edittype: "text",
+                    hidden: true,
+                    editrules: {
+                        required: true,
+                        custom_func: function validateTugID(value, column) {
+                            var re = /^[1-9]+[0-9]*]*$/;  //判断输入是否是正整数
+                            if (!re.test(value))
+                                return [false, "請選擇一條拖輪"];
+                            else
+                                return [true, ""];
+                        },
+                        custom: true
+                    },
+                    editoptions: { defaultValue: -1 }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_Name1', name: "TugName1", width: 100, editable: false, edittype: "text",
+                    editrules: { required: false }, hidden: false,
+                    editoptions: {
+                        dataInit: function (element) {
+                        },
+
+                        dataEvents: [
+                            {
+                                type: 'focus',
+                                fn: function (e) {
+                                    g_cur_subGridId = '#' + childGridID;
+                                    g_cur_parentGridRowId = parentRowKey;
+                                    $('#table-modal').modal()
+                                }
+                            }
+                        ]
+
+                    }
+
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_Name2', name: "TugName2", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                    editoptions: {
+                        dataInit: function (element) {
+
+                        },
+
+                        dataEvents: [
+                            {
+                                type: 'focus',
+                                fn: function (e) {
+                                    g_cur_subGridId = '#' + childGridID;
+                                    g_cur_parentGridRowId = parentRowKey;
+
+                                    $('#table-modal').modal()
+                                }
+                            }
+                        ]
+
+                    }
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_SimpleName', name: "SimpleName", width: 100, editable: true, edittype: 'text',
+                    editrules: { required: false, edithidden: true }, hidden: true,
+                    editoptions: {
+                        @*custom_value: function (elem, oper, value){},
+                        custom_element: function (value, editOptions) {
+                            //var url = '@Url.Action("ChooseTugs", "TugInfor")';
+                            //var a = $("<a href='#box-config' data-toggle='modal'>选择拖轮<i class='fa fa-ellipsis-h'></i></a>");
+                            var a = $("<a href='#" + childGridID + "' data-target='#table-modal' data-toggle='modal' class='btn btn-xs btn-success' value = '1'>" + '@Resources.Language.V_OrderScheduler_ChooseTug' + "...</a>");
+                            return a;
+                        }*@
+                            dataEvents: [
+                                {
+                                    type: 'focus',
+                                    fn: function (e) {
+                                        g_cur_subGridId = '#' + childGridID;
+                                        g_cur_parentGridRowId = parentRowKey;
+                                        $('#table-modal').modal()
+                                    }
+                                }
+        ]
+    }
+    },
+                @*{
+        align: 'center', label: '@Resources.Language.V_OrderScheduler_JobStateID', name: "JobStateID", width: 100, editable: true, edittype: "text",
+        editrules: {
+                        required: true,
+                        custom_func: function validateJobStateID(value, column) {
+                            var re = /^[0-9]+[0-9]*]*$/;  //判断输入是否是正整数和0
+                            if (!re.test(value))
+                                return [false, "请选择一个调度作业状态"];
+                            else
+                                return [true, ""];
+                        },
+                        custom: true
+        }, hidden: true,
+                    editoptions: {
+                        defaultValue: -1
+                    }
+
+                },*@
+                @*{
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_JobStateLabel', name: "JobStateLabel", width: 100, editable: true, edittype: "select",
+                    editrules: { required: true }, hidden: true,
+                    editoptions: {
+                        dataUrl: '@Url.Action("GetCustomField", "Base", new { CustomName = "Scheduler.JobStateID" })',
+                        dataEvents: [
+                            {
+                                type: 'change',
+                                fn: function (e) {
+                                    var rowid = jQuery("#" + childGridID).jqGrid('getGridParam', 'selrow');//得到最后一次选择的行
+                                    if (rowid != null) {
+                                        var jobStateID_id = rowid + "_JobStateID";
+                                        $('#' + jobStateID_id).val($(this).val().split("~")[0]);
+                                        //$('#' + workStateID_id).val($(this).find("option:selected").text());
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                },*@
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_IsCaptainConfirm', name: "IsCaptainConfirm", width: 90, editable: true, edittype: "checkbox",
+                    editrules: { required: true }, colmenu: false,
+                    editoptions: { value: "是:否" },  //yes:是， no:否
+                    hidden: true
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_InformCaptainTime', name: "InformCaptainTime", width: 100, editable: true, edittype: "text",
+                    editrules: {
+                        required: false,
+                        custom_func: function (value, column) {
+                            var ret = value.match(/^(\d{2})(:)?(\d{2})$/);
+                            if (ret == null) {
+                                //alert(column + ':不是正确的时间格式(hh:mm)');
+                                return [false, column + ":不是正確的時間格式(hh:mm)"];
+                            }
+                            if (ret[1] >= 24 || ret[3] >= 60) {
+                                //alert(column + ":输入的时间无效");
+                                return [false, column + ":輸入的時間無效"];
+                            }
+                            return [true, ""];
+                        },
+                        custom: true
+                    },
+                    hidden: true,
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'H:i',
+                                step: 1,
+                                datepicker: false
+                            });
+                        },
+                        defaultValue: function () { var time = new Date(); return time.Format('hh:mm') }
+                    }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_CaptainConfirmTime', name: "CaptainConfirmTime", width: 100, editable: true, edittype: "text",
+                    editrules: {
+                        required: true,
+                        custom_func: function (value, column) {
+                            var ret = value.match(/^(\d{2})(:)?(\d{2})$/);
+                            if (ret == null) {
+                                //alert(column + ':不是正确的时间格式(hh:mm)');
+                                return [false, column + ":不是正確的時間格式(hh:mm)"];
+                            }
+                            if (ret[1] >= 24 || ret[3] >= 60) {
+                                //alert(column + ":输入的时间无效");
+                                return [false, column + ":輸入的時間無效"];
+                            }
+                            return [true, ""];
+                        },
+                        custom: true
+                    },
+                    hidden: true,
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'H:i',
+                                step: 1,
+                                datepicker: false
+                            });
+                        },
+                        defaultValue: function () { var time = new Date(); return time.Format('hh:mm') }
+                    }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_DepartBaseTime', name: "DepartBaseTime", width: 80, editable: false, edittype: "text",
+                    editrules: {
+                        required: false,
+                        custom_func: function (value, column) {
+                            var ret = value.match(/^(\d{2})(:)?(\d{2})$/);
+                            if (ret == null) {
+                                //alert(column + ':不是正确的时间格式(hh:mm)');
+                                return [false, column + ":不是正確的時間格式(hh:mm)"];
+                            }
+                            if (ret[1] >= 24 || ret[3] >= 60) {
+                                //alert(column + ":输入的时间无效");
+                                return [false, column + ":輸入的時間無效"];
+                            }
+                            return [true, ""];
+                        },
+                        custom: true
+                    }, hidden: false,
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'H:i',
+                                step: 1,
+                                datepicker: false
+                            });
+                        },
+                        defaultValue: function () { var time = new Date(); return time.Format('hh:mm') }
+                    }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_ArrivalShipSideTime', name: "ArrivalShipSideTime", width: 80, editable: false, edittype: "text",
+                    editrules: {
+                        required: false,
+                        custom_func: function (value, column) {
+                            var ret = value.match(/^(\d{2})(:)?(\d{2})$/);
+                            if (ret == null) {
+                                //alert(column + ':不是正确的时间格式(hh:mm)');
+                                return [false, column + ":不是正確的時間格式(hh:mm)"];
+                            }
+                            if (ret[1] >= 24 || ret[3] >= 60) {
+                                //alert(column + ":输入的时间无效");
+                                return [false, column + ":輸入的時間無效"];
+                            }
+                            return [true, ""];
+                        },
+                        custom: true
+                    }, hidden: true,
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'H:i',
+                                step: 1,
+                                datepicker: false
+                            });
+                        },
+                        defaultValue: function () { var time = new Date(); return time.Format('hh:mm') }
+                    }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_WorkCommencedTime', name: "WorkCommencedTime", width: 100, editable: false, edittype: "text",
+                    editrules: {
+                        required: false,
+                        custom_func: function (value, column) {
+                            var ret = value.match(/^(\d{2})(:)?(\d{2})$/);
+                            if (ret == null) {
+                                //alert(column + ':不是正确的时间格式(hh:mm)');
+                                return [false, column + ":不是正確的時間格式(hh:mm)"];
+                            }
+                            if (ret[1] >= 24 || ret[3] >= 60) {
+                                //alert(column + ":输入的时间无效");
+                                return [false, column + ":輸入的時間無效"];
+                            }
+                            return [true, ""];
+                        },
+                        custom: true
+                    }, hidden: true,
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'H:i',
+                                step: 1,
+                                datepicker: false
+                            });
+                        },
+                        defaultValue: function () { var time = new Date(); return time.Format('hh:mm') }
+                    }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_WorkCompletedTime', name: "WorkCompletedTime", width: 100, editable: false, edittype: "text",
+                    editrules: {
+                        required: false,
+                        custom_func: function (value, column) {
+                            var ret = value.match(/^(\d{2})(:)?(\d{2})$/);
+                            if (ret == null) {
+                                //alert(column + ':不是正确的时间格式(hh:mm)');
+                                return [false, column + ":不是正確的時間格式(hh:mm)"];
+                            }
+                            if (ret[1] >= 24 || ret[3] >= 60) {
+                                //alert(column + ":输入的时间无效");
+                                return [false, column + ":輸入的時間無效"];
+                            }
+                            return [true, ""];
+                        },
+                        custom: true
+                    }, hidden: true,
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'H:i',
+                                step: 1,
+                                datepicker: false
+                            });
+                        },
+                        defaultValue: function () { var time = new Date(); return time.Format('hh:mm') }
+                    }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_ArrivalBaseTime', name: "ArrivalBaseTime", width: 80, editable: false, edittype: "text",
+                    editrules: {
+                        required: false,
+                        custom_func: function (value, column) {
+                            var ret = value.match(/^(\d{2})(:)?(\d{2})$/);
+                            if (ret == null) {
+                                //alert(column + ':不是正确的时间格式(hh:mm)');
+                                return [false, column + ":不是正確的時間格式(hh:mm)"];
+                            }
+                            if (ret[1] >= 24 || ret[3] >= 60) {
+                                //alert(column + ":输入的时间无效");
+                                return [false, column + ":輸入的時間無效"];
+                            }
+                            return [true, ""];
+                        },
+                        custom: true
+                    }, hidden: false,
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'H:i',
+                                step: 1,
+                                datepicker: false
+                            });
+                        },
+                        defaultValue: function () { var time = new Date(); return time.Format('hh:mm') }
+                    }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_RopeUsed', name: "RopeUsed", width: 100, editable: false, edittype: "checkbox",
+                    editrules: { required: true }, colmenu: false,
+                    editoptions: { value: "是:否" },  //yes:是， no:否
+                    hidden: true
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderScheduler_RopeNum', name: "RopeNum", width: 100, editable: false, edittype: "text",
+                    editrules: {
+                        required: false,
+                        custom_func: function (value, column) {
+
+                            var rowid = jQuery("#" + childGridID).jqGrid('getGridParam', 'selrow');//得到最后一次选择的行
+                            if (rowid != null) {
+                                var ropeUsed_id = rowid + "_RopeUsed";
+                                if (true == $('#' + ropeUsed_id).prop("checked")) {
+                                    var re = /^[1-9]+[0-9]*]*$/;
+
+                                    if (!re.test(value)) {
+                                        return [false, '@Resources.Language.V_OrderScheduler_RopeNum' + ": 此欄請輸入正整數!"];
+                                    }
+                                    else
+                                        return [true, ""];
+                                }
+                            }
+
+                            return [true, ""];
+
+                        },
+                        custom: true
+                    },
+                    hidden: true,
+                    editoptions: { defaultValue: '0' }
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.Remark', name: "Remark", width: 200, editable: true, edittype: "textarea",
+                    editrules: { required: false }, hidden: false
+                },
+                {
+                    align: 'center', label: '@Resources.Language.OwnerID', name: "OwnerID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                    editoptions: {
+                        defaultValue: -1
+                    }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserID', name: "UserID", width: 120, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true
+                },
+                {
+                    align: 'center',
+                    label: '@Resources.Language.CreateDate', name: "CreateDate", width: 120, editable: false, edittype: "text",
+                    editrules: { required: false, date: true }, hidden: false,
+                    //formatter: 'date',
+                    //formatoptions: { srcformat: 'yyyy-mm-dd', newformat: 'yyyy-mm-dd' },
+                    datefmt: 'yyyy-mm-dd',
+                    sorttype: 'date',
+                    editoptions: {
+                        //dataInit: function (element) {
+                        //    $(element).datepicker({
+                        //        //id: 'orderCreateDate_datePicker',
+                        //        dateFormat: 'yy-mm-dd',
+                        //        showOn: 'focus'
+                        //    });
+                        //}
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d H:i:s',
+                                step: 1,
+                                //timepicker: false
+                            });
+                        },
+                    },
+
+                    searchoptions: {
+                        //dataInit: function (element) {
+                        //    $(element).datepicker({
+                        //        //id: 'orderCreateDate_datePicker',
+                        //        dateFormat: 'yy-mm-dd',
+                        //        showOn: 'focus'
+                        //    });
+                        //}
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d H:i:s',
+                                step: 1,
+                                //timepicker: false
+                            });
+                        },
+                    }
+                },
+                {
+                    align: 'center',
+                    label: '@Resources.Language.LastUpDate', name: "LastUpDate", width: 120, editable: false, edittype: "text",
+                    editrules: { required: false, date: true }, hidden: false,
+                    //formatter: 'date',
+                    datefmt: 'yyyy-mm-dd',
+                    sorttype: 'date',
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d H:i:s',
+                                step: 1,
+                                //timepicker: false
+                            });
+                        },
+                    },
+                    searchoptions: {
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d H:i:s',
+                                step: 1,
+                                //timepicker: false
+                            });
+                        },
+                    }
+                },
+                ],
+
+                loadonce: false,
+                rowNum: 10,
+                //width: 500,
+                autowidth: true,
+                height: '100%',
+                shrinkToFit: false,     //指定各列宽度
+                pager: "#" + childGridPagerID,
+                grouping: true,
+                caption: "@Resources.Language.ServiceStatus_TugScheduler",
+                @*groupingView: {
+                    groupField: ["ServiceNatureLabel"],
+                    groupColumnShow: [true],
+                    groupText: ['@Resources.Language.V_OrderScheduler_ServiceNatureLabel' + ": <b>{0}</b>"],
+                    groupOrder: ["asc"],
+                    groupSummary: [false],
+                    groupCollapse: false
+                },*@
+
+
+                //gridComplete: function () {
+                //    alert(1);
+                //}
+        });
+
+        $("#" + childGridID).jqGrid('bindKeys');  //光标可以控制上下移动
+
+        $('#pg_' + childGridPagerID).css("background-color", "lightblue"); //更改子Grid导航的背景色
+
+
+        var toolbar = $('#' + childGridID).navGrid('#' + childGridPagerID, { edit: false, add: false, del: false, refresh: false, view: false, search: false })
+                .navButtonAdd('#' + childGridPagerID, {
+                    id: childGridID + '_ilrefresh',
+                    caption: "", title: '@Resources.Language.Refresh', buttonicon: "ui-icon-refresh",
+                    onClickButton: function () {
+
+                        $('#' + childGridID).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                    }
+                })
+
+        //if (dr.HasInvoice == "否")
+        {
+            toolbar.navSeparatorAdd("#" + childGridPagerID, { sepclass: "ui-separator", sepcontent: '' })
+                
+            @*.navButtonAdd('#' + childGridPagerID, {
+                        //id: childGridID + '_ilrefresh',
+                        caption: "", title: "编辑", buttonicon: "ui-icon-pencil",
+                        onClickButton: function () {
+                            var rowid = jQuery('#' + childGridID).jqGrid('getGridParam', 'selrow');
+                            if (rowid != null) {
+                                g_cur_parentGridRowId = parentRowKey;
+                                g_cur_subGridId = '#' + childGridID;
+                                g_cur_subGridRowId = rowid;
+                                g_mode = "编辑";
+
+
+                                var orderId = jQuery('#jqGrid').jqGrid('getCell', parentRowKey, "OrderID"); //OrderID;
+                                $.ajax({
+                                    url: '@Url.Action("CheckOrderInvoiceStatus", "OrderManage")',
+                                    type: "POST",
+                                    data: {
+                                        'orderId': orderId
+                                    },//"oper=delete&id=" + gr,
+                                    dataType: 'json',
+                                    success: function (result) {
+                                        //alert(result.message);
+
+                                        //alert(result.has_invoice);
+                                        if (result.has_invoice == null || result.has_invoice == "" || result.has_invoice == "否") {
+                                            //可以编辑
+                                            EditSchedulerModal();
+                                        }
+                                        else {
+                                            alert("该订单已生成账单，不能再编辑调度！");
+                                            return;
+                                        }
+                                    }
+                                });
+
+                            }
+                            else {
+                                alert('选中一行');
+                            }
+                        }
+                    });*@
+        }
+
+        //if (dr.HasInvoice == "否")
+        {
+            $('#' + childGridID).inlineNav('#' + childGridPagerID,
+                        {
+                            edit: false,
+                            add: false,
+                            del: false,
+                            save: false,
+                            cancel: false,
+                            editParams: {
+                                keys: true,
+                                successfunc: function (val) {
+                                    if (val.responseText != "") {
+                                        var ret = $.parseJSON(val.responseText);
+                                        alert(ret.message);
+                                        $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                                    }
+                                },
+                                url: null, //'/api/values',
+                                mtype: 'POST'
+                            },
+
+                            addParams: {
+                                keys: true,
+                                successfunc: function (val) {
+                                    if (val.responseText != "") {
+                                        var ret = $.parseJSON(val.responseText);
+                                        alert(ret.message);
+                                        $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                                    }
+                                },
+                                errorfunc: function (rowid, xhr) {
+                                    alert(xhr.responseText);
+                                    $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                                }
+                            }
+                        });
+        }
+
+    }
+</script>
+
+
+
+
+<!--新增调度拖轮模态框-->
+<script type="text/javascript">
+
+
+    function AddChild() {
+        $('#child-modal').modal()
+
+    }
+
+    function initChildModal() {
+        $('#childErrMsg').hide();
+
+        $("#add_btn_sumbit").attr("disabled", false);
+
+        $('#_ServiceWorkDate').parent().removeClass("has-error");
+        $('#_ServiceWorkTime').parent().removeClass("has-error");
+
+        $('#_ServiceWorkPlace').parent().removeClass("has-error");
+        $('#_ChooseTug').parent().removeClass("has-error");
+        $('#_InformCaptainTime').parent().removeClass("has-error");
+        $('#_CaptainConfirmTime').parent().removeClass("has-error");
+        $('#_RopeNum').parent().removeClass("has-error");
+        $('#_Remark').parent().removeClass("has-error");
+
+        //$('#_RopeUsed input[type="checkbox"]')
+
+        $('#_ServiceNatureLabel').empty();
+        var dr = jQuery("#jqGrid").jqGrid('getRowData', g_cur_parentGridRowId);//得到该行的数据
+
+
+        jQuery.ajax({
+            url: '@Url.Action("GetOrderServices", "OrderManage")', //Controller to Get the
+            //JsonResult From -- Json(jsonData, JsonRequestBehavior.AllowGet);
+            type: "GET",
+            dataType: "json",
+            data: {
+                'orderId': dr.IDX
+            },
+            success: function (result) {      // on Success send the Json data
+                var str_services = "";
+                for (var i = 0; i < result.services.length; ++i) {
+
+                    var v = result.services[i].OrderServiceId + "~" + result.services[i].ServiceNatureId + "~"
+                    + result.services[i].ServiceNatureValue + "~" + result.services[i].ServiceNatureLabel;
+
+                    var option = "<option value=" + v + ">" + result.services[i].ServiceNatureLabel + "</option>"
+                    $('#_ServiceNatureLabel').append(option)
+                }
+
+                if (result.services.length > 0) {
+                    $("#_ServiceNatureLabel option:first").prop("selected", 'selected');
+
+                    $('#_ServiceWorkDate').val(result.services[0].ServiceWorkDate);
+                    $('#_ServiceWorkTime').val(result.services[0].ServiceWorkTime);
+                    $('#_ServiceWorkPlace').val(result.services[0].ServiceWorkPlace);
+                }
+            },
+        });
+
+        //var serviceNatureIDS = dr.ServiceNatureIDS.split('/');
+        //var serviceNatureNames = dr.ServiceNatureNames.split('/');
+        //for (var i = 0; i < serviceNatureIDS.length; i++) {
+        //    var option = "<option value=" + serviceNatureIDS[i] + ">" + serviceNatureNames[i] + "</option>"
+        //    $('#_ServiceNatureLabel').append(option)
+        //}
+
+
+
+        $('#_ServiceWorkDate').datetimepicker({
+            //format: 'Y-m-d H:i:s',
+            format: 'Y-m-d',
+            timepicker: false,
+        });
+
+        $('#_ServiceWorkTime').datetimepicker({
+            //format: 'Y-m-d H:i:s',
+            format: 'H:i',
+            step:1,
+            datepicker: false,
+        });
+
+
+        $('#_ServiceWorkTime').val(new Date().Format("hh:mm"));
+
+        $('#_InformCaptainTime').datetimepicker({
+            format: 'H:i',
+            step: 1,
+            datepicker: false,
+        });
+        $('#_InformCaptainTime').val(new Date().Format("hh:mm"));
+
+        $('#_CaptainConfirmTime').datetimepicker({
+            format: 'H:i',
+            step: 1,
+            datepicker: false,
+        });
+        $('#_CaptainConfirmTime').val(new Date().Format("hh:mm"));
+
+        $('#_TugID').text(-1);
+
+        var orderId = dr.IDX;
+        var serviceNatureId = $('#_ServiceNatureLabel').val();
+        //alert(serviceNatureId);
+        //return;
+
+        $('#_ChooseTug').val("");
+        $("#_JobStateLabel option:first").prop("selected", 'selected');
+        $('#_RopeUsed input[type="checkbox"]').attr("checked", false);
+        $('#_IsCaptainConfirm input[type="checkbox"]').attr("checked", false);
+
+        $('#_RopeNum').val("0");
+        $('#_RopeNum').attr("disabled", "disabled");
+        $('#_Remark').val("");
+
+        @*$.ajax({
+            type: "post",
+            url: '@Url.Action("GetServiceDateAndPlace", "OrderManage")',
+            data: {
+                'orderId': orderId,
+                'serviceNatureId': serviceNatureId,
+            },//"oper=delete&id=" + gr,
+            dataType: 'json',
+            success: function (result) {
+                $('#_ServiceWorkDate').val(new Date(result.service_date).Format("yyyy-MM-dd"));
+                $('#_ServiceWorkPlace').val(result.service_place);
+            },
+        });*@
+
+
+
+    }
+
+    $('#child-modal').on('show.bs.modal', function (e) {
+        initChildModal();
+
+        //var invoker = $(e.relatedTarget);
+        //alert(invoker.html());
+    });
+
+    $('#child-modal').on('shown.bs.modal', function (e) {
+        //var invoker = $(e.relatedTarget);
+        //alert(invoker.html());
+
+    });
+    $('#child-modal').on('hide.bs.modal', function () {
+        $(this).removeData("bs.modal");
+        //alert("hide");
+    });
+    $('#child-modal').on('hidden.bs.modal', function () {
+        $(this).removeData("bs.modal");
+        //alert("hidden");
+    });
+
+    function ropeUsedCheck() {
+        var ret = $('#_RopeUsed input[type="checkbox"]').is(':checked');
+
+        if (ret == false) {
+            $('#_RopeNum').attr("disabled", "disabled");
+        } else {
+            $('#_RopeNum').removeAttr("disabled");
+        }
+    }
+
+
+    function serviceChanged() {
+        var dr = jQuery("#jqGrid").jqGrid('getRowData', g_cur_parentGridRowId);//得到该行的数据
+
+        var orderServiceId = $('#_ServiceNatureLabel').val().trim().split('~')[0];
+
+        var orderId = dr.IDX;
+        var serviceNatureId = $('#_ServiceNatureLabel').val();
+
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("GetOrderService", "OrderManage")',
+            data: {
+                'orderServiceId': orderServiceId,
+                //'serviceNatureId': serviceNatureId,
+            },//"oper=delete&id=" + gr,
+            dataType: 'json',
+            success: function (result) {
+
+                if (result.order_service != "") {
+
+                    $('#_ServiceWorkDate').val(result.order_service.ServiceWorkDate);
+                    $('#_ServiceWorkTime').val(result.order_service.ServiceWorkTime);
+                    $('#_ServiceWorkPlace').val(result.order_service.ServiceWorkPlace);
+                }
+
+
+            },
+        });
+    }
+
+    function submitChildModal() {
+
+        var maxTextLength = 25;
+        var maxTextAreaLength = 500;
+
+        //_ServiceWorkDate
+        $('#childErrMsg').hide();
+
+        $('#_InformCaptainTime').parent().removeClass("has-error");
+        $('#_CaptainConfirmTime').parent().removeClass("has-error");
+        $('#_ChooseTug').parent().removeClass("has-error");
+        $('#_RopeNum').parent().removeClass("has-error");
+        $('#_Remark').parent().removeClass("has-error");
+
+
+        var dr = jQuery("#jqGrid").jqGrid('getRowData', g_cur_parentGridRowId);//得到该行的数据
+
+        var orderId = dr.OrderID;
+
+        var orderServiceId = dr.OrderServiceID;
+        var serviceNatureId = dr.ServiceNatureID;
+        var serviceWorkDate = dr.ServiceWorkDate;
+        var serviceWorkTime = dr.ServiceWorkTime;
+        var serviceWorkPlace = dr.ServiceWorkPlace;
+        var tugId = $('#_TugID').text();
+
+        var informCaptainTime = $('#_InformCaptainTime').val().trim();
+        var captainConfirmTime = $('#_CaptainConfirmTime').val().trim();
+        var ropeUsed = "否";
+        if (true == $('#_RopeUsed input[type="checkbox"]').is(':checked'))
+            ropeUsed = "是"
+
+        var isCaptainConfirm = "否";
+        if (true == $('#_IsCaptainConfirm input[type="checkbox"]').is(':checked')) {
+            isCaptainConfirm = "是";
+        }
+
+
+        var ropeNum = $('#_RopeNum').val().toString().trim();
+        var remark = $('#_Remark').val().toString().trim();
+
+        //校验
+
+
+
+        if ($("#_ChooseTug").val().toString().trim().length <= 0) {
+            $('#childErrMsg p').html('@Resources.Language.V_OrderScheduler_ChooseTug' + ":請選擇一個拖輪");
+            $('#_ChooseTug').parent().addClass("has-error");
+            $('#childErrMsg').show();
+            return;
+        }
+
+        @*if (informCaptainTime.length <= 0) {
+            $('#childErrMsg p').html('@Resources.Language.V_OrderScheduler_InformCaptainTime' + "必填");
+            $('#_InformCaptainTime').parent().addClass("has-error");
+            $('#childErrMsg').show();
+            return;
+        }*@
+
+        @*if (captainConfirmTime.length <= 0) {
+            $('#childErrMsg p').html('@Resources.Language.V_OrderScheduler_CaptainConfirmTime' + "必填");
+            $('#_CaptainConfirmTime').parent().addClass("has-error");
+            $('#childErrMsg').show();
+            return;
+        }*@
+
+        if (true == $("#_RopeUsed").is(':checked')) {
+            var r = ropeNum.match("^\\d+$");
+            if (r == null) {
+                $('#childErrMsg p').html('@Resources.Language.V_OrderScheduler_RopeNum' + ":請輸入0或正整數!");
+                $('#_RopeNum').parent().addClass("has-error");
+                $('#childErrMsg').show();
+                return;
+            }
+        }
+
+        if (remark.length > maxTextAreaLength) {
+            $('#childErrMsg p').html('@Resources.Language.Remark' + "長度不能超多" + maxTextAreaLength);
+            $('#_Remark').parent().addClass("has-error");
+            $('#childErrMsg').show();
+            return;
+        }
+
+        $("#add_btn_sumbit").attr("disabled", true);
+
+
+        //提交数据库
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("AddScheduler", "OrderManage")',
+            data: {
+                'orderId': orderId,
+                'orderServiceId': orderServiceId,
+                'serviceNatureId': serviceNatureId,
+                'serviceWorkDate': serviceWorkDate,
+                'serviceWorkTime':serviceWorkTime,
+                'serviceWorkPlace':serviceWorkPlace,
+                'tugId': tugId,
+                'isCaptainConfirm':isCaptainConfirm,
+                'informCaptainTime': informCaptainTime,
+                'captainConfirmTime':captainConfirmTime,
+                //'jobStateId': jobStateId,
+                'ropeUsed': ropeUsed,
+                'ropeNum': ropeNum,
+                'remark': remark,
+
+            },//"oper=delete&id=" + gr,
+            dataType: 'json',
+            success: function (result) {
+
+                $('#child-modal').modal('hide')
+                //jQuery("#jqGrid").jqGrid('delRowData', rowid);
+                //$('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                alert(result.message);
+
+                var childGridURL = '@Url.Action("GetServiceSubSchedulerData", "OrderManage")' + "?orderServiceId=" + orderServiceId;
+
+                $('' + g_cur_subGridId).jqGrid('setGridParam',
+                {
+                    datatype: 'json',
+                    url: childGridURL,
+                }).trigger('reloadGrid');
+
+                $('' + g_cur_subGridId).jqGrid('setGridParam', { editurl: '@Url.Action("AddEditScheduler", "OrderManage")' });
+
+            },
+            error: function (xhr) {
+                $("#add_btn_sumbit").attr("disabled", false);
+            }
+        });
+
+    }
+</script>
+
+
+
+
+<!--全局变量-->
+<script>
+    var g_cur_parentGridRowId = '';     //保存父Grid 行号
+
+    var g_cur_subGridId = '';           //保存子Grid Id
+    var g_cur_subGridRowId = '';        //保存子Grid 行号
+
+    var g_mode = '新增';      //新增拖轮调度模式
+</script>
+
+
+
+<script>
+
+    $('#table-modal').on('show.bs.modal', function (e) {
+
+        //alert(g_cur_parentGridRowId)
+        $("#search_cells").val("");
+        var dr = jQuery("#jqGrid").jqGrid('getRowData', g_cur_parentGridRowId);//得到该行的数据
+        $('#cur_operate_chid_grid').text(g_cur_subGridId);
+        //alert(dr.WorkDate);
+
+        //var orderServiceDate = $('#_ServiceWorkDate').val().trim();
+        var orderServiceDate = dr.ServiceWorkDate;
+
+        $('#jqGrid2').jqGrid('setGridParam',
+                {
+                    datatype: 'json',
+                    //url: '@Url.Action("GetTugEx", "TugInfor")' + '?workDate=' + dr.WorkDate,
+                    url: '@Url.Action("GetTugEx", "TugInfor")' + '?workDate=' + orderServiceDate,
+                }).trigger('reloadGrid');
+
+        $("#jqGrid2").jqGrid('setCaption', '<' + orderServiceDate + '>拖輪調度狀態');
+        //$('#jqGrid2').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+    });
+
+    $('#table-modal').on('shown.bs.modal', function (e) {
+        var invoker = $(e.relatedTarget);
+
+    });
+    $('#table-modal').on('hide.bs.modal', function () {
+        $(this).removeData("bs.modal");
+        //alert("hide");
+    });
+    $('#table-modal').on('hidden.bs.modal', function () {
+        //jQuery("#jqGrid2").jqGrid('GridDestroy', 'jqGrid2');
+        $(this).removeData("bs.modal");
+        //alert("hidden");
+    });
+
+
+    function chooseMutilTugs(mode) {
+        var selectedIDs = jQuery('#jqGrid2').getGridParam("selarrrow");
+
+        if (selectedIDs != null && selectedIDs.length > 0) {
+            //alert(mode);
+
+            selectedTugIDs = '';
+            selectedTugName1 = '';
+            for (var i = 0; i < selectedIDs.length; i++) {
+                var tugId = jQuery('#jqGrid2').jqGrid('getCell', selectedIDs[i], "TugID"); //TugID
+                var tugName1 = jQuery('#jqGrid2').jqGrid('getCell', selectedIDs[i], "Name1"); //Name1
+                var tugName2 = jQuery('#jqGrid2').jqGrid('getCell', selectedIDs[i], "Name2"); //Name2
+                var tugSimpleName = jQuery('#jqGrid2').jqGrid('getCell', selectedIDs[i], "SimpleName"); //SimpleName
+
+                selectedTugIDs += tugId + ",";
+                selectedTugName1 += tugName1 + ",";
+            }
+
+            if (selectedTugIDs != "") {
+                selectedTugIDs = selectedTugIDs.substr(0, selectedTugIDs.length - 1);
+            }
+            if (selectedTugName1 != "") {
+                selectedTugName1 = selectedTugName1.substr(0, selectedTugName1.length - 1);
+            }
+
+            if (mode == '@Resources.Language.Add') {
+                $('#_TugID').text(selectedTugIDs);
+                $('#_ChooseTug').val(selectedTugName1);
+            }
+            else if (mode == "编辑") {
+                $('#_Edit_Scheduer_NewTugIDS').text(selectedTugIDs);
+                $('#_Edit_Scheduer_ChooseTug').val(selectedTugName1);
+            }
+        }
+    }
+    function chooseSingleTug() {
+
+        var rowid = jQuery('#jqGrid2').jqGrid('getGridParam', 'selrow');
+        //alert(rowid);
+        if (rowid != null) {
+            var dr = jQuery("#jqGrid2").jqGrid('getRowData', rowid);//得到该行的数据
+
+            var curChildGridId = $('#cur_operate_chid_grid').text();
+            //alert(curChildGridId);
+            var childRowid = jQuery('' + curChildGridId).jqGrid('getGridParam', 'selrow');
+
+            if (childRowid != null) {
+
+                var tugID_id = childRowid + "_TugID";
+                $('#' + tugID_id).val(dr.TugID);
+
+                var Name1_id = childRowid + "_TugName1";
+                $('#' + Name1_id).val(dr.Name1);
+                //jQuery('' + curChildGridId).setCell(childRowid, 'Name1', dr.Name1);
+
+                var Name2_id = childRowid + "_TugName2";
+                $('#' + Name2_id).val(dr.Name2);
+                //jQuery('' + curChildGridId).setCell(childRowid, 'Name2', dr.Name2);
+
+                var simpleName_id = childRowid + "_SimpleName";
+                $('#' + simpleName_id).val(dr.SimpleName);
+                //jQuery('' + curChildGridId).setCell(childRowid, 'SimpleName', dr.SimpleName);
+
+            }
+
+            $('#_TugID').text(dr.TugID);
+            $('#_ChooseTug').val(dr.Name1);
+        }
+    }
+
+
+    function modalDialogGridInit() {
+        //alert("show");
+
+        var w = 45;
+
+
+        $("#jqGrid2").jqGrid({
+            url: '@Url.Action("GetTugEx", "TugInfor")' + '?workDate=' + new Date().Format("yyyy-MM-dd"),
+            mtype: "GET",
+            datatype: "json",
+            caption: "'@Resources.Language.ServiceStatus_TugSchedulerStatus'",
+            colModel: [
+
+                {
+                    align: 'center', label: '@Resources.Language.TugInfor_IDX', index: "TugID", name: "TugID", width: 100,
+                    editable: true, edittype: "text", editrules: { required: false }, hidden: true, frozen: true,
+                    search: false
+                },
+                {
+                    align: 'center', label: '@Resources.Language.TugInfor_Code', name: "Code", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: true,
+                    search: false,
+                    frozen: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.TugInfor_Name1', name: "Name1", width: 100, editable: true, edittype: "text",
+                    editrules: { required: true }, hidden: false, frozen: true,
+                    searchoptions: { sopt: ["cn"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.TugInfor_Name2', name: "Name2", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                    search: false,
+                    editoptions: {},
+                    searchoptions: { sopt: ["cn"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.TugInfor_SimpleName', name: "SimpleName", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                    search: false,
+                    editoptions: {},
+                    searchoptions: { sopt: ["cn"] }
+                },
+                {
+                    align: 'center', label: '00:30', name: "Cell0", width: w, search: false
+                },
+                {
+                    align: 'center', label: '01:00', name: "Cell1", width: w, search: false
+                },
+                {
+                    align: 'center', label: '01:30', name: "Cell2", width: w, search: false
+                },
+                {
+                    align: 'center', label: '02:00', name: "Cell3", width: w, search: false
+                },
+                {
+                    align: 'center', label: '02:30', name: "Cell4", width: w, search: false
+                },
+                {
+                    align: 'center', label: '03:00', name: "Cell5", width: w, search: false
+                },
+                {
+                    align: 'center', label: '03:30', name: "Cell6", width: w, search: false
+                },
+                {
+                    align: 'center', label: '04:00', name: "Cell7", width: w, search: false
+                },
+                {
+                    align: 'center', label: '04:30', name: "Cell8", width: w, search: false
+                },
+                {
+                    align: 'center', label: '05:00', name: "Cell9", width: w, search: false
+                },
+                {
+                    align: 'center', label: '05:30', name: "Cell10", width: w, search: false
+                },
+
+
+                {
+                    align: 'center', label: '06:00', name: "Cell11", width: w, search: false
+                },
+                {
+                    align: 'center', label: '06:30', name: "Cell12", width: w, search: false
+                },
+                {
+                    align: 'center', label: '07:00', name: "Cell13", width: w, search: false
+                },
+                {
+                    align: 'center', label: '07:30', name: "Cell14", width: w, search: false
+                },
+                {
+                    align: 'center', label: '08:00', name: "Cell15", width: w, search: false
+                },
+                {
+                    align: 'center', label: '08:30', name: "Cell16", width: w, search: false
+                },
+                {
+                    align: 'center', label: '09:00', name: "Cell17", width: w, search: false
+                },
+                {
+                    align: 'center', label: '09:30', name: "Cell18", width: w, search: false
+                },
+                {
+                    align: 'center', label: '10:00', name: "Cell19", width: w, search: false
+                },
+                {
+                    align: 'center', label: '10:30', name: "Cell20", width: w, search: false
+                },
+                {
+                    align: 'center', label: '11:00', name: "Cell21", width: w, search: false
+                },
+                {
+                    align: 'center', label: '11:30', name: "Cell22", width: w, search: false
+                },
+
+
+                {
+                    align: 'center', label: '12:00', name: "Cell23", width: w, search: false
+                },
+                {
+                    align: 'center', label: '12:30', name: "Cell24", width: w, search: false
+                },
+                {
+                    align: 'center', label: '13:00', name: "Cell25", width: w, search: false
+                },
+                {
+                    align: 'center', label: '13:30', name: "Cell26", width: w, search: false
+                },
+                {
+                    align: 'center', label: '14:00', name: "Cell27", width: w, search: false
+                },
+                {
+                    align: 'center', label: '14:30', name: "Cell28", width: w, search: false
+                },
+                {
+                    align: 'center', label: '15:00', name: "Cell29", width: w, search: false
+                },
+                {
+                    align: 'center', label: '15:30', name: "Cell30", width: w, search: false
+                },
+                {
+                    align: 'center', label: '16.00', name: "Cell31", width: w, search: false
+                },
+                {
+                    align: 'center', label: '16:30', name: "Cell32", width: w, search: false
+                },
+                {
+                    align: 'center', label: '17:00', name: "Cell33", width: w, search: false
+                },
+                {
+                    align: 'center', label: '17:30', name: "Cell34", width: w, search: false
+                },
+
+
+                {
+                    align: 'center', label: '18:00', name: "Cell35", width: w, search: false
+                },
+                {
+                    align: 'center', label: '18:30', name: "Cell36", width: w, search: false
+                },
+                {
+                    align: 'center', label: '19:00', name: "Cell37", width: w, search: false
+                },
+                {
+                    align: 'center', label: '19:30', name: "Cell38", width: w, search: false
+                },
+                {
+                    align: 'center', label: '20:00', name: "Cell39", width: w, search: false
+                },
+                {
+                    align: 'center', label: '20:30', name: "Cell40", width: w, search: false
+                },
+                {
+                    align: 'center', label: '21:00', name: "Cell41", width: w, search: false
+                },
+                {
+                    align: 'center', label: '21:30', name: "Cell42", width: w, search: false
+                },
+                {
+                    align: 'center', label: '22:00', name: "Cell43", width: w, search: false
+                },
+                {
+                    align: 'center', label: '22:30', name: "Cell44", width: w, search: false
+                },
+                {
+                    align: 'center', label: '23:00', name: "Cell45", width: w, search: false
+                },
+                {
+                    align: 'center', label: '23:30', name: "Cell46", width: w, search: false
+                },
+                {
+                    align: 'center', label: '23:59', name: "Cell47", width: w, search: false
+                },
+
+            ],
+            viewrecords: true,
+            width: $('#table-model-dlg').width() - 25,//780,
+            height: '100%',
+            rowNum: 15,
+            //autowidth: true,
+            editurl: '@Url.Action("AddEdit", "TugInfor")',
+            pager: "#jqGridPager2",
+            loadonce: true,
+            rowList: ['15', '20', '30', '40', '50'],
+            rownumbers: true,
+            shrinkToFit: false,     //指定各列宽度
+            //sortable: true,          //列可移动
+            //colMenu: true          //列菜单
+            subGrid: true,
+            subGridRowExpanded: showChildGridForModalDialog,
+            subGridOptions: {
+                "plusicon": "ui-icon-triangle-1-e",
+                "minusicon": "ui-icon-triangle-1-s",
+                "openicon": "ui-icon-arrowreturn-1-e"
+            },
+
+            multiselect: true,
+
+            loadComplete: function () {
+                // 设定背景色
+                var ids = $(this).getDataIDs();
+                for (var i = 0; i < ids.length; i++) {
+                    var val = $(this).getCell(ids[i], 'Name1');
+                    $(this).setCell(ids[i], 'Name1', val, { background: 'lightyellow' });
+
+                    for (var j = 0; j < 48; j++) {
+                        var col_name = "Cell" + j.toString();
+
+                        val = $(this).getCell(ids[i], col_name);
+                        var bkcolor = '#00CC00'; //"#FFFFFF";
+                        if (val == 1) bkcolor = '#D90000';//"#00CC00";
+                        $(this).setCell(ids[i], col_name, ' ', { background: bkcolor });
+                    }
+                };
+            }
+        });
+
+        //$('#jqGrid2').jqGrid('filterToolbar', { searchResult: true, searchOperators: true });
+
+        $('#jqGrid2').navGrid('#jqGridPager2', { edit: false, add: false, del: false, refresh: false, view: false, search: false });
+
+
+        var timer;
+        $("#search_cells").on("keyup", function () {
+            var self = this;
+            if (timer) { clearTimeout(timer); }
+            timer = setTimeout(function () {
+                //timer = null;
+                $("#jqGrid2").jqGrid('filterInput', self.value);
+            }, 0);
+        });
+
+        //var invoker = $(e.relatedTarget);
+
+
+
+
+        //最后调用，冻结列
+        //$("#jqGrid2").jqGrid("setFrozenColumns");
+    }
+
+
+
+
+    // the event handler on expanding parent row receives two parameters
+    // the ID of the grid tow  and the primary key of the row
+    function showChildGridForModalDialog(parentRowID, parentRowKey) {
+
+        var childGridID = parentRowID + "_table";
+
+        var childGridPagerID = parentRowID + "_pager";
+
+        var dr = jQuery("#jqGrid2").jqGrid('getRowData', parentRowKey);
+        //alert(dr.TugID);
+        var parentDr = jQuery("#jqGrid").jqGrid('getRowData', g_cur_parentGridRowId);//得到该行的数据
+        var childGridURL = '@Url.Action("GetTugRelatedOrders", "OrderManage")' + "?tugId=" + dr.TugID + "&workDate=" + parentDr.WorkDate;
+
+        // add a table and pager HTML elements to the parent grid row - we will render the child grid here
+        $('#' + parentRowID).append('<table id=' + childGridID + '></table><div id=' + childGridPagerID + ' class=scroll></div>');
+
+        $("#" + childGridID).jqGrid({
+            url: childGridURL,
+            mtype: "GET",
+            datatype: "json",
+            //page: 1,
+            viewrecords: true,
+            editurl: null,
+            colModel: [
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_IDX', index: "IDX", name: "IDX", width: 100, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_IsGuest', name: "IsGuest", width: 90
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_Code', name: "Code", width: 100,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_CustomerID', name: "CustomerID", width: 100, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_CustomerName', name: "CustomerName", width: 120,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_WorkDate', name: "WorkDate", width: 100,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_WorkTime', name: "WorkTime", width: 100,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_EstimatedCompletionTime', name: "EstimatedCompletionTime", width: 100,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_WorkPlace', name: "WorkPlace", width: 100,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_ServiceNatureIDS', name: "ServiceNatureIDS", width: 100, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_ServiceNatureNames', name: "ServiceNatureNames", width: 260,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_ShipID', name: "ShipID", width: 100, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_ShipName', name: "ShipName", width: 120
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_BigTugNum', name: "BigTugNum", width: 100
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_MiddleTugNum', name: "MiddleTugNum", width: 100
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_SmallTugNum', name: "SmallTugNum", width: 100,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_LinkMan', name: "LinkMan", width: 100,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_LinkPhone', name: "LinkPhone", width: 100,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_LinkEmail', name: "LinkEmail", width: 100,
+                },
+
+
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_WorkStateID', name: "WorkStateID", width: 100, hidden: true,
+
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_WorkStateValue', name: "WorkStateValue", width: 100, hidden: true,
+
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_WorkStateLabel', name: "WorkStateLabel", width: 120,
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.Remark', name: "Remark", width: 200,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.OwnerID', name: "OwnerID", width: 100, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserID', name: "UserID", width: 100, hidden: true
+                },
+                {
+                    align: 'center',
+                    label: '@Resources.Language.CreateDate', name: "CreateDate", width: 100,
+                },
+                {
+                    align: 'center',
+                    label: '@Resources.Language.LastUpDate', name: "LastUpDate", width: 100,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol1', name: "UserDefinedCol1", width: 100, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol2', name: "UserDefinedCol2", width: 100, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol3', name: "UserDefinedCol3", width: 100, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol4', name: "UserDefinedCol4", width: 100, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol5', name: "UserDefinedCol5", width: 100, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol6', name: "UserDefinedCol6", width: 100, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol7', name: "UserDefinedCol7", width: 100, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol8', name: "UserDefinedCol8", width: 100, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol9', name: "UserDefinedCol9", width: 100, hidden: true,
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol10', name: "UserDefinedCol10", width: 100, hidden: true,
+                },
+            ],
+
+            loadonce: true,
+            rowNum: 10,
+            //width: 500,
+            autowidth: true,
+            height: '100%',
+            shrinkToFit: false,     //指定各列宽度
+            pager: "#" + childGridPagerID,
+            grouping: true,
+            caption: '已安排此拖輪的訂單',
+            @*groupingView: {
+                groupField: ["Code"],
+                groupColumnShow: [true],
+                groupText: ['@Resources.Language.V_OrderInfor_Code' + ": <b>{0}</b>"],
+                groupOrder: ["asc"],
+                groupSummary: [false],
+                groupCollapse: false
+            },*@
+
+            subGrid: true,
+            subGridRowExpanded: showThirdLevelChildGrid,
+            //gridComplete: function () {
+            //    alert(1);
+            //}
+        });
+
+        $("#" + childGridID).jqGrid('bindKeys');  //光标可以控制上下移动
+
+        $('#pg_' + childGridPagerID).css("background-color", "lightblue"); //更改子Grid导航的背景色
+
+    }
+
+
+
+
+    // the event handler on expanding parent row receives two parameters
+    // the ID of the grid tow  and the primary key of the row
+    function showThirdLevelChildGrid(parentRowID, parentRowKey) {
+
+        var parentGridID = parentRowID.substring(0, parentRowID.lastIndexOf('_'));
+
+        var childGridID = parentRowID + "_table";
+        var childGridPagerID = parentRowID + "_pager";
+
+        var dr = jQuery("#" + parentGridID).jqGrid('getRowData', parentRowKey);//得到该行的数据
+        //alert(dr.Code);
+
+        // send the parent row primary key to the server so that we know which grid to show
+        var childGridURL = '@Url.Action("GetOrderSubSchedulerDataForLoadOnce", "OrderManage")' + "?orderId=" + dr.IDX;
+
+        // add a table and pager HTML elements to the parent grid row - we will render the child grid here
+        $('#' + parentRowID).append('<table id=' + childGridID + '></table><div id=' + childGridPagerID + ' class=scroll></div>');
+
+        $("#" + childGridID).jqGrid({
+            url: childGridURL,
+            mtype: "GET",
+            datatype: "json",
+            colModel: [
+                { align: 'center', label: '@Resources.Language.V_OrderScheduler_IDX', name: 'IDX', key: 'IDX', width: 75, hidden: true },
+                { align: 'center', label: '@Resources.Language.V_OrderScheduler_ServiceNatureLabel', name: 'ServiceNatureLabel', width: 100 },
+                { align: 'center', label: '@Resources.Language.V_OrderScheduler_ServiceNatureLabel', name: 'JobStateLabel', width: 100 },
+                { align: 'center', label: '@Resources.Language.V_OrderScheduler_InformCaptainTime', name: 'InformCaptainTime', width: 100 },
+                { align: 'center', label: '@Resources.Language.V_OrderScheduler_CaptainConfirmTime', name: 'CaptainConfirmTime', width: 100 },
+                { align: 'center', label: '@Resources.Language.V_OrderScheduler_DepartBaseTime', name: 'DepartBaseTime', width: 100 },
+                { align: 'center', label: '@Resources.Language.V_OrderScheduler_ArrivalShipSideTime', name: 'ArrivalShipSideTime', width: 100 },
+                { align: 'center', label: '@Resources.Language.V_OrderScheduler_WorkCommencedTime', name: 'WorkCommencedTime', width: 100 },
+                { align: 'center', label: '@Resources.Language.V_OrderScheduler_WorkCompletedTime', name: 'WorkCompletedTime', width: 100 },
+                { align: 'center', label: '@Resources.Language.V_OrderScheduler_ArrivalBaseTime', name: 'ArrivalBaseTime', width: 100 },
+                { align: 'center', label: '@Resources.Language.V_OrderScheduler_RopeUsed', name: 'RopeUsed', width: 100 },
+                { align: 'center', label: '@Resources.Language.V_OrderScheduler_RopeNum', name: 'RopeNum', width: 100 },
+
+            ],
+            rowNum: 10,
+            shrinkToFit: false,
+            loadonce: true,
+            autowidth: true,
+            height: '100%',
+            pager: "#" + childGridPagerID,
+            grouping: true,
+            caption: '調度拖輪',
+            groupingView: {
+                groupField: ["ServiceNatureLabel"],
+                groupColumnShow: [true],
+                groupText: ['@Resources.Language.V_OrderScheduler_ServiceNatureLabel' + ": <b>{0}</b>"],
+                groupOrder: ["asc"],
+                groupSummary: [false],
+                groupCollapse: false
+            },
+        });
+
+        $('#pg_' + childGridPagerID).css("background-color", "aliceblue"); //更改子Grid导航的背景色
+
+    }
+
+</script>

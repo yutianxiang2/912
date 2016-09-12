@@ -1,0 +1,172 @@
+﻿@using DataModel
+@model DataModel.UserInfor
+@{
+    ViewBag.Title = "Login";
+    ViewBag.MenuId = "menu3";
+    ViewBag.SubMenuIndex = 0;
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>@Resources.Language.UserInfor_ChangePwd</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- STYLESHEETS --><!--[if lt IE 9]><script src="js/flot/excanvas.min.js"></script><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="~/Resources/css/cloud-admin.css">
+    <link href="~/Resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- DATE RANGE PICKER -->
+    <link rel="stylesheet" type="text/css" href="~/Resources/js/bootstrap-daterangepicker/daterangepicker-bs3.css" />
+    <!-- UNIFORM -->
+    <link rel="stylesheet" type="text/css" href="~/Resources/js/uniform/css/uniform.default.min.css" />
+    <!-- ANIMATE -->
+    <link rel="stylesheet" type="text/css" href="~/Resources/css/animatecss/animate.min.css" />
+    <!-- FONTS -->
+    @*<link href='http://fonts.useso.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>*@
+    <script>
+        function ResetForm() {
+            document.getUserById('TxtUserName').value = "";
+            document.getUserById('TxtPwd').value = "";
+            //document.getUserById('TxtPwd').value = "";
+        }
+    </script>
+</head>
+<body class="login">
+    <!-- PAGE -->
+    <section id="page">
+        <!-- HEADER -->
+        <header>
+            <!-- NAV-BAR -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-4">
+                        <div id="logo">
+                            <a href="~/Home/Index"><img src="~/Resources/img/logo-alt.png" height="40" alt="logo name" /></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/NAV-BAR -->
+        </header>
+        <!--/HEADER -->
+        <!-- LOGIN -->
+        <section class="visible">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-4">
+                        <div class="login-box-plain">
+                            <img src="~/Resources/img/TUG1.png" alt="招商集团-拖轮管理中心" width="50" height="50" class="center-block">
+                            <h2 class="bigintro">@Resources.Language.UserInfor_ChangePwd</h2>
+                            <div class="divide-20"></div>
+                            <div class="divide-40 ">
+                                <p style="color:red; text-align:center"><strong> @ViewBag.Message</strong></p>
+                            </div>
+                            <form role="form" name="form1" method="post" onsubmit="return Check()">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">@Resources.Language.UserInfor_OriginalPwd</label>
+                                    <i class="fa fa-lock"></i>
+                                    <input type="password" name="Pwd" id="Pwd" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">@Resources.Language.UserInfor_NewPwd</label>
+                                    <i class="fa fa-lock"></i>
+                                    <input type="password" name="Pwd" id="Pwd1" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">@Resources.Language.UserInfor_RepeatPwd</label>
+                                    <i class="fa fa-lock"></i>
+                                    <input type="password" name="Pwd" id="Pwd2" class="form-control" required>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-danger">@Resources.Language.UserInfor_OK</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--/LOGIN -->
+    </section>
+    <!--/PAGE -->
+    <!-- JAVASCRIPTS -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- JQUERY -->
+    <script src="~/Resources/js/jquery/jquery-2.0.3.min.js"></script>
+    <!-- JQUERY UI-->
+    <script src="~/Resources/js/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <!-- BOOTSTRAP -->
+    <script src="~/Resources/bootstrap-dist/js/bootstrap.min.js"></script>
+    <!-- UNIFORM -->
+    <script type="text/javascript" src="~/Resources/js/uniform/jquery.uniform.min.js"></script>
+    <!-- CUSTOM SCRIPT -->
+    <script src="~/Resources/js/script.js"></script>
+    <script>
+        jQuery(document).ready(function () {
+            App.setPage("login");  //Set current page
+            App.init(); //Initialise plugins and elements
+
+        });
+    </script>
+    <script language="javascript">
+        function Check() {
+            var pwd1 = document.getElementById("Pwd1").value;
+            var pwd2 = document.getElementById("Pwd2").value;
+
+            if (pwd1 != pwd2) {
+                alert("您两次输入的密码不一样！请重新输入.");
+                document.getElementById("Pwd").focus();
+                return false;
+            }
+            else {
+                var Pwd = document.getElementById("Pwd").value;
+                var newpwd = document.getElementById("Pwd1").value;
+                $.ajax({
+                    type: "post",
+                    url: "/Home/SavePwd",
+                    datatype: 'json',
+                    data: { Pwd: Pwd, newpwd: newpwd },
+                    success: function (result){
+                        alert(result.message);
+                        location.href = '/Home/Login'
+                    },
+                    error: function (result){
+                        alert(result.responseJSON.message);
+                    }
+                });
+                return false;
+            }
+        };
+    </script>
+    <script type="text/javascript">
+        function swapScreen(id) {
+            jQuery('.visible').removeClass('visible animated fadeInUp');
+            jQuery('#' + id).addClass('visible animated fadeInUp');
+        }
+
+        function login() {
+            var email = $("input#exampleInputEmail1").val();
+            var password = $("input#exampleInputPassword1").val();
+
+            jQuery.post("/Home/Login",
+                    {
+                        'email': email,
+                        'password': password
+                    },
+                    function (data, status) {
+                        //alert(data);
+                    }, "html");
+        }
+
+        function login2() {
+            var email = $("input#exampleInputEmail1").val();
+            var password = $("input#exampleInputPassword1").val();
+            alert(email);
+        }
+    </script>
+    <!-- /JAVASCRIPTS -->
+</body>
+</html>

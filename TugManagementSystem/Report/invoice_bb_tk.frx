@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="07/12/2016 15:31:30" ReportInfo.Modified="07/15/2016 12:30:48" ReportInfo.CreatorVersion="2013.3.3.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    private void Text23_AfterData(object sender, EventArgs e)
+    {
+      Text23.Text=&quot;服务项目\r\nSERVICE&quot;;
+    }
+
+    private void Cell7_AfterData(object sender, EventArgs e)
+    {
+      if(Cell7.Text==&quot;A1DepartBaseTime&quot;)
+        Cell7.Text=&quot;離廠時間\r\nDEPART BASE&quot;;
+      else if(Cell7.Text==&quot;A2ArrivalBaseTime&quot;)
+        Cell7.Text=&quot;回廠時間\r\nRETURN BASE&quot;;
+      else if(Cell7.Text==&quot;A3ServiceHours&quot;)
+        Cell7.Text=&quot;工作時間\r\nSERVICE HOURS&quot;;
+      else if(Cell7.Text==&quot;A4RateHour&quot;)
+        Cell7.Text=&quot;每小時收費\r\nRATE/HOUR&quot;;      
+      else if(Cell7.Text==&quot;A5NormalCharges&quot;)
+        Cell7.Text=&quot;正常收費\r\nNORMAL CHARGES&quot;;      
+      else if(Cell7.Text==&quot;T0SubTotalHK&quot;)
+        Cell7.Text=&quot;合計港幣\r\nSUB-TOTAL HK$&quot;;      
+      else if(Cell7.Text==&quot;T1TotalHK&quot;)
+        Cell7.Text=&quot;總數港幣\r\nTOTAL HK$&quot;;       
+    }
+
+
+    private void Cell45_AfterData(object sender, EventArgs e)
+    {
+      if(Cell45.Text==&quot;A1DepartBaseTime&quot;)
+        Cell45.Text=&quot;離廠時間\r\nDEPART BASE&quot;;
+      else if(Cell45.Text==&quot;A2ArrivalBaseTime&quot;)
+        Cell45.Text=&quot;回廠時間\r\nRETURN BASE&quot;;
+      else if(Cell45.Text==&quot;A3ServiceHours&quot;)
+        Cell45.Text=&quot;工作時間\r\nSERVICE HOURS&quot;;
+      else if(Cell45.Text==&quot;A4RateHour&quot;)
+        Cell45.Text=&quot;每小時收費\r\nRATE/HOUR&quot;;      
+      else if(Cell45.Text==&quot;A5NormalCharges&quot;)
+        Cell45.Text=&quot;正常收費\r\nNORMAL CHARGES&quot;;      
+      else if(Cell45.Text==&quot;T0SubTotalHK&quot;)
+        Cell45.Text=&quot;合計港幣\r\nSUB-TOTAL HK$&quot;;      
+      else if(Cell45.Text==&quot;T1TotalHK&quot;)
+        Cell45.Text=&quot;總數港幣\r\nTOTAL HK$&quot;;      
+    }
+
+    private void Cell25_AfterData(object sender, EventArgs e)
+    {
+      if(Cell25.Text==&quot;A1DepartBaseTime&quot;)
+        Cell25.Text=&quot;離廠時間\r\nDEPART BASE&quot;;
+      else if(Cell25.Text==&quot;A2ArrivalBaseTime&quot;)
+        Cell25.Text=&quot;回廠時間\r\nRETURN BASE&quot;;
+      else if(Cell25.Text==&quot;A3ServiceHours&quot;)
+        Cell25.Text=&quot;工作時間\r\nSERVICE HOURS&quot;;
+      else if(Cell25.Text==&quot;A4RateHour&quot;)
+        Cell25.Text=&quot;每小時收費\r\nRATE/HOUR&quot;;      
+      else if(Cell25.Text==&quot;A5NormalCharges&quot;)
+        Cell25.Text=&quot;正常收費\r\nNORMAL CHARGES&quot;;      
+      else if(Cell25.Text==&quot;T0SubTotalHK&quot;)
+        Cell25.Text=&quot;合計港幣\r\nSUB-TOTAL HK$&quot;;      
+      else if(Cell25.Text==&quot;T1TotalHK&quot;)
+        Cell25.Text=&quot;總數港幣\r\nTOTAL HK$&quot;;           
+    }
+
+    private void Cell35_AfterData(object sender, EventArgs e)
+    {
+      if(Cell35.Text==&quot;A1DepartBaseTime&quot;)
+        Cell35.Text=&quot;離廠時間\r\nDEPART BASE&quot;;
+      else if(Cell35.Text==&quot;A2ArrivalBaseTime&quot;)
+        Cell35.Text=&quot;回廠時間\r\nRETURN BASE&quot;;
+      else if(Cell35.Text==&quot;A3ServiceHours&quot;)
+        Cell35.Text=&quot;工作時間\r\nSERVICE HOURS&quot;;
+      else if(Cell35.Text==&quot;A4RateHour&quot;)
+        Cell35.Text=&quot;每小時收費\r\nRATE/HOUR&quot;;      
+      else if(Cell35.Text==&quot;A5NormalCharges&quot;)
+        Cell35.Text=&quot;正常收費\r\nNORMAL CHARGES&quot;;      
+      else if(Cell35.Text==&quot;T0SubTotalHK&quot;)
+        Cell35.Text=&quot;合計港幣\r\nSUB-TOTAL HK$&quot;;      
+      else if(Cell35.Text==&quot;T1TotalHK&quot;)
+        Cell35.Text=&quot;總數港幣\r\nTOTAL HK$&quot;;       
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlq+rW0RkboK+/8CKGGYUID3ctBV8q9SvKYxl3iiE7vBnh7Tgou0+4WFf3NfmPSvHVFNt5PNzfElyWYAH7pmiWas1IwJ1aTDtSgtRzvwNamGpACjVXGf1SFmwyUs1HN1tS6XHwUs2IJdgUAn/QiEr5wANzfunNWU6MQ2pM+hJ/llQxKEz7ZcXQhrGsfZEqSnZdv1LZYmD0bTmtDJuuQTTuTvg==">
+      <TableDataSource Name="V_Inv_Head" DataType="System.Int32" Enabled="true" TableName="V_Inv_Head">
+        <Column Name="IDX" DataType="System.Int32"/>
+        <Column Name="OrderID" DataType="System.Int32"/>
+        <Column Name="BillingCode" DataType="System.String"/>
+        <Column Name="CreateDate" DataType="System.String"/>
+        <Column Name="CustomerName" DataType="System.String"/>
+        <Column Name="ShipName" DataType="System.String"/>
+        <Column Name="TimeTypeID" DataType="System.Int32"/>
+      </TableDataSource>
+      <TableDataSource Name="V_Inv_OrdService" DataType="System.Int32" Enabled="true" TableName="V_Inv_OrdService">
+        <Column Name="IDX" DataType="System.Int32"/>
+        <Column Name="ServiceNatureID" DataType="System.Int32"/>
+        <Column Name="ServiceWorkDate" DataType="System.String"/>
+        <Column Name="ServiceWorkPlace" DataType="System.String"/>
+        <Column Name="CustomLabel" DataType="System.String"/>
+        <Column Name="OrderID" DataType="System.Int32"/>
+        <Column Name="UserDefinedCol1" Enabled="false" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table" Alias="MData" DataType="System.Int32" Enabled="true" SelectCommand="exec proc_inv_item 6,0">
+        <Column Name="ItemCode" DataType="System.String"/>
+        <Column Name="Item" DataType="System.String"/>
+        <Column Name="Value" DataType="System.String"/>
+        <Column Name="TugName" DataType="System.String"/>
+        <Column Name="ServiceName" DataType="System.String"/>
+        <Column Name="Code" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table2" Alias="DData" DataType="System.Int32" Enabled="true" SelectCommand="exec proc_inv_item 6,0">
+        <Column Name="ItemCode" DataType="System.String"/>
+        <Column Name="Item" DataType="System.String"/>
+        <Column Name="Value" DataType="System.String"/>
+        <Column Name="TugName" DataType="System.String"/>
+        <Column Name="ServiceName" DataType="System.String"/>
+        <Column Name="Code" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table3" Alias="Total" DataType="System.Int32" Enabled="true" SelectCommand="exec proc_inv_item 6,0">
+        <Column Name="ItemCode" DataType="System.String"/>
+        <Column Name="Item" DataType="System.String"/>
+        <Column Name="Value" DataType="System.String"/>
+        <Column Name="TugName" DataType="System.String"/>
+        <Column Name="ServiceName" DataType="System.String"/>
+        <Column Name="Code" DataType="System.String"/>
+      </TableDataSource>
+      <TableDataSource Name="Table1" Alias="SubTotal" DataType="System.Int32" Enabled="true" SelectCommand="exec proc_inv_item 6,0">
+        <Column Name="ItemCode" DataType="System.String"/>
+        <Column Name="Item" DataType="System.String"/>
+        <Column Name="Value" DataType="System.String"/>
+        <Column Name="TugName" DataType="System.String"/>
+        <Column Name="ServiceName" DataType="System.String"/>
+        <Column Name="Code" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle2" Width="718.2" Height="179.55">
+      <PictureObject Name="Picture2" Left="311.85" Width="66.15" Height="66.15" Image="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"/>
+      <RichObject Name="Rich2" Left="406.35" Width="311.85" Height="103.95" Text="{\rtf1\ansi\ansicpg936\deff0\deflang1033\deflangfe2052{\fonttbl{\f0\fnil\fcharset134 \'bf\'ac\'cc\'e5;}{\f1\fnil\fcharset0 Tahoma;}{\f2\fmodern\fprq6\fcharset134 \'cb\'ce\'cc\'e5;}{\f3\fnil\fcharset0 Lucida Calligraphy;}{\f4\fnil\fcharset0 Forte;}{\f5\fnil\fcharset0 Arial;}}&#13;&#10;{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\lang2052\f0\fs32\'d3\'d1\lang1033\f1  \lang2052\f0\'c2\'93\lang1033\f1  \lang2052\f0\'b4\'ac\lang1033\f1  \lang2052\f0\'8f\'53\lang1033\f1  \lang2052\f0\'d3\'d0\lang1033\f1  \lang2052\f0\'cf\'de\lang1033\f1  \lang2052\f0\'b9\'ab\lang1033\f1  \lang2052\f0\'cb\'be\f2\fs20\par&#13;&#10;\lang1033\f3\fs28 Yiu Lian Dockyards Limited. \f4\fs20\par&#13;&#10;\lang2052\f2\fs18\'cf\'e3\'b8\'db\'d0\'c2\'bd\'e7\'c7\'e0\'d2\'c2\'ce\'f7\'b2\'dd\'9e\'b3\'c2\'b71-7\'cc\'96\fs16\par&#13;&#10;\lang1033\f5 No.1-7,Sai Tso Wan Road, Tsing Yi Island, N.T., Hong Kong.\par&#13;&#10;Tel:2497 0745, 2497 0686, 2436 7822, 2497 0655\par&#13;&#10;Telefax:(852)2435 4270\f1\fs17\par&#13;&#10;}&#13;&#10;"/>
+      <TextObject Name="Text14" Left="9.45" Top="47.25" Width="94.5" Height="28.35" Text="Messes" Font="Lucida Calligraphy, 15.75pt"/>
+      <TextObject Name="Text19" Left="113.4" Top="56.7" Width="160.65" Height="18.9" Border.Lines="Bottom" Border.BottomLine.Style="Dash" Text="[V_Inv_Head.CustomerName]" Font="宋体, 10pt"/>
+      <TextObject Name="Text22" Left="283.5" Top="94.5" Width="113.4" Height="37.8" Text="Invoice" HorzAlign="Center" Font="Arial, 20pt, style=Bold" TextFill.Color="Red"/>
+      <TextObject Name="Text16" Left="406.35" Top="113.4" Width="94.5" Height="18.9" Text="Bill No" Font="Arial, 12pt, style=Italic"/>
+      <TextObject Name="Text18" Left="519.75" Top="113.4" Width="179.55" Height="18.9" Border.Lines="Bottom" Border.BottomLine.Style="Dash" Text="[V_Inv_Head.BillingCode]" Font="宋体, 10pt"/>
+      <TextObject Name="Text15" Left="9.45" Top="141.75" Width="94.5" Height="18.9" Text="Attent" Font="Arial, 14.25pt"/>
+      <TextObject Name="Text17" Left="406.35" Top="141.75" Width="94.5" Height="18.9" Text="Hong Kong" Font="Arial, 12pt, style=Italic"/>
+      <TextObject Name="Text20" Left="113.4" Top="141.75" Width="160.65" Height="18.9" Border.Lines="Bottom" Border.BottomLine.Style="Dash" Text="[V_Inv_Head.ShipName]" Font="宋体, 10pt"/>
+      <TextObject Name="Text21" Left="519.75" Top="141.75" Width="179.55" Height="18.9" Border.Lines="Bottom" Border.BottomLine.Style="Dash" Text="[V_Inv_Head.CreateDate]" Font="宋体, 10pt"/>
+      <LineObject Name="Line2" Left="9.45" Top="170.1" Width="689.85" Border.Color="Red" Border.Width="2"/>
+    </ReportTitleBand>
+    <DataBand Name="Data1" Top="183.55" Width="718.2" Height="28.35" Guides="28.35,9.45,28.35" DataSource="V_Inv_OrdService">
+      <TextObject Name="Text23" Left="9.45" Top="9.45" Width="151.2" Height="18.9" AfterDataEvent="Text23_AfterData" Duplicates="Merge" Font="宋体, 10pt"/>
+      <TextObject Name="Text24" Left="189" Top="9.45" Width="151.2" Height="18.9" Text="[V_Inv_OrdService.CustomLabel]" Font="宋体, 10pt"/>
+      <TextObject Name="Text25" Left="368.55" Top="9.45" Width="151.2" Height="18.9" Text="[V_Inv_OrdService.ServiceWorkPlace]" Font="宋体, 10pt"/>
+      <TextObject Name="Text26" Left="548.1" Top="9.45" Width="151.2" Height="18.9" Text="[V_Inv_OrdService.ServiceWorkDate]" Font="宋体, 10pt"/>
+      <DataFooterBand Name="DataFooter1" Top="215.9" Width="718.2" Height="18.9" Guides="9.45">
+        <LineObject Name="Line1" Left="9.45" Top="9.45" Width="689.85" Border.Width="2"/>
+      </DataFooterBand>
+    </DataBand>
+    <DataBand Name="Data2" Top="238.8" Width="718.2" Height="85.23">
+      <MatrixObject Name="Matrix1" Left="9.45" Top="9.45" Width="157.51" Height="72" FixedRows="2" FixedColumns="1" DataSource="Table">
+        <MatrixColumns>
+          <Header Expression="[MData.ServiceName]" Totals="false"/>
+          <Header Expression="[MData.TugName]" Totals="false"/>
+        </MatrixColumns>
+        <MatrixRows>
+          <Header Expression="[MData.Item]" Totals="false"/>
+        </MatrixRows>
+        <MatrixCells>
+          <Cell Expression="[MData.Value]"/>
+        </MatrixCells>
+        <TableColumn Name="Column1" Width="54.69" AutoSize="true"/>
+        <TableColumn Name="Column2" Width="102.82" AutoSize="true"/>
+        <TableRow Name="Row1" Height="24" AutoSize="true">
+          <TableCell Name="Cell1" Text="拖輪" Padding="4, 4, 4, 4" VertAlign="Center" Font="宋体, 10pt" RowSpan="2"/>
+          <TableCell Name="Cell2" Text="[ServiceName]" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row2" Height="24" AutoSize="true">
+          <TableCell Name="Cell3"/>
+          <TableCell Name="Cell4" Text="[TugName]" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row3" Height="24" AutoSize="true">
+          <TableCell Name="Cell7" AfterDataEvent="Cell7_AfterData" Text="[Item]" Padding="4, 4, 4, 4" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell8" Text="[Value]" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+      </MatrixObject>
+    </DataBand>
+    <DataBand Name="Data3" Top="328.03" Width="718.2" Height="82.35">
+      <MatrixObject Name="Matrix2" Left="9.45" Top="9.45" Width="157.51" Height="72" AfterDataEvent="Matrix2_AfterData" FixedRows="2" FixedColumns="1" DataSource="Table1">
+        <MatrixColumns>
+          <Header Expression="[SubTotal.ServiceName]" Totals="false"/>
+          <Header Expression="[SubTotal.TugName]" Totals="false"/>
+        </MatrixColumns>
+        <MatrixRows>
+          <Header Expression="[SubTotal.Item]" Totals="false"/>
+        </MatrixRows>
+        <MatrixCells>
+          <Cell Expression="[SubTotal.Value]"/>
+        </MatrixCells>
+        <TableColumn Name="Column9" Width="54.69" AutoSize="true"/>
+        <TableColumn Name="Column10" Width="102.82" AutoSize="true"/>
+        <TableRow Name="Row13" Visible="false" Height="24" AutoSize="true">
+          <TableCell Name="Cell37" Padding="4, 4, 4, 4" VertAlign="Center" Font="宋体, 10pt" RowSpan="2"/>
+          <TableCell Name="Cell38" Text="[ServiceName]" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row14" Visible="false" Height="24" AutoSize="true">
+          <TableCell Name="Cell39"/>
+          <TableCell Name="Cell40" Text="[TugName]" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row15" Height="24" AutoSize="true">
+          <TableCell Name="Cell45" AfterDataEvent="Cell45_AfterData" Text="[Item]" Padding="4, 4, 4, 4" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell46" Text="[Value]" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+      </MatrixObject>
+    </DataBand>
+    <DataBand Name="Data4" Top="414.38" Width="718.2" Height="85.05">
+      <MatrixObject Name="Matrix3" Left="9.45" Top="9.45" Width="157.51" Height="72" FixedRows="2" FixedColumns="1" DataSource="Table2">
+        <MatrixColumns>
+          <Header Expression="[DData.ServiceName]" Totals="false"/>
+          <Header Expression="[DData.TugName]" Totals="false"/>
+        </MatrixColumns>
+        <MatrixRows>
+          <Header Expression="[DData.Item]" Totals="false"/>
+        </MatrixRows>
+        <MatrixCells>
+          <Cell Expression="[DData.Value]"/>
+        </MatrixCells>
+        <TableColumn Name="Column5" Width="54.69" AutoSize="true"/>
+        <TableColumn Name="Column6" Width="102.82" AutoSize="true"/>
+        <TableRow Name="Row7" Visible="false" Height="24" AutoSize="true">
+          <TableCell Name="Cell19" Padding="4, 4, 4, 4" VertAlign="Center" Font="宋体, 10pt" RowSpan="2"/>
+          <TableCell Name="Cell20" Text="[ServiceName]" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row8" Visible="false" Height="24" AutoSize="true">
+          <TableCell Name="Cell21"/>
+          <TableCell Name="Cell22" Text="[TugName]" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row9" Height="24" AutoSize="true">
+          <TableCell Name="Cell25" AfterDataEvent="Cell25_AfterData" Text="[Item]" Padding="4, 4, 4, 4" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell26" Text="[Value]" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+      </MatrixObject>
+      <DataFooterBand Name="DataFooter2" Top="503.43" Width="718.2" Height="18.9">
+        <LineObject Name="Line3" Left="9.45" Top="9.45" Width="689.85" Border.Width="2"/>
+      </DataFooterBand>
+    </DataBand>
+    <DataBand Name="Data5" Top="526.33" Width="718.2" Height="85.05" Guides="132.3">
+      <MatrixObject Name="Matrix4" Left="9.45" Top="9.45" Width="157.51" Height="72" FixedRows="2" FixedColumns="1" DataSource="Table3">
+        <MatrixColumns>
+          <Header Expression="[Total.ServiceName]" Totals="false"/>
+          <Header Expression="[Total.TugName]" Totals="false"/>
+        </MatrixColumns>
+        <MatrixRows>
+          <Header Expression="[Total.Item]" Totals="false"/>
+        </MatrixRows>
+        <MatrixCells>
+          <Cell Expression="[Total.Value]"/>
+        </MatrixCells>
+        <TableColumn Name="Column7" MinWidth="37.8" MaxWidth="189" Width="54.69" AutoSize="true"/>
+        <TableColumn Name="Column8" Width="102.82" AutoSize="true"/>
+        <TableRow Name="Row10" Visible="false" Height="24" AutoSize="true">
+          <TableCell Name="Cell27" Padding="4, 4, 4, 4" VertAlign="Center" Font="宋体, 10pt" RowSpan="2"/>
+          <TableCell Name="Cell28" Text="[ServiceName]" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row11" Visible="false" Height="24" AutoSize="true">
+          <TableCell Name="Cell29"/>
+          <TableCell Name="Cell30" Text="[TugName]" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row12" Height="24" AutoSize="true">
+          <TableCell Name="Cell35" AfterDataEvent="Cell35_AfterData" Text="[Item]" Padding="4, 4, 4, 4" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell36" Text="[Value]" Padding="4, 4, 4, 4" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+      </MatrixObject>
+    </DataBand>
+    <PageFooterBand Name="PageFooter2" Top="615.38" Width="718.2" Height="113.4">
+      <TextObject Name="Text4" Left="321.3" Top="66.15" Width="94.5" Height="18.9" Text="E.&amp; O.E." Font="Arial Narrow, 12pt, style=Italic"/>
+      <TextObject Name="Text3" Left="9.45" Top="47.25" Width="255.15" Height="56.7" Text="Payment of this invoice is base on the contract payment terms from the date of invoice. Thereafter interest will be charged at 1.5% per month or part thereof." Font="Arial, 9pt"/>
+      <TextObject Name="Text5" Left="472.5" Top="47.25" Width="226.8" Height="56.7" Text="Any queries concerning this account must be reported to us by letter and /ortelefax within 21 days of receipt." Font="Arial, 9pt"/>
+      <TextObject Name="Text1" Left="387.45" Top="9.45" Width="151.2" Height="28.35" Text="共  計  港   幣：&#13;&#10;GRAND TOTAL HK$：" Font="宋体, 10pt, style=Bold"/>
+      <TextObject Name="Text2" Left="548.1" Top="9.45" Width="151.2" Height="28.35" Border.Lines="Bottom" Border.Style="Double" Font="宋体, 10pt"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

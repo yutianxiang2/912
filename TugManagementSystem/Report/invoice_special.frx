@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReferencedAssemblies="System.dll&#13;&#10;System.Drawing.dll&#13;&#10;System.Windows.Forms.dll&#13;&#10;System.Data.dll&#13;&#10;System.Xml.dll&#13;&#10;FastReportAdditional.dll" TextQuality="Regular" ReportInfo.Description="Demonstrates how to print multiple Table rows with a script. To do this:&#13;&#10;&#13;&#10;- select the Table object;&#13;&#10;&#13;&#10;- go to the &quot;Properties&quot; window and click the &quot;Events&quot; button to view list of available events;&#13;&#10;&#13;&#10;- doubleclick the &quot;ManualBuild&quot; event;&#13;&#10;&#13;&#10;- you will see the empty event handler. You need to print rows using TableObject.PrintRow method; in each row, you must also print all columns (using PrintColumns method). See the script code for more details.&#13;&#10;&#13;&#10;When you run a report, the Table will repeat a row and fill it with data." ReportInfo.Created="01/17/2008 20:40:24" ReportInfo.Modified="08/26/2016 22:18:44" ReportInfo.CreatorVersion="2013.3.3.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+using FastReportAdditional; 
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    private void Text21_AfterData(object sender, EventArgs e)
+    {
+      DateTime dt = Convert.ToDateTime(Text21.Text);            
+      Text21.Text=string.Format(&quot;{0:dd.MM.yyyy}&quot;, dt); 
+    }
+    private void Table1_ManualBuild(object sender, EventArgs e)
+    {
+      int i=1;
+      // get the data source by its name
+      DataSourceBase rowData = Report.GetDataSource(&quot;SpecialBillingItem&quot;);
+      // init the data source
+      rowData.Init();
+      Cell6.Text=i.ToString();
+      // print the first table row - it is a header
+      Table1.PrintRow(0);
+      // each PrintRow call must be followed by either PrintColumn or PrintColumns call
+      // to print cells on the row
+      Table1.PrintColumns();
+      
+      // now enumerate the data source and print the table body
+      while (rowData.HasMoreRows)
+      {
+        // print the table body  
+        Table1.PrintRow(1);
+        Table1.PrintColumns();
+        i++;
+        Cell6.Text=i.ToString();
+        // go next data source row
+        rowData.Next();
+      }
+      
+      // print the last table row - it is a footer
+      Table1.PrintRow(2);
+      Table1.PrintColumns();
+      Table1.PrintRow(3);
+      Table1.PrintColumns();
+      Table1.PrintRow(4);
+      Table1.PrintColumns();
+    }
+
+    private void Cell8_AfterData(object sender, EventArgs e)
+    {
+      DateTime dt = Convert.ToDateTime(Cell8.Text);            
+      Cell8.Text=string.Format(&quot;{0:dd.MM.yyyy}&quot;, dt);       
+    }
+
+    private void Cell19_AfterData(object sender, EventArgs e)
+    {
+      Cell19.Text=Addition.AmountFormat(Cell19.Text); 
+    }
+
+    private void Cell22_AfterData(object sender, EventArgs e)
+    {
+     Cell22.Text=Addition.AmountFormat(Cell22.Text);  
+    }
+
+    private void Text4_AfterData(object sender, EventArgs e)
+    {
+      Text4.Text=Addition.AmountFormat(Text4.Text); 
+    }
+
+    private void Text5_AfterData(object sender, EventArgs e)
+    {
+      Text5.Text=Addition.AmountFormat(Text5.Text);  
+    }
+
+    private void Cell34_AfterData(object sender, EventArgs e)
+    {
+      Cell34.Text=Addition.AmountFormat(Cell34.Text);  
+    }
+
+    private void Cell28_AfterData(object sender, EventArgs e)
+    {
+      Cell28.Text=Addition.AmountFormat(Cell28.Text);  
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlq+rW0RkboK+/8CKGGYUID3ctBV8q9SvKYxl3iiE7vBnh7Tgou0+4WFf3NfmPSvHVFNt5PNzfElyWYAH7pmiWas1IwJ1aTDtSgtRzvwNamGpACjVXGf1SFmwyUs1HN1tS6XHwUs2IJdgUAn/QiEr5wANzfunNWU6MQ2pM+hJ/llQxKEz7ZcXQhrGsfZEqSnZdv7vYV3WXER+WHRuUiH5zxcg==">
+      <TableDataSource Name="SpecialBillingItem" DataType="System.Int32" Enabled="true" TableName="SpecialBillingItem">
+        <Column Name="IDX" DataType="System.Int32"/>
+        <Column Name="SpecialBillingID" DataType="System.Int32"/>
+        <Column Name="OrderServiceID" DataType="System.Int32"/>
+        <Column Name="ServiceDate" DataType="System.String"/>
+        <Column Name="ServiceNatureID" DataType="System.Int32"/>
+        <Column Name="ServiceNatureValue" DataType="System.String"/>
+        <Column Name="ServiceNature" DataType="System.String"/>
+        <Column Name="CustomerShipName" DataType="System.String"/>
+        <Column Name="TugNumber" DataType="System.Int32"/>
+        <Column Name="ServiceUnitPrice" DataType="System.Double"/>
+        <Column Name="FeulUnitPrice" DataType="System.Double"/>
+      </TableDataSource>
+      <TableDataSource Name="V_Inv_Head_Special" DataType="System.Int32" Enabled="true" TableName="V_Inv_Head_Special">
+        <Column Name="IDX" DataType="System.Int32"/>
+        <Column Name="CustomerID" DataType="System.Int32"/>
+        <Column Name="BillingCode" DataType="System.String"/>
+        <Column Name="InvoiceType" DataType="System.String"/>
+        <Column Name="CreateDate" DataType="System.String"/>
+        <Column Name="Name1" DataType="System.String"/>
+        <Column Name="Month" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Parameter Name="srvprice" DataType="System.String"/>
+    <Parameter Name="feulprice" DataType="System.String"/>
+    <Parameter Name="totalfeul" DataType="System.String"/>
+    <Parameter Name="totalsrv" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="368.55">
+      <TableObject Name="Table1" Left="28.35" Top="255.15" Width="689.85" Height="94.5" ManualBuildEvent="Table1_ManualBuild">
+        <TableColumn Name="Column1" Width="47.25"/>
+        <TableColumn Name="Column2" Width="132.3"/>
+        <TableColumn Name="Column3" Width="113.4"/>
+        <TableColumn Name="Column4" Width="217.35"/>
+        <TableColumn Name="Column5" Width="85.05"/>
+        <TableColumn Name="Column6" Width="94.5"/>
+        <TableRow Name="Row1">
+          <TableCell Name="Cell1" Border.Lines="All" Fill="Glass" Fill.Color="Transparent" Fill.Blend="0.47" Fill.Hatch="false" Text="序號" Padding="5, 0, 0, 0" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt, style=Bold"/>
+          <TableCell Name="Cell2" Border.Lines="All" Fill="Glass" Fill.Color="Transparent" Fill.Blend="0.47" Fill.Hatch="false" Text="服務內容" Padding="0, 0, 5, 0" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt, style=Bold"/>
+          <TableCell Name="Cell3" Border.Lines="All" Fill="Glass" Fill.Color="Transparent" Fill.Blend="0.47" Fill.Hatch="false" Text="工作日期" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt, style=Bold"/>
+          <TableCell Name="Cell14" Border.Lines="All" Text="工作" HorzAlign="Center" Font="宋体, 10pt, style=Bold"/>
+          <TableCell Name="Cell15" Border.Lines="All" Text="拖輪" HorzAlign="Center" Font="宋体, 10pt, style=Bold"/>
+          <TableCell Name="Cell16" Border.Lines="All" Text="價錢" HorzAlign="Center" Font="宋体, 10pt, style=Bold"/>
+        </TableRow>
+        <TableRow Name="Row2">
+          <TableCell Name="Cell6" Border.Lines="All" Text="[Row#]" Padding="5, 0, 0, 0" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell7" Border.Lines="All" Text="[SpecialBillingItem.ServiceNature]" Padding="0, 0, 5, 0" Format="Currency" Format.UseLocale="true" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell8" Border.Lines="All" AfterDataEvent="Cell8_AfterData" Text="[SpecialBillingItem.ServiceDate]" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell17" Border.Lines="All" Text="[SpecialBillingItem.CustomerShipName]" Font="宋体, 10pt"/>
+          <TableCell Name="Cell18" Border.Lines="All" Text="[SpecialBillingItem.TugNumber]" HorzAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell19" Border.Lines="All" AfterDataEvent="Cell19_AfterData" Text="[ToDecimal([SpecialBillingItem.TugNumber]*[SpecialBillingItem.ServiceUnitPrice])]" HorzAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row3">
+          <TableCell Name="Cell11" Border.Lines="Left, Bottom" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell12" Border.Lines="Bottom" Padding="0, 0, 5, 0" HorzAlign="Right" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell13" Border.Lines="Bottom" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell20" Border.Lines="Bottom" Text="燃油附加費總計" HorzAlign="Right" Font="宋体, 10pt"/>
+          <TableCell Name="Cell21" Border.Lines="All" Text="[Sum(Cell18)]" HorzAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell22" Border.Lines="All" AfterDataEvent="Cell22_AfterData" Text="[totalfeul]" HorzAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row4">
+          <TableCell Name="Cell23" Border.Lines="Left, Bottom" Font="宋体, 10pt"/>
+          <TableCell Name="Cell24" Border.Lines="Bottom" Font="宋体, 10pt"/>
+          <TableCell Name="Cell25" Border.Lines="Bottom" Font="宋体, 10pt"/>
+          <TableCell Name="Cell26" Border.Lines="Bottom" Text="泊/離服務費總計" HorzAlign="Right" Font="宋体, 10pt"/>
+          <TableCell Name="Cell27" Border.Lines="All" Text="[Sum(Cell18)]" HorzAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell28" Border.Lines="All" AfterDataEvent="Cell28_AfterData" Text="[totalsrv]" HorzAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row5">
+          <TableCell Name="Cell29" Border.Lines="Left, Bottom" Font="宋体, 10pt"/>
+          <TableCell Name="Cell30" Border.Lines="Bottom" Font="宋体, 10pt"/>
+          <TableCell Name="Cell31" Border.Lines="Bottom" Font="宋体, 10pt"/>
+          <TableCell Name="Cell32" Border.Lines="Bottom" Font="宋体, 10pt"/>
+          <TableCell Name="Cell33" Border.Lines="All" Text="合 共 港 幣" HorzAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell34" Border.Lines="All" AfterDataEvent="Cell34_AfterData" Text="[ToDecimal([totalfeul]+[totalsrv])]" HorzAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+      </TableObject>
+      <TextObject Name="Text19" Left="66.15" Top="47.25" Width="245.7" Height="66.15" Text="[V_Inv_Head_Special.Name1]" Font="宋体, 11pt"/>
+      <TextObject Name="Text18" Left="567" Top="94.5" Width="151.2" Height="18.9" Text="[V_Inv_Head_Special.BillingCode]" Font="宋体, 10pt"/>
+      <TextObject Name="Text20" Left="66.15" Top="122.85" Width="245.7" Height="18.9" Text="&quot;使用拖輪服務&quot;" Font="宋体, 10pt"/>
+      <TextObject Name="Text21" Left="567" Top="122.85" Width="151.2" Height="18.9" AfterDataEvent="Text21_AfterData" Text="[V_Inv_Head_Special.CreateDate]" Font="宋体, 10pt"/>
+      <TextObject Name="Text1" Left="28.35" Top="236.25" Width="189" Height="18.9" Text="[V_Inv_Head_Special.Month]" Font="宋体, 10pt"/>
+      <TextObject Name="Text2" Left="28.35" Top="189" Width="217.35" Height="18.9" Text="每艘拖輪泊/離服務收費港幣 HK$" Font="宋体, 10pt"/>
+      <TextObject Name="Text3" Left="28.35" Top="207.9" Width="217.35" Height="18.9" Text="燃油附加費每艘拖輪收費港幣 HK$" Font="宋体, 10pt"/>
+      <TextObject Name="Text4" Left="245.7" Top="189" Width="94.5" Height="18.9" AfterDataEvent="Text4_AfterData" Text="[srvprice]" Font="宋体, 10pt"/>
+      <TextObject Name="Text5" Left="245.7" Top="207.9" Width="94.5" Height="18.9" AfterDataEvent="Text5_AfterData" Text="[feulprice]" Font="宋体, 10pt"/>
+    </ReportTitleBand>
+    <PageFooterBand Name="PageFooter1" Top="372.59" Width="718.2" Height="18.9"/>
+  </ReportPage>
+</Report>

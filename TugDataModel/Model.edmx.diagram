@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="028802cc46dc4c5eb12ca4dea1fb5dd6" Name="Diagram1" ZoomLevel="66">
+        <EntityTypeShape EntityType="Model.AmountSum" Width="1.5" PointX="3" PointY="28.125" />
+        <EntityTypeShape EntityType="Model.Approve" Width="1.5" PointX="0.75" PointY="3.375" />
+        <EntityTypeShape EntityType="Model.Arrangement" Width="1.5" PointX="13" PointY="13.25" />
+        <EntityTypeShape EntityType="Model.BaseTreeItems" Width="1.5" PointX="12.75" PointY="19.375" />
+        <EntityTypeShape EntityType="Model.Billing" Width="1.5" PointX="0.75" PointY="13.125" />
+        <EntityTypeShape EntityType="Model.BillingItem" Width="1.5" PointX="3" PointY="15.375" />
+        <EntityTypeShape EntityType="Model.BillingItemTemplate" Width="1.5" PointX="18" PointY="12.25" />
+        <EntityTypeShape EntityType="Model.BillingOrder" Width="1.5" PointX="6" PointY="16.25" />
+        <EntityTypeShape EntityType="Model.BillingTemplate" Width="1.5" PointX="15.75" PointY="11.75" />
+        <EntityTypeShape EntityType="Model.Credit" Width="1.5" PointX="3" PointY="9.25" />
+        <EntityTypeShape EntityType="Model.Customer" Width="1.5" PointX="15.75" PointY="3.75" />
+        <EntityTypeShape EntityType="Model.CustomerShip" Width="1.5" PointX="18" PointY="3.875" />
+        <EntityTypeShape EntityType="Model.CustomField" Width="1.5" PointX="0.75" PointY="22.375" />
+        <EntityTypeShape EntityType="Model.FileInfor" Width="1.5" PointX="14.75" PointY="19.375" />
+        <EntityTypeShape EntityType="Model.Flow" Width="1.5" PointX="16.75" PointY="19.375" />
+        <EntityTypeShape EntityType="Model.Fuelprice" Width="1.5" PointX="18.75" PointY="18.375" />
+        <EntityTypeShape EntityType="Model.FunctionModule" Width="1.5" PointX="18.75" PointY="22.375" />
+        <EntityTypeShape EntityType="Model.LogProcess" Width="1.5" PointX="20.75" PointY="3.375" />
+        <EntityTypeShape EntityType="Model.OrderInfor" Width="1.5" PointX="3.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.OrderService" Width="1.5" PointX="6" PointY="20" />
+        <EntityTypeShape EntityType="Model.Role" Width="1.5" PointX="5.75" PointY="6.75" />
+        <EntityTypeShape EntityType="Model.RoleMenu" Width="1.5" PointX="8" PointY="4" />
+        <EntityTypeShape EntityType="Model.RoleModule" Width="1.5" PointX="8" PointY="9.5" />
+        <EntityTypeShape EntityType="Model.Scheduler" Width="1.5" PointX="8.25" PointY="19.875" />
+        <EntityTypeShape EntityType="Model.SpecialBillingItem" Width="1.5" PointX="3" PointY="24" />
+        <EntityTypeShape EntityType="Model.testinv" Width="1.5" PointX="20.75" PointY="9.375" />
+        <EntityTypeShape EntityType="Model.TugInfor" Width="1.5" PointX="10.75" PointY="12.75" />
+        <EntityTypeShape EntityType="Model.UserInfor" Width="1.5" PointX="10.75" PointY="3.75" />
+        <EntityTypeShape EntityType="Model.UsersRole" Width="1.5" PointX="13" PointY="4.875" />
+        <EntityTypeShape EntityType="Model.V_AmountSum_Billing" Width="1.5" PointX="20.75" PointY="12.375" />
+        <EntityTypeShape EntityType="Model.V_Approve_Billing" Width="1.5" PointX="20.75" PointY="18.375" />
+        <EntityTypeShape EntityType="Model.V_Arrangement" Width="1.5" PointX="20.75" PointY="22.375" />
+        <EntityTypeShape EntityType="Model.V_BaseTreeItems" Width="1.5" PointX="22.75" PointY="3.375" />
+        <EntityTypeShape EntityType="Model.V_Billing" Width="1.5" PointX="22.75" PointY="6.375" />
+        <EntityTypeShape EntityType="Model.V_Billing2" Width="1.5" PointX="22.75" PointY="14.375" />
+        <EntityTypeShape EntityType="Model.V_Billing3" Width="1.5" PointX="22.75" PointY="23.375" />
+        <EntityTypeShape EntityType="Model.V_Billing4" Width="1.5" PointX="10.75" PointY="26.375" />
+        <EntityTypeShape EntityType="Model.V_BillingItem" Width="1.5" PointX="12.75" PointY="26.375" />
+        <EntityTypeShape EntityType="Model.V_BillingItemTemplate" Width="1.5" PointX="14.75" PointY="26.375" />
+        <EntityTypeShape EntityType="Model.V_BillingOrders" Width="1.5" PointX="24.75" PointY="3.375" />
+        <EntityTypeShape EntityType="Model.V_BillingTask" Width="1.5" PointX="24.75" PointY="14.375" />
+        <EntityTypeShape EntityType="Model.V_BillingTemplate" Width="1.5" PointX="16.75" PointY="27.375" />
+        <EntityTypeShape EntityType="Model.V_CustomerShip" Width="1.5" PointX="18.75" PointY="27.375" />
+        <EntityTypeShape EntityType="Model.V_Flow" Width="1.5" PointX="24.75" PointY="23.375" />
+        <EntityTypeShape EntityType="Model.V_Inv_BillingItem" Width="1.5" PointX="24.75" PointY="27.375" />
+        <EntityTypeShape EntityType="Model.V_Inv_Head" Width="1.5" PointX="5.75" PointY="28.375" />
+        <EntityTypeShape EntityType="Model.V_Inv_Head_Special" Width="1.5" PointX="7.75" PointY="28.375" />
+        <EntityTypeShape EntityType="Model.V_Inv_OrdService" Width="1.5" PointX="20.75" PointY="28.375" />
+        <EntityTypeShape EntityType="Model.V_Inv_Scheduler" Width="1.5" PointX="26.75" PointY="3.375" />
+        <EntityTypeShape EntityType="Model.V_Invoice" Width="1.5" PointX="26.75" PointY="8.375" />
+        <EntityTypeShape EntityType="Model.V_Invoice2" Width="1.5" PointX="26.75" PointY="23.375" />
+        <EntityTypeShape EntityType="Model.V_Module_Role_User" Width="1.5" PointX="28.75" PointY="3.375" />
+        <EntityTypeShape EntityType="Model.V_NeedApproveBilling" Width="1.5" PointX="28.75" PointY="6.375" />
+        <EntityTypeShape EntityType="Model.V_NeedApproveOrderBilling" Width="1.5" PointX="28.75" PointY="12.375" />
+        <EntityTypeShape EntityType="Model.V_NeedApproveOrderBillingSpecial" Width="1.5" PointX="9.75" PointY="31.375" />
+        <EntityTypeShape EntityType="Model.V_OrderBillingCredit" Width="1.5" PointX="11.75" PointY="31.375" />
+        <EntityTypeShape EntityType="Model.V_OrderInfor" Width="1.5" PointX="28.75" PointY="22.375" />
+        <EntityTypeShape EntityType="Model.V_OrderScheduler" Width="1.5" PointX="18.75" PointY="32.375" />
+        <EntityTypeShape EntityType="Model.V_OrderService" Width="1.5" PointX="20.75" PointY="32.375" />
+        <EntityTypeShape EntityType="Model.V_OrderService_Scheduler" Width="1.5" PointX="22.75" PointY="32.375" />
+        <EntityTypeShape EntityType="Model.V_RoleMenu" Width="1.5" PointX="30.75" PointY="3.375" />
+        <EntityTypeShape EntityType="Model.V_RoleModule" Width="1.5" PointX="30.75" PointY="7.375" />
+        <EntityTypeShape EntityType="Model.V_RoleUser" Width="1.5" PointX="30.75" PointY="10.375" />
+        <EntityTypeShape EntityType="Model.V_SpecialBillingCredit" Width="1.5" PointX="30.75" PointY="14.375" />
+        <EntityTypeShape EntityType="Model.V_SpecialBillingItem" Width="1.5" PointX="13.75" PointY="33.375" />
+        <EntityTypeShape EntityType="Model.V_SpecialBillingItem_OrderService" Width="1.5" PointX="30.75" PointY="18.375" />
+        <EntityTypeShape EntityType="Model.V_SpecialBillingSummarizeItem" Width="1.5" PointX="30.75" PointY="21.375" />
+        <EntityTypeShape EntityType="Model.V_Users" Width="1.5" PointX="30.75" PointY="26.375" />
+        <AssociationConnector Association="Model.FK_AmountSum_Billing" />
+        <AssociationConnector Association="Model.FK_Arrangement_TugInfor" />
+        <AssociationConnector Association="Model.FK_BillingItem_Billing" />
+        <AssociationConnector Association="Model.FK_BillingOrder_Billing" />
+        <AssociationConnector Association="Model.FK_Credit_Billing" />
+        <AssociationConnector Association="Model.FK_SpecialBillingItem_Billing" />
+        <AssociationConnector Association="Model.FK_BillingItem_CustomerField" />
+        <AssociationConnector Association="Model.FK_BillingItemTemplate_BillingTemplate" />
+        <AssociationConnector Association="Model.FK_BillingOrder_OrderInfor" />
+        <AssociationConnector Association="Model.FK_CustomerShip_Customer" />
+        <AssociationConnector Association="Model.FK_OrderService_OrderInfor" />
+        <AssociationConnector Association="Model.FK_Scheduler_OrderService" />
+        <AssociationConnector Association="Model.FK_Role_Menu_Role" />
+        <AssociationConnector Association="Model.FK_Role_Module_Role" />
+        <AssociationConnector Association="Model.FK_Users_Role_User_Infor" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

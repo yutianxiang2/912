@@ -1,0 +1,626 @@
+﻿@{
+    ViewBag.Title = @Resources.Language.Custom_CustomManage;
+    ViewBag.MenuId = "menu1";
+    ViewBag.SubMenuIndex = 2;
+    Layout = "~/Views/Shared/_ContentLayout.cshtml";
+}
+@model List<WMS.Controllers.CustomEntity>
+
+    <div id="main-content">
+        <!-- Parent MODAL FORM-->
+        <div class="modal fade" id="parent-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div id="model-dlg" class="modal-dialog" style="width:500px">
+                <div class="modal-content modal-table">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="box border blue">
+                                    <div class="box-title">
+                                        <h4><i class="fa fa-windows"></i>@Resources.Language.Custom_CustomManage</h4>
+                                        <div class="tools hidden-xs">
+                                            <a href="javascript:;" class="" onclick="$('#parent-modal').modal('hide');">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="box-body big">
+                                        @*<h4 class="form-title">Supported controls</h4>*@
+                                        <form class="form-horizontal" role="form">
+
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        
+                                                        <label class="col-sm-4 control-label" id="_CustomType">*@Model[0].Label</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="_CustomValue" type="text" class="form-control" placeholder="@Resources.Language.Custom_Value" onfocus="$(this).parent().removeClass('has-error')" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div id="parentErrMsg" class="alert alert-block alert-warning fade in" hidden>
+                                            @*<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>*@
+                                            <i class="fa fa-exclamation-circle"></i><p style=""></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">@Resources.Language.Close</button>
+                        <button type="button" class="btn btn-primary" onclick="submitParentModal()">@Resources.Language.UserInfor_OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Parent MODAL FORM-->
+        <div class="container">
+            <div class="row">
+                <div id="content" class="col-lg-12">
+                    <!-- PAGE HEADER-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="">
+                                <!-- STYLER -->
+                                <!-- /STYLER -->
+                                <!-- BREADCRUMBS -->
+                                <ul class="breadcrumb">
+                                    <li>
+                                        <i class="fa fa-home"></i>
+                                        <a href="#">@Resources.Language.HomePage</a>
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-users"></i>
+                                        <a href="#">@Resources.Language.BasicInformation</a>
+                                    </li>
+                                    <li>
+                                        @Resources.Language.Custom_CustomManage
+                                    </li>
+                                </ul>
+                                <!-- /BREADCRUMBS -->
+                                @*<div class="clearfix">
+                                        <h3 class="content-title pull-left">Grid Test</h3>
+                                    </div>
+                                    <div class="description">Table</div>*@
+                                @*<button type="button" class="btn btn-danger" onclick="AddChild()">Add</button>*@
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /PAGE HEADER -->
+                    <!-- SAMPLE -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- BOX -->
+                            <div class="box border orange">
+                                <div class="box-title">
+                                    <h4><i class="fa fa-bars"></i>@Resources.Language.Custom_CustomManage</h4>
+                                </div>
+                                <div id="jqGridContainerBox" class="box-body">
+                                    <div class="row">
+                                        <!-- ORDER SCROLL -->
+                                        <div class="col-md-3">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body orders">
+                                                    <div @*class="scroller"*@ data-height="600px" data-always-visible="1" data-rail-visible="1">
+                                                        @*<div class="padding-bottom-20">
+                                                                <div class="input-group">
+                                                                    <input id="searchCustomer" type="text" class="form-control" placeholder="请输入客户名称" value="@ViewBag.QueryName" onkeypress="return onKeyPress(event)">
+                                                                    <span class="input-group-btn">
+                                                                        <button class="btn btn-danger" type="button" onclick="clearCustomer()">清除</button>
+                                                                        <button class="btn btn-primary" type="button" onclick="searchCustomer($('#searchCustomer').val())">搜索</button>
+                                                                    </span>
+                                                                </div>
+                                                            </div>*@
+                                                        <ul class="list-unstyled">
+                                                            @{
+    for (int i = 0; i < Model.Count; i++)
+    {
+        <li class="clearfix" onclick="loadCustomerShips($(this), '@Model[i].IDX', '@Model[i].Name','@Model[i].Label')">
+            <div class="pull-left">
+                @if (i % 2 == 0)
+                {
+                    <p><h6><i class="fa fa-user"></i><strong> @Model[i].Label</strong></h6></p>
+
+                }
+                else
+                {
+                    <p><h6><i class="fa fa-user"></i><strong> @Model[i].Label</strong></h6></p>
+                }
+            </div>
+            <div class="clearfix"></div>
+        </li>
+    }
+}
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /ORDER SCROLL -->
+                                        <div id="" class="col-md-9">
+                                            <div id="contact-card" class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h5 class="panel-title">
+                                                        @{
+                                                            if (Model.Count > 0)
+                                                            {
+                                                                <span hidden>@Model[0].IDX</span>
+                                                                 <span id="_CustomType1">@Model[0].Label</span>
+                                                                <span hidden>@Model[0].Name</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span></span>
+                                                                <span></span>
+                                                                <span></span>
+                                                            }
+                                                        }
+                                                    </h5>
+                                                </div>
+                                                <div id="" class="panel-body">
+                                                    <table id="jqGrid"></table>
+                                                    <div id="jqGridPager"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /BOX -->
+                        </div>
+                    </div>
+                    <!-- /SAMPLE -->
+                    <div class="footer-tools">
+                        <span class="go-top">
+                            <i class="fa fa-chevron-up"></i> Top
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+    var tableConfig = null;
+
+    $(document).ready(function () {
+
+        if (tableConfig == null) {
+            GetTableConfig();
+        }
+
+
+        $("#jqGrid").jqGrid({
+            url: "/CustomData/GetCustomData" + '?ctmName=' + $('.panel-title span:last').html(),
+            mtype: "GET",
+            datatype: "json",
+            colModel: tableConfig.columns,
+            viewrecords: true,
+            height: '100%',
+            rowNum: 15,
+            autowidth: true,
+            editurl: "/CustomData/AddEdit" + '?ctmName=' + $('.panel-title span:last').html(),
+            pager: "#jqGridPager",
+            loadonce: true,
+            rowList: ['15', '20', '30', '40', '50'],
+            rownumbers: true,
+            shrinkToFit: false,     //指定各列宽度
+            sortable: true,          //列可移动
+            colMenu: true,         //列菜单
+        });
+
+        $('#jqGrid').jqGrid('filterToolbar', { searchResult: true, searchOperators: true });
+
+        $("#jqGrid").jqGrid('bindKeys');  //光标可以控制上下移动
+
+        $('#contact-card').resize(function () {
+            var width = $('#contact-card').width() - 30;
+            $("#jqGrid").setGridWidth(width);
+        });
+
+        $('#jqGrid').navGrid('#jqGridPager', { edit: false, add: false, del: false, refresh: false, view: false, search: false })
+
+            .navButtonAdd('#jqGridPager', {
+                caption: "", title: '@Resources.Language.Refresh', buttonicon: "ui-icon-refresh",
+                onClickButton: function () {
+                    $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                }
+            })
+            .navButtonAdd('#jqGridPager', {
+                caption: "", title: "'@Resources.Language.ClearSearchFilter'", buttonicon: "ui-icon-circle-minus",
+                onClickButton: function () {
+                    var grid = $('#jqGrid')[0];
+                    grid.clearToolbar();
+                    $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                }
+            })
+            .navSeparatorAdd("#jqGridPager", { sepclass: "ui-separator", sepcontent: '' })
+            .navButtonAdd('#jqGridPager', {
+                caption: "", title: '@Resources.Language.DeleteSelectedRows', buttonicon: "ui-icon-trash",
+                onClickButton: function () {
+                    var rowid = jQuery('#jqGrid').jqGrid('getGridParam', 'selrow');
+                    var dr = jQuery("#jqGrid").jqGrid('getRowData', rowid);//得到该行的数据
+                    if (rowid != null) {
+                        if (confirm('@Resources.Language.SureDelete')) {
+                            var d = new Date();
+                            $.ajax(
+                                {
+                                    type: "post",
+                                    url: '@Url.Action("Delete", "CustomData")',
+                                    data: { 'oper': 'delete', 'data': dr },//"oper=delete&id=" + gr,
+                                    dataType: 'json',
+                                    success: function (result) {
+                                        alert(result.message);
+                                        //jQuery("#jqGrid").jqGrid('delRowData', rowid);
+                                        $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                                    },
+
+                                }
+                                    );
+                        }
+                    }
+                    else {
+                        alert('选中一行');
+                    }
+                },
+                position: "last"
+            })
+            .navButtonAdd('#jqGridPager', {
+                //id: 'jqGrid_ilrefresh',
+                caption: "", title: '@Resources.Language.Add', buttonicon: "ui-icon-plus",
+                onClickButton: AddParent
+            });
+
+        $('#jqGrid').inlineNav('#jqGridPager',
+            {
+                edit: true,
+                add: false,
+                del: true,
+                cancel: true,
+                editParams: {
+                    keys: true,
+                    successfunc: function (val) {
+                        if (val.responseText != "") {
+                            var ret = $.parseJSON(val.responseText);
+                            alert(ret.message);
+                            $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                        }
+                    },
+                    url: null, //'/api/values',
+                    mtype: 'POST'
+                },
+
+                addParams: {
+                    keys: true,
+                    successfunc: function (val) {
+                        alert("111");
+                        if (val.responseText != "") {
+                            var ret = $.parseJSON(val.responseText);
+                            alert(ret.message);
+                            $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                        }
+                    },
+                    errorfunc: function (rowid, xhr) {
+                        alert(xhr.responseText);
+                        $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                    }
+                }
+            });
+
+        //最后调用，冻结列
+        //$("#jqGrid").jqGrid("setFrozenColumns");
+    });
+
+    function GetTableConfig() {
+        tableConfig = {
+            columns: [
+            {
+                align: 'center', label: "IDX", index: "IDX", name: "IDX", width: 100, editable: true, edittype: "text",
+                editrules: { required: false }, hidden: true,
+            },
+            {
+                align: 'center', label: '@Resources.Language.Custom_Name', name: "CustomName", width: 100, editable: false, edittype: "text",
+                editrules: { required: false }, hidden: false,
+                coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: false, freeze: false },
+                searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+            },
+            {
+                align: 'center', label: '@Resources.Language.Custom_Value', name: "CustomValue", width: 100, editable: true, edittype: "text",
+                editrules: { required: false }, hidden: true,
+                coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: false, freeze: false },
+                searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+            },
+            {
+                align: 'center', label: '@Resources.Language.Custom_Value', name: "CustomLabel", width: 200, editable: true, edittype: "text",
+                editrules: { required: true }, colmenu: false,
+                hidden: false,
+                coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: false, freeze: false },
+                searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+
+            },
+            {
+                align: 'center', label: 'Description', name: "Description", width: 100, editable: true, edittype: "text",
+                editrules: { required: false }, colmenu: true,
+                hidden: true,
+                coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: false, freeze: false },
+                searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+            },
+            {
+                align: 'center', label: 'FormulaStr', name: "FormulaStr", width: 100, editable: true, edittype: "text",
+                editrules: { required: false }, colmenu: false,
+                hidden: true,
+                coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: false, freeze: false },
+                searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+            },
+
+            {
+                align: 'center', label: 'CType', name: "CType", width: 100, editable: true, edittype: "text",
+                editrules: { required: false, integer: true },
+                hidden: true,
+                coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: false, freeze: false },
+                searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+            },
+            {
+                align: 'center', label: 'SortCode', name: "SortCode", width: 100, editable: true, edittype: "text",
+                editrules: { required: false, integer: true },
+                hidden: true,
+                coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: false, freeze: false },
+                searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+            },
+            {
+                align: 'center', label: 'Remark', name: "Remark", width: 100, editable: true, edittype: "text",
+                editrules: { required: false, integer: true },
+                hidden: true,
+                coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: false, freeze: false },
+                searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+            },
+           
+                {
+                    align: 'center',
+                    label: '@Resources.Language.CreateDate', name: "CreateDate", width: 100, editable: false, edittype: "text",
+                    editrules: { required: false, date: true }, hidden: false,
+                    colmenu: false, coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: false, freeze: false },
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d',
+                                step: 1,
+                            });
+                        },
+                        defaultValue: new Date().Format("yyyy-MM-dd")
+                    },
+
+                    searchoptions: {
+                        sopt: ["lt", "ge"],
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d',
+                                step: 1,
+                                //timepicker: false
+                            });
+                        }
+                    }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserID', name: "UserID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true
+                },
+            {
+                align: 'center',
+                label: '@Resources.Language.LastUpDate', name: "LastUpDate", width: 100, editable: false, edittype: "text",
+                editrules: { required: false, date: true }, hidden: false,
+                colmenu: false, coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: false, freeze: false },
+                editoptions: {
+                    dataInit: function (element) {
+                        $(element).datetimepicker({
+                            format: 'Y-m-d',
+                            step: 1,
+                        });
+                    },
+                    defaultValue: new Date().Format("yyyy-MM-dd")
+                },
+
+                searchoptions: {
+                    sopt: ["lt", "ge"],
+                    dataInit: function (element) {
+                        $(element).datetimepicker({
+                            format: 'Y-m-d',
+                            step: 1,
+                            //timepicker: false
+                        });
+                    }
+                }
+            },
+            {
+                align: 'center', label: '@Resources.Language.UserDefinedCol1', name: "UserDefinedCol1", width: 100, editable: true, edittype: "text",
+                editrules: { required: false }, hidden: true
+            },
+            {
+                align: 'center', label: '@Resources.Language.UserDefinedCol2', name: "UserDefinedCol2", width: 100, editable: true, edittype: "text",
+                editrules: { required: false }, hidden: true
+            },
+            {
+                align: 'center', label: '@Resources.Language.UserDefinedCol3', name: "UserDefinedCol3", width: 100, editable: true, edittype: "text",
+                editrules: { required: false }, hidden: true
+            },
+            {
+                align: 'center', label: '@Resources.Language.UserDefinedCol4', name: "UserDefinedCol4", width: 100, editable: true, edittype: "text",
+                editrules: { required: false }, hidden: true
+            },
+            {
+                align: 'center', label: '@Resources.Language.UserDefinedCol5', name: "UserDefinedCol5", width: 100, editable: true, edittype: "text",
+                editrules: { required: false, number: true }, hidden: true
+            },
+            {
+                align: 'center', label: '@Resources.Language.UserDefinedCol6', name: "UserDefinedCol6", width: 100, editable: true, edittype: "text",
+                editrules: { required: false, integer: true }, hidden: true
+            },
+            {
+                align: 'center', label: '@Resources.Language.UserDefinedCol7', name: "UserDefinedCol7", width: 100, editable: true, edittype: "text",
+                editrules: { required: false, integer: true }, hidden: true
+            },
+            {
+                align: 'center', label: '@Resources.Language.UserDefinedCol8', name: "UserDefinedCol8", width: 100, editable: true, edittype: "text",
+                editrules: { required: false, integer: true }, hidden: true
+            },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol9', name: "UserDefinedCol9", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, date: true }, hidden: true,
+                    datefmt: 'yyyy-mm-dd',
+                    sorttype: 'date',
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d H:i:s',
+                                step: 1,
+                            });
+                        },
+                        defaultValue: new Date().Format("yyyy-MM-dd hh:mm:ss")
+                    },
+
+                    searchoptions: {
+                        sopt: ["lt", "ge"],
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d H:i:s',
+                                step: 1,
+                                //timepicker: false
+                            });
+                        }
+                    }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol10', name: "UserDefinedCol10", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, date: true }, hidden: true,
+                    datefmt: 'yyyy-mm-dd',
+                    sorttype: 'date',
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d H:i:s',
+                                step: 1,
+                            });
+                        },
+                        defaultValue: new Date().Format("yyyy-MM-dd hh:mm:ss")
+                    },
+
+                    searchoptions: {
+                        sopt: ["lt", "ge"],
+                        dataInit: function (element) {
+                            $(element).datetimepicker({
+                                format: 'Y-m-d H:i:s',
+                                step: 1,
+                                //timepicker: false
+                            });
+                        }
+                    }
+                },
+
+            ]
+        };
+    }
+
+
+    //模态框
+    function AddParent() {
+        $('#parent-modal').modal()
+    }
+   
+    $('#parent-modal').on('show.bs.modal', function (e) {
+        initParentModal();
+    });
+    $('#parent-modal').on('shown.bs.modal', function (e) {
+    });
+    $('#parent-modal').on('hide.bs.modal', function () {
+        $(this).removeData("bs.modal");
+    });
+    $('#parent-modal').on('hidden.bs.modal', function () {
+        $(this).removeData("bs.modal");
+    });
+    function initParentModal() {
+        $('#parentErrMsg').hide();
+        $('#_CustomValue').parent().removeClass("has-error");
+        $('#_CustomValue').val("");
+
+        var CustomType = $('#_CustomType1').val().trim();
+        if (CustomType == "作業位置") { $("#_CustomType").html("*作業位置"); }
+        if (CustomType == "服務內容") { $("#_CustomType").html("*服務內容"); }
+    
+    }
+    function submitParentModal() {
+        var maxTextLength = 25;
+        var maxTextAreaLength = 500;
+
+        $('#parentErrMsg').hide();
+        $('#_CustomValue').parent().removeClass("has-error");
+
+        var CustomValue = $('#_CustomValue').val();
+
+        if (CustomValue.length <= 0) {
+            $('#parentErrMsg p').html('@Resources.Language.Custom_Value' + "@Resources.Language.IsNull");
+            $('#_CustomValue').parent().addClass("has-error");
+            $('#parentErrMsg').show();
+            return;
+        }
+        //提交数据库
+        $.ajax({
+            type: "post",
+            url:"/CustomData/AddCustomData",
+            data: {
+                'CustomName': $('.panel-title span:last').html(),
+                'CustomValue': CustomValue,
+               
+            },//"oper=delete&id=" + gr,
+            dataType: 'json',
+            success: function (result) {
+
+                $('#parent-modal').modal('hide')
+                alert(result.message);
+
+                $('#jqGrid').jqGrid('setGridParam',
+                {
+                    datatype: 'json',
+                    url: "/CustomData/GetCustomData" + '?ctmName=' + $('.panel-title span:last').html(),
+                }).trigger('reloadGrid');
+
+                $("#jqGrid").jqGrid('setGridParam', { editurl: "/CustomData/AddEdit" + '?ctmName=' + $('.panel-title span:last').html() });
+
+            },
+            error: function (result) {
+                console.log(result)
+                try {
+                    var json = $.parseJSON(result.responseText);
+                    alert(json.errorMessage);
+                } catch (e) {
+                    alert(e.message);
+                }
+                return;
+            }
+        });
+
+    }
+
+
+        function loadCustomerShips(self, custom_id, custom_Name, custom_Lable) {
+
+        $('.panel-title span:first').html(custom_id);
+        $('.panel-title span:last').html(custom_Name);
+        $("#_CustomType1").html(custom_Lable);
+
+        $('li.clearfix').removeAttr('style');
+        $(self).css('background-color', 'ButtonHighlight');
+
+        //alert(customer_id);
+        $('#jqGrid').jqGrid('setGridParam',
+            {
+                datatype: 'json',
+                url: '@Url.Action("GetCustomData", "CustomData")' + '?ctmName=' + custom_Name,
+            }).trigger('reloadGrid');
+
+        $("#jqGrid").jqGrid('setGridParam', { editurl: '@Url.Action("AddEdit", "CustomData")' + '?ctmName=' + custom_Name });
+    }
+
+</script>
+

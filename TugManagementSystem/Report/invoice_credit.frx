@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReferencedAssemblies="System.dll&#13;&#10;System.Drawing.dll&#13;&#10;System.Windows.Forms.dll&#13;&#10;System.Data.dll&#13;&#10;System.Xml.dll&#13;&#10;FastReportAdditional.dll" ReportInfo.Created="07/12/2016 15:31:30" ReportInfo.Modified="09/04/2016 19:42:44" ReportInfo.CreatorVersion="2013.3.3.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+using FastReportAdditional; 
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+    private void Text21_AfterData(object sender, EventArgs e)
+    {
+      DateTime dt = Convert.ToDateTime(Text21.Text);            
+      Text21.Text=string.Format(&quot;{0:dd.MM.yyyy}&quot;, dt); 
+    }
+
+    private void Text5_AfterData(object sender, EventArgs e)
+    {
+      Text5.Text=Addition.AmountFormat(Text5.Text); 
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlq+rW0RkboK+/8CKGGYUID3ctBV8q9SvKYxl3iiE7vBnh7Tgou0+4WFf3NfmPSvHVFNt5PNzfElyWYAH7pmiWas1IwJ1aTDtSgtRzvwNamGpACjVXGf1SFmwyUs1HN1tS6XHwUs2IJdgUAn/QiEr5wANzfunNWU6MQ2pM+hJ/llQxKEz7ZcXQhrGsfZEqSnZdvSQ+7rIK1T/gEhSrKnDC+IA==">
+      <TableDataSource Name="V_Inv_Head" DataType="System.Int32" Enabled="true" TableName="V_Inv_Head">
+        <Column Name="IDX" DataType="System.Int32"/>
+        <Column Name="OrderID" DataType="System.Int32"/>
+        <Column Name="BillingCode" DataType="System.String"/>
+        <Column Name="CreateDate" DataType="System.String"/>
+        <Column Name="CustomerName" DataType="System.String"/>
+        <Column Name="ShipName" DataType="System.String"/>
+        <Column Name="TimeTypeID" DataType="System.Int32"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Parameter Name="CreditNote" DataType="System.String"/>
+    <Parameter Name="RefundHK$" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle2" Width="718.2" Height="170.1">
+      <TextObject Name="Text19" Left="113.4" Top="28.35" Width="283.5" Height="85.05" Text="[V_Inv_Head.CustomerName]" Font="宋体, 10pt"/>
+      <TextObject Name="Text18" Left="585.9" Top="103.95" Width="132.3" Height="18.9" Text="[V_Inv_Head.BillingCode]" Font="宋体, 10pt"/>
+      <TextObject Name="Text20" Left="113.4" Top="132.3" Width="283.5" Height="28.35" Text="[V_Inv_Head.ShipName]" Font="宋体, 10pt"/>
+      <TextObject Name="Text21" Left="585.9" Top="132.3" Width="132.3" Height="18.9" AfterDataEvent="Text21_AfterData" Text="[V_Inv_Head.CreateDate]" Font="宋体, 10pt"/>
+      <TextObject Name="Text6" Left="47.25" Top="132.3" Width="66.15" Height="28.35" Text="CAPTAIN/&#13;&#10;OWNER" HorzAlign="Right" Font="宋体, 8pt"/>
+    </ReportTitleBand>
+    <DataBand Name="Data1" Top="234.88" Width="718.2" Height="737.1">
+      <TextObject Name="Text3" Left="236.25" Top="18.9" Width="198.45" Height="37.8" Text="CREDIT NOTE" HorzAlign="Center" VertAlign="Center" Font="Arial, 18pt"/>
+      <RichObject Name="Rich1" Left="141.75" Top="122.85" Width="406.35" Height="302.4" Text="{\rtf1\ansi\ansicpg936\deff0\deflang1033\deflangfe2052{\fonttbl{\f0\fnil\fcharset134 \'cb\'ce\'cc\'e5;}{\f1\fnil\fcharset0 Tahoma;}}&#13;&#10;{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\lang2052\f0\fs24 [CreditNote]\lang1033\f1\fs17\par&#13;&#10;}&#13;&#10;"/>
+      <TextObject Name="Text4" Left="425.25" Top="472.5" Width="132.3" Height="30.24" Text="REFUND HK$" HorzAlign="Center" VertAlign="Center" Font="宋体, 12pt"/>
+      <TextObject Name="Text5" Left="576.45" Top="472.5" Width="141.75" Height="30.24" Border.Lines="Bottom" Border.Style="Double" AfterDataEvent="Text5_AfterData" Text="[RefundHK$]" HorzAlign="Center" VertAlign="Center" Font="宋体, 14pt, style=Bold"/>
+      <LineObject Name="Line3" Left="113.4" Height="737.1" Diagonal="true"/>
+      <LineObject Name="Line5" Left="576.45" Height="737.1" Diagonal="true"/>
+      <DataHeaderBand Name="DataHeader1" Top="174.14" Width="718.2" Height="56.7">
+        <TextObject Name="Text1" Left="9.45" Top="18.9" Width="94.5" Height="18.9" Text="No." HorzAlign="Center"/>
+        <TextObject Name="Text2" Left="283.5" Top="18.9" Width="113.4" Height="18.9" Text="Description" HorzAlign="Center"/>
+        <RichObject Name="Rich3" Left="585.9" Top="9.45" Width="113.4" Height="37.8" Text="{\rtf1\ansi\ansicpg936\deff0\deflang1033\deflangfe2052{\fonttbl{\f0\fnil\fcharset0 Arial;}{\f1\fnil\fcharset0 Tahoma;}}&#13;&#10;{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\qc\ul\fs20         Amount      .\ulnone\par&#13;&#10;     H.K.Dollars\f1\fs17\par&#13;&#10;}&#13;&#10;"/>
+        <LineObject Name="Line1" Left="9.45" Top="56.7" Width="689.85" Border.Width="2" Diagonal="true"/>
+        <LineObject Name="Line2" Left="113.4" Top="18.9" Height="37.8" Diagonal="true"/>
+        <LineObject Name="Line4" Left="576.45" Top="9.45" Height="47.25" Diagonal="true"/>
+      </DataHeaderBand>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="976.02" Width="718.2" Height="66.15"/>
+  </ReportPage>
+</Report>

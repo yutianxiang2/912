@@ -1,0 +1,378 @@
+﻿@{
+    ViewBag.Title = "OrderManage";
+    ViewBag.MenuId = "menu6";
+    ViewBag.SubMenuIndex = 1;
+    Layout = "~/Views/Shared/_ContentLayout.cshtml";
+}
+
+<div id="main-content">
+
+    <!-- SAMPLE BOX CONFIGURATION MODAL FORM-->
+    <div class="modal fade" id="table-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div id="model-dlg" class="modal-dialog" style="width:1200px">
+            <div class="modal-content modal-table">
+                @*<div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">拖轮选择</h4>
+                    </div>*@
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- BOX -->
+                            <div class="box border orange">
+                                <div class="box-title">
+                                    <h4><i class="fa fa-bars"></i>创建流程</h4>
+                                </div>
+                                <div class="box-body">
+                                    <table id="jqGrid"></table>
+                                    <div id="jqGridPager"></div>
+                                </div>
+                            </div>
+                            <!-- /BOX -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    @*<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="chooseTug()">选择</button>*@
+                    <a href="#" class="btn btn-warning" data-dismiss="modal">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /SAMPLE BOX CONFIGURATION MODAL FORM-->
+
+    <div class="container">
+        <div class="row">
+            <div id="content" class="col-lg-12">
+                <!-- PAGE HEADER-->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-header">
+                            <!-- STYLER -->
+                            <!-- /STYLER -->
+                            <!-- BREADCRUMBS -->
+                            <ul class="breadcrumb">
+                                <li>
+                                    <i class="fa fa-home"></i>
+                                    <a href="#">@Resources.Language.HomePage</a>
+                                </li>
+                                <li>
+                                    <a href="#">创建流程</a>
+                                </li>
+                                <li>
+                                    流程
+                                </li>
+                            </ul>
+                            <!-- /BREADCRUMBS -->
+                            <div class="clearfix">
+                                <h3 class="content-title pull-left">Grid Test</h3>
+                            </div>
+                            <div class="description">Table</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /PAGE HEADER -->
+                @*<div class="row">
+                        <div class="col-md-12">
+                            <div class="box border orange">
+                                <div class="box-title">
+                                </div>
+                                <div class="box-body">
+                                    <div>
+                                        <ul>
+                                            <li>@Model.Code</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+                <!-- SAMPLE -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- BOX -->
+                        <div class="box border orange">
+                            <div class="box-title">
+                                <h4><i class="fa fa-bars"></i>创建流程</h4>
+                            </div>
+                            <div class="box-body">
+                                <button onclick="$('#table-modal').modal()">提交审核</button>
+                            </div>
+                        </div>
+                        <!-- /BOX -->
+                    </div>
+                </div>
+                <!-- /SAMPLE -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var tableConfig = null;
+    //设置流程grid
+    $(document).ready(function () { });
+
+    //设置流程节点jqgrid表头
+    function GetTableConfig() {
+        tableConfig = {
+            columns: [
+            {
+                align: 'center', label: 'IDX', index: "IDX", name: "IDX", width: 100, editable: true, edittype: "text", key: true,
+                editrules: { required: false }, hidden: true,
+            },
+            {
+                align: 'center', label: "任务", name: "Task", width: 100, editable: true, edittype: "text",
+                editrules: { required: false }, colmenu: false,
+                hidden: false,
+                searchoptions: { sopt: ["cn"] }
+                //searchoptions: { sopt: ["ge", "le"] }
+            },
+            {
+                align: 'center', label: 'FlowUserID', name: "FlowUserID", width: 100, editable: true, edittype: "text",
+                editrules: { required: false }, hidden: true,
+            },
+
+            {
+                align: 'center', label: "人员", name: "Name1", width: 100, editable: true, edittype: "text",
+                coloptions: { sorting: true, columns: false, filtering: false, seraching: true, grouping: true, freeze: false },
+                editrules: { required: false }, hidden: false,
+                editoptions: {
+                    dataInit: function (element) {
+                        window.setTimeout(function () {
+                            $(element).autocomplete({
+                                id: 'AutoComplete',
+                                source: function (request, response) {
+                                    this.xhr = $.ajax({
+                                        url: '@Url.Action("GetUser", "Flow")',
+                                        data: request,
+                                        type: 'GET',
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            //alert(data);
+                                            response($.map(data.list, function (item) {
+                                                //alert(item.Name1);
+                                                return {
+                                                    id: item.FlowUserID,
+                                                    label: item.Name1,
+                                                    value: item.Name1
+                                                };
+                                            }));
+                                        },
+
+                                        error: function (model, response, options) {
+                                            response([]);
+                                        }
+                                    });
+                                },
+                                select: function (event, ui) {
+                                },
+                                change: function (event, ui) {
+
+                                    var rowid = jQuery("#jqGrid").jqGrid('getGridParam', 'selrow');//得到最后一次选择的行
+
+                                    if (ui.item != null) {
+                                        var FlowUserID_id = rowid + "_FlowUserID";
+                                        $('#' + FlowUserID_id).val(ui.item.id);
+
+                                        //jQuery("#jqGrid").setCell(rowid, 'CustomerID', ui.item.id);
+                                    }
+                                    else {
+                                        var FlowUserID_id = rowid + "_FlowUserID";
+                                        $('#' + FlowUserID_id).val(-1);
+                                        //jQuery("#jqGrid").setCell(rowid, 'CustomerID', -1);
+                                    }
+
+                                    //var dr = jQuery("#jqGrid").jqGrid('getRowData', rowid);//得到该行的数据
+                                },
+                                autoFocus: false
+                            });
+                        }, 100);
+                    }
+
+                }
+            },
+            {
+                align: 'center',
+                label: "开始日期", name: "StDate", width: 100, editable: true, edittype: "text",
+                editrules: { required: false, date: true }, hidden: false,
+                //formatter: 'date',
+                datefmt: 'yyyy-mm-dd',
+                sorttype: 'date',
+                editoptions: {
+                    dataInit: function (element) {
+                        $(element).datepicker({
+                            dateFormat: 'yy-mm-dd',
+                            showOn: 'focus'
+                        });
+                    }
+                },
+                searchoptions: {
+                    dataInit: function (element) {
+                        $(element).datepicker({
+                            //id: 'orderCreateDate_datePicker',
+                            dateFormat: 'yy-mm-dd',
+                            showOn: 'focus'
+                        });
+                    }
+                }
+            },
+            {
+                align: 'center',
+                label: "结束日期", name: "EndDate", width: 100, editable: true, edittype: "text",
+                editrules: { required: false, date: true }, hidden: false,
+                //formatter: 'date',
+                datefmt: 'yyyy-mm-dd',
+                sorttype: 'date',
+                editoptions: {
+                    dataInit: function (element) {
+                        $(element).datepicker({
+                            //id: 'orderCreateDate_datePicker',
+                            dateFormat: 'yy-mm-dd',
+                            showOn: 'focus'
+                        });
+                    }
+                },
+                searchoptions: {
+                    dataInit: function (element) {
+                        $(element).datepicker({
+                            //id: 'orderCreateDate_datePicker',
+                            dateFormat: 'yy-mm-dd',
+                            showOn: 'focus'
+                        });
+                    }
+                }
+            },
+            ]
+        };
+    }
+    //选择人员的modal框
+    $('#table-modal').on('show.bs.modal', function (e) {
+        {
+            if (tableConfig == null) {
+                GetTableConfig();
+            }
+
+            $("#jqGrid").jqGrid({
+                url: '@Url.Action("LoadFlow", "Flow")',
+                mtype: "GET",
+                datatype: "json",
+                colModel: tableConfig.columns,
+                viewrecords: true,
+                //width: 700,
+                height: 300, //$(window).height() - 300,//300,
+                rowNum: 5,
+                autowidth: true,
+                editurl: '@Url.Action("FlowAddEdit", "Flow")',
+                pager: "#jqGridPager",
+                loadonce: true,
+                rowList: ['5', '10', '15'],
+                rownumbers: true,
+                shrinkToFit: false,     //指定各列宽度
+                sortable: true,          //列可移动
+                colMenu: true          //列菜单
+            });
+
+            $('#jqGrid').jqGrid('filterToolbar', { searchResult: true, searchOperators: true });
+            $("#jqGrid").jqGrid('bindKeys');  //光标可以控制上下移动
+
+            $('#jqGridContainerBox').resize(function () {
+                var width = $('#jqGridContainerBox').width();
+                $("#jqGrid").setGridWidth(width);
+            });
+
+            $('#jqGrid').navGrid('#jqGridPager', { edit: false, add: false, del: false, refresh: false, view: false, search: false })
+
+                .navButtonAdd('#jqGridPager', {
+                    caption: "", title: '@Resources.Language.Refresh', buttonicon: "ui-icon-refresh",
+                    onClickButton: function () {
+                        //alert("haha");
+                        @*$.ajax(
+                                {
+                                    type: "get",
+                                    url: '@Url.Action("GetDataForLoadOnce", "OrderManage")',
+                                    dataType: 'json',
+                                    type: 'get',
+                                    data:{'_search':false, 'sidx':'', 'sord':'', 'page':1, 'rows':10},
+                                    success: function (result) {
+
+                                        $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                                    },
+                                }
+                                );*@
+
+                        $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                    }
+                })
+                .navSeparatorAdd("#jqGridPager", { sepclass: "ui-separator", sepcontent: '' })
+                .navButtonAdd('#jqGridPager', {
+                    caption: "", title: '@Resources.Language.DeleteSelectedRows', buttonicon: "ui-icon-trash",
+                    onClickButton: function () {
+                        var rowid = jQuery('#jqGrid').jqGrid('getGridParam', 'selrow');
+                        var dr = jQuery("#jqGrid").jqGrid('getRowData', rowid);//得到该行的数据
+                        if (rowid != null) {
+                            if (confirm('@Resources.Language.SureDelete')) {
+                                var d = new Date();
+                                $.ajax(
+                                    {
+                                        type: "post",
+                                        url: '@Url.Action("Delete", "OrderManage")',
+                                        data: { 'oper': 'delete', 'data': dr },//"oper=delete&id=" + gr,
+                                        dataType: 'json',
+                                        success: function (result) {
+                                            alert(result.message);
+                                            //jQuery("#jqGrid").jqGrid('delRowData', rowid);
+                                            $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                                        },
+
+                                    }
+                                    );
+                            }
+                        }
+                        else {
+                            alert('选中一行');
+                        }
+                    },
+                    position: "last"
+                });
+
+            $('#jqGrid').inlineNav('#jqGridPager',
+                {
+                    edit: true,
+                    add: true,
+                    del: true,
+                    cancel: true,
+                    editParams: {
+                        keys: true,
+                        successfunc: function (val) {
+                            if (val.responseText != "") {
+                                var ret = $.parseJSON(val.responseText);
+                                alert(ret.message);
+                                $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                            }
+                        },
+                        url: null, //'/api/values',
+                        mtype: 'POST'
+                    },
+
+                    addParams: {
+                        keys: true,
+                        successfunc: function (val) {
+                            if (val.responseText != "") {
+                                var ret = $.parseJSON(val.responseText);
+                                alert(ret.message);
+                                $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                            }
+                        },
+                        errorfunc: function (rowid, xhr) {
+                            alert(xhr.responseText);
+                            $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                        }
+                    }
+                });
+
+            //最后调用，冻结列
+            //$("#jqGrid").jqGrid("setFrozenColumns");
+        }
+    });
+</script>

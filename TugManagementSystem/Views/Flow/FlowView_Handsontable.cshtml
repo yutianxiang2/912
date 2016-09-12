@@ -1,0 +1,426 @@
+﻿
+@{
+    ViewBag.Title = "提交审核";
+    ViewBag.MenuId = "menu6";
+    ViewBag.SubMenuIndex = 1;
+    Layout = "~/Views/Shared/_ContentLayout.cshtml";
+}
+<script src="~/Resources/handsontable-master/dist/handsontable.full.min.js"></script>
+<link href="~/Resources/handsontable-master/dist/handsontable.full.css" rel="stylesheet" />
+<script src="~/Resources/handsontable-master/demo/js/moment/moment.js"></script>
+<script src="~/Resources/handsontable-master/demo/js/pikaday/pikaday.js"></script>
+<script src="~/Resources/handsontable-master/demo/js/pikaday/css/pikaday.css"></script>
+
+<div id="main-content">
+
+    <!-- SAMPLE BOX CONFIGURATION MODAL FORM-->
+    <div class="modal fade" id="table-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div id="model-dlg" class="modal-dialog" style="width: 560px ;height:600px">
+            <div class="modal-content modal-table">
+                @*<div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">拖轮选择</h4>
+                    </div>*@
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- BOX -->
+                            <div class="box border orange">
+                                <div class="box-title">
+                                    <h4><i class="fa fa-bars"></i>创建流程</h4>
+                                </div>
+                                <div class="box-body">
+                                    <div id="flowtable" class="hot handsontable dataTable table-striped center-block">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /BOX -->
+                        </div>
+                    </div>
+                    <div id="childErrMsg" class="alert alert-block alert-warning fade in" hidden>
+                        <i class="fa fa-exclamation-circle"></i><p style=""></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">@Resources.Language.Close</button>
+                    <button id="btnflow" type="button" class="btn btn-primary" @*onclick="updateflowinfor()"*@>提交审核</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /SAMPLE BOX CONFIGURATION MODAL FORM-->
+
+    <div class="container">
+        <div class="row">
+            <div id="content" class="col-lg-12">
+                <!-- PAGE HEADER-->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-header">
+                            <!-- STYLER -->
+                            <!-- /STYLER -->
+                            <!-- BREADCRUMBS -->
+                            <ul class="breadcrumb">
+                                <li>
+                                    <i class="fa fa-home"></i>
+                                    <a href="#">@Resources.Language.HomePage</a>
+                                </li>
+                                <li>
+                                    <a href="#">创建流程</a>
+                                </li>
+                                <li>
+                                    流程
+                                </li>
+                            </ul>
+                            <!-- /BREADCRUMBS -->
+                            <div class="clearfix">
+                                <h3 class="content-title pull-left">Grid Test</h3>
+                            </div>
+                            <div class="description">Table</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /PAGE HEADER -->
+                @*<div class="row">
+                        <div class="col-md-12">
+                            <div class="box border orange">
+                                <div class="box-title">
+                                </div>
+                                <div class="box-body">
+                                    <div>
+                                        <ul>
+                                            <li>@Model.Code</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+                <!-- SAMPLE -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- BOX -->
+                        <div class="box border orange">
+                            <div class="box-title">
+                                <h4><i class="fa fa-bars"></i>创建流程</h4>
+                            </div>
+                            <div class="box-body">
+                                <button onclick="$('#table-modal').modal()">提交审核</button>
+                            </div>
+                        </div>
+                        <!-- /BOX -->
+                    </div>
+                </div>
+                <!-- /SAMPLE -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //$(document).ready(Init);
+    //function Init() {}
+        // Variables declaration & to make our life easier we set our HTML tags to variables too
+        var
+            $$ = function (id) { return document.getElementById(id); },
+            container = $$('flowtable'),
+            tjflow = $$('btnflow'),
+            autosaveNotification,
+            hot;
+
+        hot = new Handsontable(container, {
+            //data: getCarData(),
+            startRows: 2,
+            startCols: 4,
+            colHeaders: ['流程节点',  '人员', '起始日期', '结束日期'],
+            columnSorting: true,
+            contextMenu: true,
+            minSpareRows: 1,
+            rowHeaders: true,
+            columnSorting: false,
+            contextMenu: ['row_below', 'remove_row'],
+            removeRowPlugin: true,
+            heigth: 500,
+            columns: [
+              {
+                  type: 'dropdown',
+                  //source: ['创建', '校对', '审核', '会签'],
+                  source: function (query, process) {
+                      $.ajax({
+                          //url: 'php/cars.php', // commented out because our website is hosted on static GitHub Pages
+                          url: '@Url.Action("GetNodes", "Flow")',
+                          dataType: 'json',
+                          data: {
+                              query: query
+                          },
+                          success: function (response) {
+                              console.log("response", response);
+                              //process(JSON.parse(response.data)); // JSON.parse takes string as a argument
+                              process(response);
+
+                          }
+                      });
+                  },
+                  strict: false,
+                  width: 120
+              },
+              {
+                  type: 'dropdown',//'autocomplete',
+                  //source: ['张三', '李四', '王五', '赵六'],
+                  source: function (query, process) {
+                      $.ajax({
+                          //url: 'php/cars.php', // commented out because our website is hosted on static GitHub Pages
+                          url: '@Url.Action("GetPersons", "Flow")',
+                          dataType: 'json',
+                          data: {
+                              query: query
+                          },
+                          success: function (response) {
+                              console.log("response", response);
+                              //process(JSON.parse(response.data)); // JSON.parse takes string as a argument
+                              process(response);
+
+                          }
+                      });
+                  },
+                  @*source: function (request, response) {
+                      this.xhr = $.ajax({
+                          url: '@Url.Action("GetPersons", "Flow")',
+                          data: request,
+                          type: 'GET',
+                          dataType: 'json',
+                          success: function (data) {
+                              response(data);
+                          },
+
+                          error: function (model, response, options) {
+                              response([]);
+                          }
+                      });
+                  },*@
+                  strict: false,
+                  width: 120
+              },
+              {
+                  type: 'date',
+                  dateFormat: 'MM/DD/YYYY',
+                  correctFormat: true,
+                  defaultDate: '@DateTime.Now.ToShortDateString()',
+                  width: 120
+              },
+              {
+                  type: 'date',
+                  dateFormat: 'MM/DD/YYYY',
+                  correctFormat: true,
+                  //defaultDate: '@DateTime.Now.ToShortDateString()'
+                  width: 120
+              }
+            ],
+            afterChange: function (change, source) {
+                //alert(change);
+                //alert(source);                
+
+                if (source === 'loadData') {
+                    return; //don't save this change
+                }
+                if (change != null) {
+                    var chs = change[0];
+                    //判断节点是否重复
+                    var rct = hot.countRows();
+                    //alert(rct);
+                    if (chs[1] == 0)
+                    {
+                        //$('#childErrMsg p').html("");
+                        //$('#childErrMsg').hide();
+                        for (var i = 0; i < rct - 1; i++) {
+                            if (i == chs[0]) continue;
+                            var vlnode = hot.getDataAtCell(i, 0)
+                            if (chs[3] == vlnode && chs[3] !="") {
+                                alert("行流程节点重复! ");
+                                hot.setDataAtRowProp(chs[0], 0, "");
+                                return;
+                            }
+                        }
+                    }
+                    //判断人员是否存在
+                    if (chs[1] == 1) {
+                        var vlperson = hot.getDataAtCell(chs[0], 1);
+                        if (vlperson !=null && vlperson != "")
+                        {
+                            jQuery.ajax({
+                                url: '/Flow/UserValid',
+                                type: "POST",
+                                dataType: "json",
+                                data: { 'vlperson': vlperson },//JSON.stringify(hot.getChangeData()),
+                                success: function (result) {
+                                    if (result.rvalid == false) {
+                                        alert(vlperson + "不存在! ")
+                                        hot.setDataAtRowProp(chs[0], 1, "");
+                                    }
+                                },
+                                error: function (xhr) {
+                                    //alert('error');
+                                }
+                            });
+                        }
+                    }
+                }
+                clearTimeout(autosaveNotification);
+                jQuery.ajax({
+                    url: '@Url.Action("")',
+                    type: "POST",
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(hot.getData()),
+                    async: true,
+                    processData: false,
+                    cache: false,
+                    success: function (data) {
+                        //exampleConsole.innerHTML = 'Changes will be autosaved';
+                        autosaveNotification = setTimeout(function () {
+                            //exampleConsole.innerHTML = 'Autosaved (' + change.length +
+                            //' ' + 'cell' +
+                            //(change.length > 1 ? 's' : '') + ')';
+                        }, 1000);
+                        //alert(data);
+                    },
+                    error: function (xhr) {
+                        //exampleConsole.innerHTML = 'Autosave: No Response from Controller';
+                        //alert('error');
+                    }
+                });
+            }
+        });
+          //创建单元格只读
+          hot.updateSettings({
+              cells: function (row, col, prop) {
+                  var cellProperties = {};
+
+                  if (hot.getData()[row][prop] === '创建') {
+                      cellProperties.readOnly = true;
+                  }
+
+                  return cellProperties;
+              }
+          });
+          //第一行不能被删除
+          hot.updateSettings({
+              contextMenu: {
+                  //callback: function (key, options) {
+                  //    if (key === 'about') {
+                  //        setTimeout(function () {
+                  //            //timeout is used to make sure the menu collapsed before alert is shown
+                  //            alert("This is a context menu with default and custom options mixed");
+                  //        }, 100);
+                  //    }
+                  //},
+                  items: {
+                      "row_below": {
+                          //disabled: function () {
+                          //    //if first row, disable this option
+                          //    return (hot.getSelected() && hot.getSelected()[0] === 0)
+                          //}
+                      },
+                      "remove_row": {
+                          name: 'Remove row',
+                          disabled: function () {
+                              //if first row, disable this option
+                              return (hot.getSelected() && hot.getSelected()[0] === 0)
+                          }
+                      }
+                  }
+              }
+          })
+
+          Handsontable.Dom.addEvent(tjflow, 'click', function () {
+              var rct = hot.countRows();
+              //alert(rct);
+              for (var i = 0; i < rct - 1; i++) {
+                  //alert(hot.getDataAtCell(i, 0));//[A1,B1]
+                  var vlnode = hot.getDataAtCell(i, 0)
+                  //alert(vlnode);
+                  if (vlnode == null || vlnode == '' || vlnode == undefined) {
+                      //alert("第" + (i + 1) + "行流程节点为空! ");
+                      $('#childErrMsg p').html("第" + (i + 1) + "行流程节点为空! ");
+                      //$('#_XX').parent().addClass("has-error");
+                      $('#childErrMsg').show();
+                      return;
+                  }
+                  var vlperson = hot.getDataAtCell(i, 1)
+                  if (vlperson == null || vlperson == '' || vlperson == undefined) {
+                      //alert("第" + (i + 1) + "行人员为空! ");
+                      $('#childErrMsg p').html("第" + (i + 1) + "行人员为空! ");
+                      //$('#_XX').parent().addClass("has-error");
+                      $('#childErrMsg').show();
+                      return;
+                  }
+
+              }              
+              jQuery.ajax({
+                  url: '/Flow/SubmitFlow',
+                  type: "POST",
+                  dataType: "json",
+                  contentType: 'application/json; charset=utf-8',
+                  data: JSON.stringify(hot.getSourceData()),
+                  async: true,
+                  processData: false,
+                  cache: false,
+                  success: function (result) {
+                      $('#table-modal').modal('hide')
+
+                      //exampleConsole.innerHTML = 'Data saved';
+                      //alert(result.message);
+                  },
+                  error: function (xhr) {
+                      //exampleConsole.innerHTML = 'Save error';
+                      //alert('error');
+                  }
+              });
+          });
+
+          //
+          $('#table-modal').on('shown.bs.modal', function (e) {
+              initChildModal();
+          });
+
+          function initChildModal() {
+              $('#childErrMsg').hide();
+              //$('#_xxx').parent().removeClass("has-error");
+
+              jQuery.ajax({
+                  url: '/Flow/GetInitData', //Controller to Get the
+                  //JsonResult From -- Json(jsonData, JsonRequestBehavior.AllowGet);
+                  type: "GET",
+                  dataType: "json",
+                  contentType: "application/json",
+                  charset: "utf-8", // dataType and contentType should be json
+                  async: true,
+                  processData: false,
+                  cache: false,
+                  success: function (data) {      // on Success send the Json data
+                      // to the table by using loaddata function""
+                      //alert("ok");
+                      hot.loadData(data);
+                      //exampleConsole.innerHTML = 'Data loaded';
+                  },
+                  error: function (xhr) {
+                      alert('error');
+                  }
+              });
+
+
+              //var rct = hot.countRows();
+              ////alert(rct);
+              //for (var i = 0; i < rct - 1; i++) {
+              //    hot.alter('remove_row',i);
+              //}
+              //hot.clear();
+
+              //$('#_ServiceNatureLabel').empty();
+              //$('#_ChooseTug').val("");
+              //$("#_JobStateLabel option:first").prop("selected", 'selected');
+              //$('#_RopeUsed input[type="checkbox"]').attr("checked", false);
+          }
+
+</script>
+

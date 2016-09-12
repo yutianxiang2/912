@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/15/2016 20:32:29" ReportInfo.Modified="06/16/2016 13:15:17" ReportInfo.CreatorVersion="2013.3.3.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlq+rW0RkboK+/8CKGGYUID3ctBV8q9SvKYxl3iiE7vBnh7Tgou0+4WFf3NfmPSvHVFjrnV/077oMNCm4lj2j+pxwoNdr4lnhewqn6KC+UDA8v71f3vDu3WmvuAdC2UrLL2/0+pKtzvFGZWz4aPZoMFxXr0OOoiqA+o3DzzqKMOcM6EZD2BkpxuoVDE09Ry4ba8">
+      <TableDataSource Name="OrderInfor" DataType="System.Int32" Enabled="true" TableName="OrderInfor">
+        <Column Name="IDX" DataType="System.Int32"/>
+        <Column Name="IsGuest" DataType="System.String"/>
+        <Column Name="Code" DataType="System.String"/>
+        <Column Name="CustomerID" DataType="System.Int32"/>
+        <Column Name="CustomerName" DataType="System.String"/>
+        <Column Name="OrdTime" DataType="System.String"/>
+        <Column Name="WorkTime" DataType="System.String"/>
+        <Column Name="EstimatedCompletionTime" DataType="System.String"/>
+        <Column Name="ShipID" DataType="System.Int32"/>
+        <Column Name="ShipName" DataType="System.String"/>
+        <Column Name="LinkMan" DataType="System.String"/>
+        <Column Name="LinkPhone" DataType="System.String"/>
+        <Column Name="LinkEmail" DataType="System.String"/>
+        <Column Name="WorkPlace" DataType="System.String"/>
+        <Column Name="ServiceNatureIDS" DataType="System.String"/>
+        <Column Name="ServiceNatureNames" DataType="System.String"/>
+        <Column Name="WorkStateID" DataType="System.Int32"/>
+        <Column Name="BigTugNum" DataType="System.Int32"/>
+        <Column Name="MiddleTugNum" DataType="System.Int32"/>
+        <Column Name="SmallTugNum" DataType="System.Int32"/>
+        <Column Name="Remark" DataType="System.String"/>
+        <Column Name="OwnerID" DataType="System.Int32"/>
+        <Column Name="CreateDate" DataType="System.String"/>
+        <Column Name="UserID" DataType="System.Int32"/>
+        <Column Name="LastUpDate" DataType="System.String"/>
+        <Column Name="UserDefinedCol1" DataType="System.String"/>
+        <Column Name="UserDefinedCol2" DataType="System.String"/>
+        <Column Name="UserDefinedCol3" DataType="System.String"/>
+        <Column Name="UserDefinedCol4" DataType="System.String"/>
+        <Column Name="UserDefinedCol5" DataType="System.Double"/>
+        <Column Name="UserDefinedCol6" DataType="System.Int32"/>
+        <Column Name="UserDefinedCol7" DataType="System.Int32"/>
+        <Column Name="UserDefinedCol8" DataType="System.Int32"/>
+        <Column Name="UserDefinedCol9" DataType="System.String"/>
+        <Column Name="UserDefinedCol10" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8">
+      <TextObject Name="Text1" Left="302.4" Top="18.9" Width="94.5" Height="18.9" Text="订单清单" Font="宋体, 9pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="41.8" Width="718.2" Height="37.8">
+      <TableObject Name="Table1" Left="94.5" Width="500.85" Height="28.35">
+        <TableColumn Name="Column1"/>
+        <TableColumn Name="Column2"/>
+        <TableColumn Name="Column3"/>
+        <TableColumn Name="Column4"/>
+        <TableColumn Name="Column5" Width="103.95"/>
+        <TableColumn Name="Column6"/>
+        <TableColumn Name="Column7"/>
+        <TableRow Name="Row1" Height="28.35">
+          <TableCell Name="Cell1" Text="租用公司" Font="宋体, 9pt"/>
+          <TableCell Name="Cell2" Text="船名" Font="宋体, 9pt"/>
+          <TableCell Name="Cell3" Text="下单时间" Font="宋体, 9pt"/>
+          <TableCell Name="Cell4" Text="工作日期" Font="宋体, 9pt"/>
+          <TableCell Name="Cell5" Text="工作地点" Font="宋体, 9pt"/>
+          <TableCell Name="Cell6" Text="服务内容" Font="宋体, 9pt"/>
+          <TableCell Name="Cell7" Text="工作状态" Font="宋体, 9pt"/>
+        </TableRow>
+      </TableObject>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="83.6" Width="718.2" Height="75.6">
+      <TableObject Name="Table2" Left="94.5" Top="9.45" Width="500.85" Height="28.35">
+        <TableColumn Name="Column8"/>
+        <TableColumn Name="Column9"/>
+        <TableColumn Name="Column10"/>
+        <TableColumn Name="Column11"/>
+        <TableColumn Name="Column12" Width="103.95"/>
+        <TableColumn Name="Column13"/>
+        <TableColumn Name="Column14"/>
+        <TableRow Name="Row2" Height="28.35">
+          <TableCell Name="Cell8" Text="[OrderInfor.CustomerName]" Font="宋体, 9pt"/>
+          <TableCell Name="Cell9" Text="[OrderInfor.ShipName]" Font="宋体, 9pt"/>
+          <TableCell Name="Cell10" Text="[OrderInfor.OrdTime]" Font="宋体, 9pt"/>
+          <TableCell Name="Cell11" Text="[OrderInfor.WorkTime]" Font="宋体, 9pt"/>
+          <TableCell Name="Cell12" Text="[OrderInfor.WorkPlace]" Font="宋体, 9pt"/>
+          <TableCell Name="Cell13" Text="[OrderInfor.ServiceNatureNames]" Font="宋体, 9pt"/>
+          <TableCell Name="Cell14" Text="[OrderInfor.WorkStateID]" Font="宋体, 9pt"/>
+        </TableRow>
+      </TableObject>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="163.2" Width="718.2" Height="18.9"/>
+  </ReportPage>
+</Report>

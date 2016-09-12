@@ -1,0 +1,512 @@
+﻿@{
+    ViewBag.Title = "组织结构";
+    ViewBag.MenuId = "menu1";
+    ViewBag.SubMenuIndex = 0;
+    Layout = "~/Views/Shared/_ContentLayout.cshtml";
+}
+<div id="main-content">
+    <div class="container">
+        <div class="row">
+            <div id="content" class="col-lg-12">
+                <!-- PAGE HEADER-->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div>
+                            <!-- STYLER -->
+                            <!-- /STYLER -->
+                            <!-- BREADCRUMBS -->
+                            <ul class="breadcrumb">
+                                <li>
+                                    <i class="fa fa-home"></i>
+                                    <a href="#">@Resources.Language.HomePage</a>
+                                </li>
+                                <li>
+                                    <a href="#">@Resources.Language.Organization</a>
+                                </li>
+                                <li>
+                                    @Resources.Language.OrganizationManage
+                                </li>
+                            </ul>
+                            <!-- /BREADCRUMBS -->
+                            @*<div class="clearfix">
+                                <h3 class="content-title pull-left">Grid Test</h3>
+                            </div>
+                            <div class="description">Table</div>*@
+                        </div>
+                    </div>
+                </div>
+                <!-- /PAGE HEADER -->
+                @*<div class="row">
+                        <div class="col-md-12">
+                            <div class="box border orange">
+                                <div class="box-title">
+                                </div>
+                                <div class="box-body">
+                                    <div>
+                                        <ul>
+                                            <li>@Model.Code</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+                <!-- SAMPLE -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- BOX -->
+                        <div class="box border orange">
+                            <div class="box-title">
+                                <h4><i class="fa fa-bars"></i>@Resources.Language.OrganizationManage</h4>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <form role="form" name="form1" method="post">
+                                        @*组织结构管理暂时不实现*@
+                                        <div style="float:left">
+                                            <table id="tree"></table>
+                                            <div id="pager"></div>
+                                        </div>
+                                        <div style="float:left;margin-left:10px;">
+                                            <table id="jqGrid"></table>
+                                            <div id="jqGridPager"></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /BOX -->
+                    </div>
+                </div>
+                <!-- /SAMPLE -->
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var tableConfig = null;
+    //设置treegrid
+    jQuery(document).ready(function ($) {
+        jQuery('#tree').jqGrid({
+            "url": "/Organization/OrgGetDataForLoadOnce",
+            "editurl": "/Organization/OrgAddEdit",
+            "datatype": "json",
+            "colModel": [
+                {
+                    "name": "IDX",
+                    "index": "IDX",
+                    "sorttype": "int",
+                    "key": true,
+                    "hidden": true
+                },
+
+                {
+                    "name": "Name1",
+                    "index": "Name1",
+                    "sorttype": "string",
+                    "label": "组织结构",
+                    "editable": true,
+                    "width": 50
+                },
+                {
+                    "name": "InCode",
+                    "index": "InCode",
+                    "sorttype": "string",
+                    "label": "InCode",
+                    "editable": true,
+                    "hidden": true,
+                    "width": 50
+                },
+                {
+                    "name": "FatherID",
+                    "hidden": true
+                },
+                //{
+                //    "name": "IsLeaf",
+                //    "editable": true,
+                //    "hidden": true
+                //},
+                {
+                    "name": "LevelValue",
+                    "editable": true,
+                    "hidden": true
+                }
+            ],
+            "width": 300,
+            //"caption": "组织结构",
+            "mtype": "POST",
+            "hoverrows": false,
+            "viewrecords": false,
+            "gridview": true,
+            "height": 335,//"auto",
+            "sortname": "Name1",
+            "scrollrows": true,
+
+            "treeGrid": true,
+            "ExpandColumn": "Name1",
+            "treedatatype": "json",
+            "treeGridModel": "adjacency",
+            "loadonce": true,
+            "rowNum": 100,
+            "treeReader": {
+                "parent_id_field": "FatherID",
+                "level_field": "LevelValue",
+                "leaf_field": "IsLeaf",
+                "expanded_field": "expanded",
+                "loaded": "loaded",
+                "icon_field": "icon"
+            },
+            //"treeIcons": {
+            //    "plus": "ui-icon-circlesmall-plus",
+            //    "minus": "ui-icon-circlesmall-minus",
+            //    "leaf": "ui-icon-document"
+            //},
+            "sortorder": "asc",
+            "pager": "#pager",
+            "onSelectRow": function (rowid) {
+                if (rowid != null) {
+                    var dr = $('#tree').jqGrid('getRowData', rowid);
+                    //alert(dr.IsLeaf);
+                    //if (dr.IsLeaf === 'true') {
+                    treeidx = dr.IDX;
+                    incode = dr.InCode;
+                    level = dr.LevelValue;
+                    //$("#InCode").html(dr.InCode);
+                    //$("#Name1").html(dr.Name1);
+                    $('#jqGrid').jqGrid('setGridParam', { mtype: 'POST', datatype: 'json', url: '@(Url.Action("LoadUsersFilter", "Organization"))?incode=' + incode }).trigger('reloadGrid');
+                    //}
+                }
+                //else {
+                //    alert('选中一行');
+                //}
+            },
+        });
+        //设置treegrid的导航
+        jQuery('#tree').jqGrid('navGrid', '#pager',
+        {
+            "edit": true,
+            "add": true,
+            "del": true,
+            "search": true,
+            "refresh": true,
+            "view": false,
+            "excel": false,
+            "pdf": false,
+            "csv": false,
+            "columns": false
+        },
+        { "drag": true, "resize": true, "closeOnEscape": true, "dataheight": 150 },
+        { "drag": true, "resize": true, "closeOnEscape": true, "dataheight": 150 }
+        );
+        jQuery('#tree').jqGrid('bindKeys');
+
+        //设置jqgrid
+        if (tableConfig == null) {
+            GetTableConfig();
+        }
+
+        $("#jqGrid").jqGrid({
+            //url: 'http://trirand.com/blog/phpjqgrid/examples/jsonp/getjsonp.php?callback=?&qwery=longorders',
+            url: '@Url.Action("UserGetDataForLoadOnce", "Organization")',
+            mtype: "GET",
+            datatype: "json",
+            colModel: tableConfig.columns,
+            viewrecords: true,
+            width: 700,
+            height: 300,//$(window).height() - 300,//300,
+            rowNum: 10,
+            //autowidth: true,
+            editurl: '@Url.Action("UserAddEdit", "Organization")',
+            pager: "#jqGridPager",
+            loadonce: true,
+            rowList: ['10', '20', '30'],
+            rownumbers: true,
+            shrinkToFit: false,     //指定各列宽度
+            sortable: true,          //列可移动
+            colMenu: true          //列菜单
+        });
+
+        $('#jqGrid').jqGrid('filterToolbar', { searchResult: true, searchOperators: true });
+
+        $('#jqGrid').navGrid('#jqGridPager', { edit: false, add: false, del: false, refresh: false, view: false, search: false })
+
+            .navButtonAdd('#jqGridPager', {
+                caption: "", title: '@Resources.Language.Refresh', buttonicon: "ui-icon-refresh",
+                onClickButton: function () {
+                    //alert("haha");
+                    @*$.ajax(
+                        {
+                            type: "get",
+                            url: '@Url.Action("GetDataForLoadOnce", "Customer")',
+                            dataType: 'json',
+                            type: 'get',
+                            data:{'_search':false, 'sidx':'', 'sord':'', 'page':1, 'rows':10},
+                            success: function (result) {
+
+                                $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                            },
+                        }
+                        );*@
+
+                    $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                }
+            })
+            .navSeparatorAdd("#jqGridPager", { sepclass: "ui-separator", sepcontent: '' })
+            .navButtonAdd('#jqGridPager', {
+                caption: "", title: '@Resources.Language.DeleteSelectedRows', buttonicon: "ui-icon-trash",
+                onClickButton: function () {
+                    var rowid = jQuery('#jqGrid').jqGrid('getGridParam', 'selrow');
+                    var dr = jQuery("#jqGrid").jqGrid('getRowData', rowid);//得到该行的数据
+                    if (rowid != null) {
+                        if (confirm('@Resources.Language.SureDelete')) {
+                            var d = new Date();
+                            $.ajax(
+                                {
+                                    type: "post",
+                                    url: '@Url.Action("", "")',
+                                    data: { 'oper': 'delete', 'data': dr },//"oper=delete&id=" + gr,
+                                    dataType: 'json',
+                                    success: function (result) {
+                                        alert(result.message);
+                                        //jQuery("#jqGrid").jqGrid('delRowData', rowid);
+                                        $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                                    },
+
+                                }
+                                );
+                        }
+                    }
+                    else {
+                        alert('选中一行');
+                    }
+                },
+                position: "last"
+            });
+
+        $('#jqGrid').inlineNav('#jqGridPager',
+            {
+                edit: true,
+                add: true,
+                del: true,
+                cancel: true,
+                editParams: {
+                    keys: true,
+                    successfunc: function (val) {
+                        if (val.responseText != "") {
+                            var ret = $.parseJSON(val.responseText);
+                            alert(ret.message);
+                            $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                        }
+                    },
+                    url: null, //'/api/values',
+                    mtype: 'POST'
+                },
+
+                addParams: {
+                    keys: true,
+                    //extraparam: { treeid: treeidx },
+                    successfunc: function (val) {
+                        if (val.responseText != "") {
+                            var ret = $.parseJSON(val.responseText);
+                            alert(ret.message);
+                            $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                        }
+                    },
+                    errorfunc: function (rowid, xhr) {
+                        alert(xhr.responseText);
+                        $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                    }
+                }
+            });
+
+    });
+
+    //设置jqgrid表头
+    function GetTableConfig() {
+        tableConfig = {
+            columns: [
+
+                {
+                    align: 'center', label: 'IDX', index: "IDX", name: "IDX", width: 100, editable: true, edittype: "text", key: true,
+                    editrules: { required: false }, hidden: true,
+                },
+                {
+                    align: 'center', label: '@Resources.Language.Org_UserName', name: "UserName", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: false,
+                    searchoptions: { sopt: ["cn"] }
+                    //searchoptions: { sopt: ["ge", "le"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.Org_Pwd', name: "Pwd", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: false,
+                    //searchoptions: { sopt: ["cn"] }
+                    //searchoptions: { sopt: ["ge", "le"] }
+                },
+                {
+                    align: 'center', label: 'IsGuest', name: "IsGuest", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: true,
+                    //searchoptions: { sopt: ["cn"] },
+                    editoptions: {
+                        defaultValue: "false"
+                    }
+                    //searchoptions: { sopt: ["ge", "le"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.Org_LanUserName', name: "LanUserName", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: true,
+                    searchoptions: { sopt: ["cn"] }
+                    //searchoptions: { sopt: ["ge", "le"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.Org_Lan', name: "Lan", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: true,
+                    searchoptions: { sopt: ["cn"] }
+                    //searchoptions: { sopt: ["ge", "le"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.Org_Dept', name: "Dept", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: true,
+                    searchoptions: { sopt: ["cn"] }
+                    //searchoptions: { sopt: ["ge", "le"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.Org_Sec', name: "Sec", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: true,
+                    searchoptions: { sopt: ["cn"] }
+                    //searchoptions: { sopt: ["ge", "le"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.Org_Name1', name: "Name1", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: false,
+                    searchoptions: { sopt: ["cn"] }
+                    //searchoptions: { sopt: ["ge", "le"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.Org_Name2', name: "Name2", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: false,
+                    searchoptions: { sopt: ["cn"] }
+                    //searchoptions: { sopt: ["ge", "le"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.Org_WorkNumber', name: "WorkNumber", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: false,
+                    searchoptions: { sopt: ["cn"] }
+                    //searchoptions: { sopt: ["ge", "le"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.Org_Sex', name: "Sex", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: false,
+                    searchoptions: { sopt: ["cn"] }
+                    //searchoptions: { sopt: ["ge", "le"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.Org_Tel', name: "Tel", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: false,
+                    searchoptions: { sopt: ["cn"] }
+                    //searchoptions: { sopt: ["ge", "le"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.Org_Email', name: "Email", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, colmenu: false,
+                    hidden: false,
+                    searchoptions: { sopt: ["cn"] }
+                    //searchoptions: { sopt: ["ge", "le"] }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol1', name: "UserDefinedCol1", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol2', name: "UserDefinedCol2", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol3', name: "UserDefinedCol3", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol4', name: "UserDefinedCol4", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol5', name: "UserDefinedCol5", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, number: true }, hidden: true
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol6', name: "UserDefinedCol6", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, integer: true }, hidden: true
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol7', name: "UserDefinedCol7", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, integer: true }, hidden: true
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol8', name: "UserDefinedCol8", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, integer: true }, hidden: true
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol9', name: "UserDefinedCol9", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, date: true }, hidden: true,
+                    datefmt: 'yyyy-mm-dd',
+                    sorttype: 'date',
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datepicker({
+                                dateFormat: 'yy-mm-dd',
+                                showOn: 'focus'
+                            });
+                        }
+                    }
+                },
+                {
+                    align: 'center', label: '@Resources.Language.UserDefinedCol10', name: "UserDefinedCol10", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false, date: true }, hidden: true,
+                    datefmt: 'yyyy-mm-dd',
+                    sorttype: 'date',
+                    editoptions: {
+                        dataInit: function (element) {
+                            $(element).datepicker({
+                                dateFormat: 'yy-mm-dd',
+                                showOn: 'focus'
+                            });
+                        }
+                    }
+                },
+
+                {
+                    align: 'center', label: 'TreeID', name: "TreeID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                    editoptions: {},
+                },
+                {
+                    align: 'center', label: 'TreeName1', name: "TreeName1", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false },
+                    hidden: true,
+                },
+                {
+                    align: 'center', label: 'FatherID', name: "FatherID", width: 100, editable: true, edittype: "text",
+                    editrules: { required: false }, hidden: true,
+                    editoptions: {},
+                },
+            {
+                align: 'center', label: 'InCode', name: "InCode", width: 100, editable: true, edittype: "text",
+                editrules: { required: false },
+                hidden: true,
+            }
+            ]
+        };
+    }
+</script>

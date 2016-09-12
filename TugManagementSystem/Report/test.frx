@@ -1,0 +1,409 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/11/2015 20:01:17" ReportInfo.Modified="06/16/2016 08:27:52" ReportInfo.CreatorVersion="2013.3.3.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+
+   
+
+   
+
+    private void Cell59_BeforePrint(object sender, EventArgs e)
+    {
+      int tempPharse=(int)Report.GetColumnValue(&quot;HeadTable.Phase&quot;);
+      if(tempPharse != -1) ((TableCell)sender).Text = &quot;结构检验员/日期：&quot;;
+    }
+    private void InspectionLength_BeforePrint(object sender, EventArgs e)
+    {
+      TableCell cell = sender as TableCell;
+      int tempLength=Convert.ToInt32( Report.GetColumnValue(&quot;DetailTable.JointLengthInspect&quot;));
+      int count = (int)Report.GetColumnValue(&quot;DetailTable.Count&quot;);
+      cell.Text = tempLength.ToString();  
+      if(count &gt; 1)
+      {
+        cell.Text +=  &quot;*&quot;+count.ToString();
+      }
+    }
+  }
+}
+</ScriptText>
+  <Dictionary>
+    <TableDataSource Name="Report_NDT_ApplyHead" Alias="HeadTable" ReferenceName="Report_NDT_ApplyHead" DataType="System.Int32" Enabled="true">
+      <Column Name="ID" Enabled="false" DataType="System.Int32"/>
+      <Column Name="ProjectID" Enabled="false" DataType="System.Int32"/>
+      <Column Name="ProjectCode" DataType="System.String"/>
+      <Column Name="SheetID" Enabled="false" DataType="System.Int32"/>
+      <Column Name="SheetCode" Enabled="false" DataType="System.String"/>
+      <Column Name="NdtTypeValue" Enabled="false" DataType="System.Int32"/>
+      <Column Name="DescriptionCh" Enabled="false" DataType="System.String"/>
+      <Column Name="NdtCardID" Enabled="false" DataType="System.Int32"/>
+      <Column Name="WpsCode" Enabled="false" DataType="System.String"/>
+      <Column Name="BaseMaterial" Enabled="false" DataType="System.String"/>
+      <Column Name="BaseThickNess" Enabled="false" DataType="System.Decimal"/>
+      <Column Name="AcceptStandard" Enabled="false" DataType="System.String"/>
+      <Column Name="AcceptClass" Enabled="false" DataType="System.String"/>
+      <Column Name="DiagDrawing" Enabled="false" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="InspectionStatus" Enabled="false" DataType="System.Int32"/>
+      <Column Name="Note" Enabled="false" DataType="System.String"/>
+      <Column Name="HeadDyn_String_1" Enabled="false" DataType="System.String"/>
+      <Column Name="HeadDyn_String_2" Enabled="false" DataType="System.String"/>
+      <Column Name="HeadDyn_String_3" Enabled="false" DataType="System.String"/>
+      <Column Name="HeadDyn_String_4" Enabled="false" DataType="System.String"/>
+      <Column Name="HeadDyn_String_5" Enabled="false" DataType="System.String"/>
+      <Column Name="HeadDyn_String_6" Enabled="false" DataType="System.String"/>
+      <Column Name="HeadDyn_String_7" Enabled="false" DataType="System.String"/>
+      <Column Name="HeadDyn_String_8" Enabled="false" DataType="System.String"/>
+      <Column Name="HeadDyn_String_9" Enabled="false" DataType="System.String"/>
+      <Column Name="HeadDyn_String_10" Enabled="false" DataType="System.String"/>
+      <Column Name="HeadDyn_Int_1" Enabled="false" DataType="System.Int32"/>
+      <Column Name="HeadDyn_Int_2" Enabled="false" DataType="System.Int32"/>
+      <Column Name="HeadDyn_Int_3" Enabled="false" DataType="System.Int32"/>
+      <Column Name="HeadDyn_Int_4" Enabled="false" DataType="System.Int32"/>
+      <Column Name="HeadDyn_Int_5" Enabled="false" DataType="System.Int32"/>
+      <Column Name="HeadDyn_Float_1" Enabled="false" DataType="System.Decimal"/>
+      <Column Name="HeadDyn_Float_2" Enabled="false" DataType="System.Decimal"/>
+      <Column Name="HeadDyn_Float_3" Enabled="false" DataType="System.Decimal"/>
+      <Column Name="HeadDyn_Float_4" Enabled="false" DataType="System.Decimal"/>
+      <Column Name="HeadDyn_Datatime_1" Enabled="false" DataType="System.DateTime"/>
+      <Column Name="HeadDyn_Datatime_2" Enabled="false" DataType="System.DateTime"/>
+      <Column Name="HeadDyn_Datatime_3" Enabled="false" DataType="System.DateTime"/>
+      <Column Name="WorkerTeam" DataType="System.String"/>
+      <Column Name="ApplierID" Enabled="false" DataType="System.Int32"/>
+      <Column Name="ApplierName" Enabled="false" DataType="System.String"/>
+      <Column Name="ApplyDate" Enabled="false" DataType="System.DateTime"/>
+      <Column Name="InspectorID" Enabled="false" DataType="System.Int32"/>
+      <Column Name="InspectorName" Enabled="false" DataType="System.String"/>
+      <Column Name="InspectionLocation" Enabled="false" DataType="System.String"/>
+      <Column Name="InspectionDate" Enabled="false" DataType="System.DateTime"/>
+      <Column Name="InspectionTypeID" Enabled="false" DataType="System.Int32"/>
+      <Column Name="InspectionResults" Enabled="false" DataType="System.String"/>
+      <Column Name="ClassComments" Enabled="false" DataType="System.String"/>
+      <Column Name="OwnerComments" Enabled="false" DataType="System.String"/>
+      <Column Name="ChildTable" Enabled="false" DataType="System.String"/>
+      <Column Name="MarkID" Enabled="false" DataType="System.Int32"/>
+      <Column Name="Phase" Enabled="false" DataType="System.Int32"/>
+      <Column Name="Status" Enabled="false" DataType="System.String"/>
+      <Column Name="CreateDate" Enabled="false" DataType="System.DateTime"/>
+      <Column Name="LastUpdate" Enabled="false" DataType="System.DateTime"/>
+      <Column Name="ProjectName" Enabled="false" DataType="System.String"/>
+      <Column Name="ProjectName1" Enabled="false" DataType="System.String"/>
+      <Column Name="ProjectName2" Enabled="false" DataType="System.String"/>
+      <Column Name="ProjectClass" Enabled="false" DataType="System.String"/>
+      <Column Name="ProjectShipOwner" Enabled="false" DataType="System.String"/>
+      <Column Name="ProjectShipStyler" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeNdt_MethodeCode" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeMethodeNameCh" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeProductName" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeWorkstype" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeWpsNo" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeQuantityTestRate" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeMaterial" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeTestTiming" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeWeldBevel" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeHeatTrutment" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeRefStandard" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeAccStandard" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeTestMethode" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeSurfaceCondition" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeOtherItems" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeOperateProcedure" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeTestingArragement" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeNote" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeWeave" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeChecked" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeWeavedate" Enabled="false" DataType="System.DateTime"/>
+      <Column Name="MethodeCheckeddate" Enabled="false" DataType="System.DateTime"/>
+      <Column Name="MethodeDyn_String_1" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_2" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_3" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_4" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_5" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_6" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_7" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_8" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_9" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_10" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_11" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_12" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_13" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_14" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_15" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_16" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_17" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_18" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_19" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_20" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_21" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_22" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_23" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_24" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_25" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_26" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_27" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_28" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_29" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_30" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_31" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_32" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_33" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_34" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_35" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_36" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_37" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_38" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_39" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_40" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_41" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_42" Enabled="false" DataType="System.String"/>
+      <Column Name="MethodeDyn_String_43" Enabled="false" DataType="System.String"/>
+      <Column Name="InspectionPosition" Enabled="false" DataType="System.String"/>
+      <Column Name="BlockNo" DataType="System.String"/>
+      <Column Name="RefDwgNo" DataType="System.String"/>
+      <Column Name="SpecialtyType" Enabled="false" DataType="System.String"/>
+      <Column Name="WorkShop" DataType="System.String"/>
+      <Column Name="ContactsPhoneNo" Enabled="false" DataType="System.String"/>
+      <Column Name="ContactsName" Enabled="false" DataType="System.String"/>
+      <Column Name="DescriptionEn" Alias="NdtTypeEn" DataType="System.String"/>
+      <Column Name="ViInspectDate" DataType="System.DateTime"/>
+      <Column Name="ViInspectorName" DataType="System.String"/>
+      <Column Name="InspectionCompleteDate" DataType="System.DateTime"/>
+      <Column Name="LogoPicture" DataType="System.Byte[]" BindableControl="Picture"/>
+    </TableDataSource>
+    <TableDataSource Name="Report_NDT_ApplyItem" Alias="DetailTable" ReferenceName="Report_NDT_ApplyItem" DataType="System.Int32" Enabled="true">
+      <Column Name="ID" Enabled="false" DataType="System.Int32"/>
+      <Column Name="ProjectID" Enabled="false" DataType="System.Int32"/>
+      <Column Name="NdtTypeValue" Enabled="false" DataType="System.Int32"/>
+      <Column Name="NDT_ApplyHeadID" Enabled="false" DataType="System.Int32"/>
+      <Column Name="JointNo" DataType="System.String"/>
+      <Column Name="JointLengthDesign" Enabled="false" DataType="System.Decimal"/>
+      <Column Name="JointLengthInspect" DataType="System.Decimal"/>
+      <Column Name="PartNo" Enabled="false" DataType="System.String"/>
+      <Column Name="PartSize" DataType="System.String"/>
+      <Column Name="WpsCode" DataType="System.String"/>
+      <Column Name="TeamNo" Enabled="false" DataType="System.String"/>
+      <Column Name="WelderNo" DataType="System.String"/>
+      <Column Name="DefectNo" Enabled="false" DataType="System.String"/>
+      <Column Name="DefectType" Enabled="false" DataType="System.String"/>
+      <Column Name="DefectGrade" Enabled="false" DataType="System.String"/>
+      <Column Name="DefectSize" Enabled="false" DataType="System.Decimal"/>
+      <Column Name="InspectResult" Enabled="false" DataType="System.Int32"/>
+      <Column Name="Conclusion" Enabled="false" DataType="System.String"/>
+      <Column Name="Comment" Alias="备注" DataType="System.String"/>
+      <Column Name="Dyn_String_1" Enabled="false" DataType="System.String"/>
+      <Column Name="Dyn_String_2" Enabled="false" DataType="System.String"/>
+      <Column Name="Dyn_String_3" Enabled="false" DataType="System.String"/>
+      <Column Name="Dyn_String_4" Enabled="false" DataType="System.String"/>
+      <Column Name="Dyn_String_5" Enabled="false" DataType="System.String"/>
+      <Column Name="Dyn_String_6" Enabled="false" DataType="System.String"/>
+      <Column Name="Dyn_String_7" Enabled="false" DataType="System.String"/>
+      <Column Name="Dyn_String_8" Enabled="false" DataType="System.String"/>
+      <Column Name="Dyn_String_9" Enabled="false" DataType="System.String"/>
+      <Column Name="Dyn_String_10" Enabled="false" DataType="System.String"/>
+      <Column Name="Dyn_Int_1" Enabled="false" DataType="System.Int32"/>
+      <Column Name="Dyn_Int_2" Enabled="false" DataType="System.Int32"/>
+      <Column Name="Dyn_Int_3" Enabled="false" DataType="System.Int32"/>
+      <Column Name="Dyn_Int_4" Enabled="false" DataType="System.Int32"/>
+      <Column Name="Dyn_Int_5" Enabled="false" DataType="System.Int32"/>
+      <Column Name="Dyn_Float_1" Enabled="false" DataType="System.Double"/>
+      <Column Name="Dyn_Float_2" Enabled="false" DataType="System.Double"/>
+      <Column Name="Dyn_Float_3" Enabled="false" DataType="System.Double"/>
+      <Column Name="Dyn_Float_4" Enabled="false" DataType="System.Double"/>
+      <Column Name="Dyn_Datatime_1" Enabled="false" DataType="System.DateTime"/>
+      <Column Name="Dyn_Datatime_2" Enabled="false" DataType="System.DateTime"/>
+      <Column Name="Dyn_Datatime_3" Enabled="false" DataType="System.DateTime"/>
+      <Column Name="CreateUser" Enabled="false" DataType="System.String"/>
+      <Column Name="ModifyUser" Enabled="false" DataType="System.String"/>
+      <Column Name="CreateTime" Enabled="false" DataType="System.DateTime"/>
+      <Column Name="LastModifyTime" Enabled="false" DataType="System.DateTime"/>
+      <Column Name="BaseMaterial" Enabled="false" DataType="System.String"/>
+      <Column Name="BaseThickNess" Enabled="false" DataType="System.Decimal"/>
+      <Column Name="InspectorName" Enabled="false" DataType="System.String"/>
+      <Column Name="SheetID" Enabled="false" DataType="System.Int32"/>
+      <Column Name="InspectResultEn" Enabled="false" DataType="System.String"/>
+      <Column Name="InspectResultCh" Enabled="false" DataType="System.String"/>
+      <Column Name="BlockNo" Enabled="false" DataType="System.String"/>
+      <Column Name="PartMaterial" DataType="System.String"/>
+      <Column Name="PartHeatNo" Enabled="false" DataType="System.String"/>
+      <Column Name="PartNoB" Enabled="false" DataType="System.String"/>
+      <Column Name="PartSizeB" Enabled="false" DataType="System.String"/>
+      <Column Name="PartMaterialB" Enabled="false" DataType="System.String"/>
+      <Column Name="PartHeatNoB" Enabled="false" DataType="System.String"/>
+      <Column Name="Count" Enabled="false" DataType="System.Int32"/>
+      <Column Name="JointType" Enabled="false" DataType="System.String"/>
+      <Column Name="ItemParentID" Enabled="false" DataType="System.Int32"/>
+      <Column Name="SpecialtyType" Enabled="false" DataType="System.String"/>
+      <Column Name="SheetCode" DataType="System.String"/>
+      <Column Name="WorkerTeam" DataType="System.String"/>
+      <Column Name="ProjectCode" DataType="System.String"/>
+      <Column Name="ApplierName" DataType="System.String"/>
+    </TableDataSource>
+  </Dictionary>
+  <ReportPage Name="Page1" LeftMargin="15" RightMargin="5" Guides="29.44,402.22,3.77,233.61,155.61,472.56,687.98,79.68,323.18,406,713.72,108.93,223.9,406.25,118.75,311.25,687.9901,40.34,192.72,261.07,322.81,496.2,584.85,261.09,496.08,584.86,229.32,236.9,454.86,322.79,584.88,459.61,662.6">
+    <PageHeaderBand Name="PageHeader1" Width="718.2" Height="270.59" PrintOn="FirstPage" Guides="33.27,53.64,8.29,30.87,66.56,92.28,149.63,270.59,0,30.24,60.48,90.72,120.96,109.68,147.48,37.8,18.9">
+      <TextObject Name="Text1" Left="29.44" Top="33.27" Width="372.78" Height="20.37" Text="CHINA MERCHANTS HEAVY INDUSTRY(SHENZHEN)CO.,LTD." VertAlign="Center" Font="黑体, 10pt"/>
+      <PictureObject Name="Picture1" Left="3.77" Top="8.29" Width="229.84" Height="22.58" Image="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"/>
+      <TextObject Name="Text2" Left="155.61" Top="66.56" Width="316.95" Height="25.72" Text="无损检测申请单" HorzAlign="Center" Font="宋体, 16pt, style=Underline"/>
+      <TableObject Name="Table1" Left="3.78" Top="149.63" Width="684.2" Height="120.96" Border.Lines="All">
+        <TableColumn Name="Column1" Width="75.9"/>
+        <TableColumn Name="Column2" Width="243.5"/>
+        <TableColumn Name="Column3" Width="82.82"/>
+        <TableColumn Name="Column4" Width="281.98"/>
+        <TableRow Name="Row1" Height="30.24">
+          <TableCell Name="Cell1" Border.Lines="All" Text="项目名称" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell2" Border.Lines="All" Text="[HeadTable.ProjectName1]" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell3" Border.Lines="All" Text="项目编号" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell4" Border.Lines="All" Text="[HeadTable.ProjectCode]" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row2" Height="30.24">
+          <TableCell Name="Cell6" Border.Lines="All" Text="构件名称" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell7" Border.Lines="All" Text="[HeadTable.BlockNo]" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell8" Border.Lines="All" Text="检测区域" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell9" Border.Lines="All" Text="[HeadTable.InspectionPosition]" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row3" Height="30.24">
+          <TableCell Name="Cell10" Border.Lines="All" Text="探伤方法" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell11" Border.Lines="All" Text="[HeadTable.NdtTypeEn]" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell12" Border.Lines="All" Text="图纸编号" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell13" Border.Lines="All" Text="[HeadTable.RefDwgNo]" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row12" Height="30.24">
+          <TableCell Name="Cell76" Border.Lines="All" Text="检测地点" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell77" Border.Lines="All" Text="[HeadTable.InspectionLocation]" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell78" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+          <TableCell Name="Cell79" Border.Lines="All" VertAlign="Center" Font="宋体, 9pt"/>
+        </TableRow>
+      </TableObject>
+      <TableObject Name="Table6" Left="3.78" Top="109.68" Width="709.94" Height="37.8">
+        <TableColumn Name="Column32" Width="105.15"/>
+        <TableColumn Name="Column33" Width="114.97"/>
+        <TableColumn Name="Column34" Width="182.35"/>
+        <TableColumn Name="Column35" Width="307.47"/>
+        <TableRow Name="Row10">
+          <TableCell Name="Cell67" Text="车间：[HeadTable.WorkShop]" VertAlign="Center" Font="宋体, 9pt" RowSpan="2"/>
+          <TableCell Name="Cell68" Text="班组：[HeadTable.WorkerTeam]" HorzAlign="Center" VertAlign="Center" Font="宋体, 9pt" RowSpan="2"/>
+          <TableCell Name="Cell69" Text="联系人：[HeadTable.ContactsName]" HorzAlign="Center" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell70" Text="申请单编号：[HeadTable.SheetCode]" HorzAlign="Center" VertAlign="Center" Font="宋体, 9pt" RowSpan="2"/>
+        </TableRow>
+        <TableRow Name="Row11">
+          <TableCell Name="Cell72" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell73" HorzAlign="Center" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell74" Text="电话:[HeadTable.ContactsPhoneNo]" HorzAlign="Center" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell75" HorzAlign="Center" VertAlign="Center" Font="宋体, 9pt"/>
+        </TableRow>
+      </TableObject>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="311.11" Width="718.2" Height="26.46" Guides="0,26.46" DataSource="Report_NDT_ApplyItem">
+      <TableObject Name="Table3" Left="3.78" Width="684.21" Height="26.46">
+        <TableColumn Name="Column12" Width="36.56"/>
+        <TableColumn Name="Column13" Width="152.38"/>
+        <TableColumn Name="Column14" Width="68.35"/>
+        <TableColumn Name="Column15" Width="61.74"/>
+        <TableColumn Name="Column16" Width="83.19"/>
+        <TableColumn Name="Column17" Width="90.2"/>
+        <TableColumn Name="Column18" Width="88.65"/>
+        <TableColumn Name="Column30" Width="103.14"/>
+        <TableRow Name="Row5" Height="26.46">
+          <TableCell Name="Cell41" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell42" Border.Lines="All" Text="[DetailTable.PartNo]_[DetailTable.JointNo]" HorzAlign="Center" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell43" Border.Lines="All" Text="[DetailTable.PartMaterial]" HorzAlign="Center" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell44" Border.Lines="All" Text="[DetailTable.PartSize]" HorzAlign="Center" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell45" Border.Lines="All" Text="[DetailTable.WpsCode]" HorzAlign="Center" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell46" Border.Lines="All" BeforePrintEvent="InspectionLength_BeforePrint" HorzAlign="Center" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell47" Border.Lines="All" Text="[DetailTable.WelderNo]" HorzAlign="Center" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell62" Border.Lines="All" Text="[DetailTable.Dyn_String_10]" HorzAlign="Center" VertAlign="Center" Font="宋体, 8pt"/>
+        </TableRow>
+      </TableObject>
+      <DataHeaderBand Name="DataHeader1" Top="274.59" Width="718.2" Height="32.52" Guides="0,32.52" RepeatOnEveryPage="true">
+        <TableObject Name="Table2" Left="3.78" Width="684.2" Height="32.52">
+          <TableColumn Name="Column5" Width="36.56"/>
+          <TableColumn Name="Column6" Width="152.38"/>
+          <TableColumn Name="Column7" Width="68.37"/>
+          <TableColumn Name="Column8" Width="62.09"/>
+          <TableColumn Name="Column9" Width="82.82"/>
+          <TableColumn Name="Column10" Width="90.08"/>
+          <TableColumn Name="Column11" Width="88.78"/>
+          <TableColumn Name="Column29" Width="103.12"/>
+          <TableRow Name="Row4" Height="32.52">
+            <TableCell Name="Cell14" Border.Lines="All" Text="序号" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+            <TableCell Name="Cell15" Border.Lines="All" Text="剖面/焊缝号" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+            <TableCell Name="Cell16" Border.Lines="All" Text="材质" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+            <TableCell Name="Cell17" Border.Lines="All" Text="板厚(mm)" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+            <TableCell Name="Cell18" Border.Lines="All" Text="焊接方法" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+            <TableCell Name="Cell39" Border.Lines="All" Text="检测长度（mm）" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+            <TableCell Name="Cell40" Border.Lines="All" Text="焊工号" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt"/>
+            <TableCell Name="Cell61" Border.Lines="All" Text="备注" HorzAlign="Center" VertAlign="Center" Font="宋体, 9pt"/>
+          </TableRow>
+        </TableObject>
+      </DataHeaderBand>
+      <DataFooterBand Name="DataFooter1" Top="372.03" Width="718.2" Height="127.11" Guides="0,127.11,37.8,89.31">
+        <TableObject Name="Table5" Left="3.78" Width="684.2" Height="127.11">
+          <TableColumn Name="Column26" Width="225.54"/>
+          <TableColumn Name="Column27" Width="225.54"/>
+          <TableColumn Name="Column28" Width="233.12"/>
+          <TableRow Name="Row7" Height="37.8">
+            <TableCell Name="Cell55" Border.Lines="All" Text="备注：&#13;&#10;   [HeadTable.Note]" Padding="2, 3, 2, 1" Font="宋体, 10pt" ColSpan="3"/>
+            <TableCell Name="Cell56" Border.Lines="All" Padding="2, 3, 2, 1" Font="宋体, 11pt"/>
+            <TableCell Name="Cell57" Border.Lines="All" Padding="2, 3, 2, 1" Font="宋体, 11pt"/>
+          </TableRow>
+          <TableRow Name="Row8" Height="51.51">
+            <TableCell Name="Cell58" Border.Lines="All" Text="申请人/日期：&#13;&#10;       [HeadTable.ApplierName]&#13;&#10;       [Format(&quot;{0:yyyy.MM.dd}&quot;,[HeadTable.ApplyDate])]" Font="宋体, 9pt"/>
+            <TableCell Name="Cell59" Border.Lines="All" BeforePrintEvent="Cell59_BeforePrint" Text="结构检验员/日期：&#13;&#10;         [HeadTable.ViInspectorName]&#13;&#10;         [Format(&quot;{0:yyyy.MM.dd}&quot;,[HeadTable.ViInspectDate])]" Font="宋体, 9pt">
+              <Formats>
+                <GeneralFormat/>
+                <DateFormat/>
+              </Formats>
+            </TableCell>
+            <TableCell Name="Cell60" Border.Lines="All" Text="NDT检验员/日期：&#13;&#10;        [HeadTable.InspectorName]&#13;&#10;        [Format(&quot;{0:yyyy.MM.dd}&quot;,[HeadTable.InspectionDate])]" Font="宋体, 9pt"/>
+          </TableRow>
+          <TableRow Name="Row9" Height="37.8">
+            <TableCell Name="Cell64" Text="注：1.申请人员必须认真填写本表，不得有漏项：&#13;&#10;    2.相关焊缝的外观，标示经结构检验员验收合格并在申请单签字确认后，才能送交探伤人员探伤。" VertAlign="Center" Font="宋体, 9pt" ColSpan="3"/>
+            <TableCell Name="Cell65" Font="宋体, 9pt"/>
+            <TableCell Name="Cell66" Font="宋体, 9pt"/>
+          </TableRow>
+        </TableObject>
+        <ChildBand Name="Child1" Top="341.57" Width="718.2" Height="26.46" Guides="0,26.46" FillUnusedSpace="true">
+          <TableObject Name="Table4" Left="3.78" Width="684.2" Height="26.46">
+            <TableColumn Name="Column19" Width="36.56"/>
+            <TableColumn Name="Column20" Width="152.38"/>
+            <TableColumn Name="Column21" Width="68.35"/>
+            <TableColumn Name="Column22" Width="61.72"/>
+            <TableColumn Name="Column23" Width="83.21"/>
+            <TableColumn Name="Column24" Width="90.2"/>
+            <TableColumn Name="Column25" Width="88.68"/>
+            <TableColumn Name="Column31" Width="103.1"/>
+            <TableRow Name="Row6" Height="26.46">
+              <TableCell Name="Cell48" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="宋体, 9pt"/>
+              <TableCell Name="Cell49" Border.Lines="All" HorzAlign="Center" Font="宋体, 9pt"/>
+              <TableCell Name="Cell50" Border.Lines="All" HorzAlign="Center" Font="宋体, 9pt"/>
+              <TableCell Name="Cell51" Border.Lines="All" HorzAlign="Center" Font="宋体, 9pt"/>
+              <TableCell Name="Cell52" Border.Lines="All" HorzAlign="Center" Font="宋体, 9pt"/>
+              <TableCell Name="Cell53" Border.Lines="All" HorzAlign="Center" Font="宋体, 9pt"/>
+              <TableCell Name="Cell54" Border.Lines="All" HorzAlign="Center" Font="宋体, 9pt"/>
+              <TableCell Name="Cell63" Border.Lines="All" Font="宋体, 9pt"/>
+            </TableRow>
+          </TableObject>
+        </ChildBand>
+      </DataFooterBand>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="503.14" Width="718.2" CanGrow="true" CanShrink="true" PrintOn="FirstPage">
+      <ChildBand Name="Child2" Top="507.14" Width="718.2" Height="57.13" Guides="3.43,22.33">
+        <TextObject Name="Text9" Left="459.61" Top="3.43" Width="202.99" Height="18.9" Text="第 [Page#] 页 共 [TotalPages#] 页   Page:[Page#]/[TotalPages#]&#13;&#10;" Font="宋体, 8pt"/>
+      </ChildBand>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

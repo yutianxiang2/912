@@ -1,0 +1,1144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Arrangement" xml:space="preserve">
+    <value>排班</value>
+  </data>
+  <data name="ArrangementManagement" xml:space="preserve">
+    <value>排班管理</value>
+  </data>
+  <data name="Arrangement_IDX" xml:space="preserve">
+    <value>排班ID</value>
+  </data>
+  <data name="Arrangement_SortNo" xml:space="preserve">
+    <value>排序號</value>
+  </data>
+  <data name="Arrangement_TeamName" xml:space="preserve">
+    <value>班次</value>
+  </data>
+  <data name="Arrangement_TugID" xml:space="preserve">
+    <value>拖輪ID</value>
+  </data>
+  <data name="Arrangement_WorkDate" xml:space="preserve">
+    <value>工作日期</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>更改密码</value>
+  </data>
+  <data name="CreateDate" xml:space="preserve">
+    <value>創建時間</value>
+  </data>
+  <data name="Customer" xml:space="preserve">
+    <value>客戶</value>
+  </data>
+  <data name="CustomerBillingScheme" xml:space="preserve">
+    <value>計費方案</value>
+  </data>
+  <data name="CustomerInformation" xml:space="preserve">
+    <value>客戶信息</value>
+  </data>
+  <data name="CustomerManage" xml:space="preserve">
+    <value>客戶管理</value>
+  </data>
+  <data name="CustomerShip" xml:space="preserve">
+    <value>客戶船</value>
+  </data>
+  <data name="CustomerShipManage" xml:space="preserve">
+    <value>客戶船管理</value>
+  </data>
+  <data name="CustomerShip_Class" xml:space="preserve">
+    <value>船級社</value>
+  </data>
+  <data name="CustomerShip_Name1" xml:space="preserve">
+    <value>名稱1</value>
+  </data>
+  <data name="CustomerShip_CustomerID" xml:space="preserve">
+    <value>客戶ID</value>
+  </data>
+  <data name="CustomerShip_DeadWeight" xml:space="preserve">
+    <value>載重噸</value>
+  </data>
+  <data name="CustomerShip_Name2" xml:space="preserve">
+    <value>名稱2</value>
+  </data>
+  <data name="CustomerShip_Length" xml:space="preserve">
+    <value>長</value>
+  </data>
+  <data name="CustomerShip_ShipTypeID" xml:space="preserve">
+    <value>船型ID</value>
+  </data>
+  <data name="CustomerShip_SimpleName" xml:space="preserve">
+    <value>簡寫</value>
+  </data>
+  <data name="CustomerShip_TEUS" xml:space="preserve">
+    <value>箱量</value>
+  </data>
+  <data name="CustomerShip_Width" xml:space="preserve">
+    <value>吃水</value>
+  </data>
+  <data name="Customer_Address" xml:space="preserve">
+    <value>地址</value>
+  </data>
+  <data name="Customer_Name1" xml:space="preserve">
+    <value>姓名1</value>
+  </data>
+  <data name="Customer_Code" xml:space="preserve">
+    <value>客戶編號</value>
+  </data>
+  <data name="Customer_ContactPerson" xml:space="preserve">
+    <value>聯繫人</value>
+  </data>
+  <data name="Customer_Email" xml:space="preserve">
+    <value>電郵</value>
+  </data>
+  <data name="Customer_Name2" xml:space="preserve">
+    <value>姓名2</value>
+  </data>
+  <data name="Customer_Fax" xml:space="preserve">
+    <value>傳真</value>
+  </data>
+  <data name="Customer_IDX" xml:space="preserve">
+    <value>客戶ID</value>
+  </data>
+  <data name="Customer_MailCode" xml:space="preserve">
+    <value>郵編</value>
+  </data>
+  <data name="Customer_SimpleName" xml:space="preserve">
+    <value>簡寫</value>
+  </data>
+  <data name="Customer_Telephone" xml:space="preserve">
+    <value>電話</value>
+  </data>
+  <data name="Customer_TypeID" xml:space="preserve">
+    <value>客戶類型ID</value>
+  </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>主頁</value>
+  </data>
+  <data name="IDX" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="JobInformation" xml:space="preserve">
+    <value>作業信息</value>
+  </data>
+  <data name="Lan" xml:space="preserve">
+    <value>語言</value>
+  </data>
+  <data name="LastUpDate" xml:space="preserve">
+    <value>更新時間</value>
+  </data>
+  <data name="Module" xml:space="preserve">
+    <value>模塊</value>
+  </data>
+  <data name="ModuleManage" xml:space="preserve">
+    <value>模塊管理</value>
+  </data>
+  <data name="Module_ModuleCode" xml:space="preserve">
+    <value>模塊編號</value>
+  </data>
+  <data name="Module_ModuleName" xml:space="preserve">
+    <value>模塊名稱</value>
+  </data>
+  <data name="Module_System" xml:space="preserve">
+    <value>系統</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>訂單</value>
+  </data>
+  <data name="OrderManage" xml:space="preserve">
+    <value>訂單管理</value>
+  </data>
+  <data name="OrderScheduling" xml:space="preserve">
+    <value>訂單調度</value>
+  </data>
+  <data name="Organization" xml:space="preserve">
+    <value>組織結構</value>
+  </data>
+  <data name="OrganizationManage" xml:space="preserve">
+    <value>組織結構管理</value>
+  </data>
+  <data name="Org_Name1" xml:space="preserve">
+    <value>名稱1</value>
+  </data>
+  <data name="Org_Dept" xml:space="preserve">
+    <value>部門</value>
+  </data>
+  <data name="Org_Email" xml:space="preserve">
+    <value>電郵</value>
+  </data>
+  <data name="Org_Name2" xml:space="preserve">
+    <value>名稱2</value>
+  </data>
+  <data name="Org_Lan" xml:space="preserve">
+    <value>域</value>
+  </data>
+  <data name="Org_LanUserName" xml:space="preserve">
+    <value>域用戶名</value>
+  </data>
+  <data name="Org_Pwd" xml:space="preserve">
+    <value>密碼</value>
+  </data>
+  <data name="Org_Sec" xml:space="preserve">
+    <value>科室</value>
+  </data>
+  <data name="Org_Sex" xml:space="preserve">
+    <value>性別</value>
+  </data>
+  <data name="Org_Tel" xml:space="preserve">
+    <value>電話</value>
+  </data>
+  <data name="Org_UserName" xml:space="preserve">
+    <value>用戶名</value>
+  </data>
+  <data name="Org_WorkNumber" xml:space="preserve">
+    <value>工號</value>
+  </data>
+  <data name="OwnerID" xml:space="preserve">
+    <value>角色</value>
+  </data>
+  <data name="Remark" xml:space="preserve">
+    <value>備註</value>
+  </data>
+  <data name="TugInfor" xml:space="preserve">
+    <value>拖輪</value>
+  </data>
+  <data name="TugInforManage" xml:space="preserve">
+    <value>拖輪管理</value>
+  </data>
+  <data name="TugInfor_Class" xml:space="preserve">
+    <value>船級社</value>
+  </data>
+  <data name="TugInfor_Name1" xml:space="preserve">
+    <value>名稱1</value>
+  </data>
+  <data name="TugInfor_Code" xml:space="preserve">
+    <value>拖輪編號</value>
+  </data>
+  <data name="TugInfor_Name2" xml:space="preserve">
+    <value>名稱2</value>
+  </data>
+  <data name="TugInfor_IDX" xml:space="preserve">
+    <value>拖輪ID</value>
+  </data>
+  <data name="TugInfor_Length" xml:space="preserve">
+    <value>長度</value>
+  </data>
+  <data name="TugInfor_Power" xml:space="preserve">
+    <value>馬力</value>
+  </data>
+  <data name="TugInfor_SimpleName" xml:space="preserve">
+    <value>簡寫</value>
+  </data>
+  <data name="TugInfor_Speed" xml:space="preserve">
+    <value>航速</value>
+  </data>
+  <data name="TugInfor_Width" xml:space="preserve">
+    <value>寬度</value>
+  </data>
+  <data name="UserDefinedCol1" xml:space="preserve">
+    <value>自定義字段1</value>
+  </data>
+  <data name="UserDefinedCol10" xml:space="preserve">
+    <value>自定義字段10</value>
+  </data>
+  <data name="UserDefinedCol2" xml:space="preserve">
+    <value>自定義字段2</value>
+  </data>
+  <data name="UserDefinedCol3" xml:space="preserve">
+    <value>自定義字段3</value>
+  </data>
+  <data name="UserDefinedCol4" xml:space="preserve">
+    <value>自定義字段4</value>
+  </data>
+  <data name="UserDefinedCol5" xml:space="preserve">
+    <value>自定義字段5</value>
+  </data>
+  <data name="UserDefinedCol6" xml:space="preserve">
+    <value>自定義字段6</value>
+  </data>
+  <data name="UserDefinedCol7" xml:space="preserve">
+    <value>自定義字段7</value>
+  </data>
+  <data name="UserDefinedCol8" xml:space="preserve">
+    <value>自定義字段8</value>
+  </data>
+  <data name="UserDefinedCol9" xml:space="preserve">
+    <value>自定義字段9</value>
+  </data>
+  <data name="UserID" xml:space="preserve">
+    <value>用戶</value>
+  </data>
+  <data name="V_BillingItemTemplate_BillingTemplateID" xml:space="preserve">
+    <value>關聯的模板ID</value>
+  </data>
+  <data name="V_BillingItemTemplate_Currency" xml:space="preserve">
+    <value>幣種</value>
+  </data>
+  <data name="V_BillingItemTemplate_IDX" xml:space="preserve">
+    <value>模板項ID</value>
+  </data>
+  <data name="V_BillingItemTemplate_ItemID" xml:space="preserve">
+    <value>服務項ID</value>
+  </data>
+  <data name="V_BillingItemTemplate_ItemLabel" xml:space="preserve">
+    <value>服務項</value>
+  </data>
+  <data name="V_BillingItemTemplate_ItemValue" xml:space="preserve">
+    <value>服務項值</value>
+  </data>
+  <data name="V_BillingItemTemplate_TypeID" xml:space="preserve">
+    <value>位置ID</value>
+  </data>
+  <data name="V_BillingItemTemplate_TypeLabel" xml:space="preserve">
+    <value>位置</value>
+  </data>
+  <data name="V_BillingItemTemplate_TypeValue" xml:space="preserve">
+    <value>位置值</value>
+  </data>
+  <data name="V_BillingItemTemplate_UnitPrice" xml:space="preserve">
+    <value>單價</value>
+  </data>
+  <data name="V_BillingTemplate_BillingTemplateCode" xml:space="preserve">
+    <value>模板編碼</value>
+  </data>
+  <data name="V_BillingTemplate_BillingTemplateName" xml:space="preserve">
+    <value>模板名稱</value>
+  </data>
+  <data name="V_BillingTemplate_BillingTemplateTypeID" xml:space="preserve">
+    <value>模板類型ID</value>
+  </data>
+  <data name="V_BillingTemplate_BillingTemplateTypeLabel" xml:space="preserve">
+    <value>模板類型</value>
+  </data>
+  <data name="V_BillingTemplate_BillingTemplateTypeValue" xml:space="preserve">
+    <value>模板類型值</value>
+  </data>
+  <data name="V_BillingTemplate_CustomerID" xml:space="preserve">
+    <value>客戶ID</value>
+  </data>
+  <data name="V_BillingTemplate_IDX" xml:space="preserve">
+    <value>客戶計費模版ID</value>
+  </data>
+  <data name="V_BillingTemplate_TemplateCreditContent" xml:space="preserve">
+    <value>模板回扣</value>
+  </data>
+  <data name="V_BillingTemplate_TimeTypeID" xml:space="preserve">
+    <value>模板計時方式ID</value>
+  </data>
+  <data name="V_BillingTemplate_TimeTypeLabel" xml:space="preserve">
+    <value>模板計時方式</value>
+  </data>
+  <data name="V_BillingTemplate_TimeTypeValue" xml:space="preserve">
+    <value>模板計時方式值</value>
+  </data>
+  <data name="V_OrderInfor_BigTugNum" xml:space="preserve">
+    <value>大拖輪數量</value>
+  </data>
+  <data name="V_OrderInfor_Code" xml:space="preserve">
+    <value>訂單編號</value>
+  </data>
+  <data name="V_OrderInfor_CustomerID" xml:space="preserve">
+    <value>客戶ID</value>
+  </data>
+  <data name="V_OrderInfor_CustomerName" xml:space="preserve">
+    <value>客戶名稱</value>
+  </data>
+  <data name="V_OrderInfor_EstimatedCompletionTime" xml:space="preserve">
+    <value>預估完成時間</value>
+  </data>
+  <data name="V_OrderInfor_IDX" xml:space="preserve">
+    <value>訂單ID</value>
+  </data>
+  <data name="V_OrderInfor_IsGuest" xml:space="preserve">
+    <value>是否客戶下單</value>
+  </data>
+  <data name="V_OrderInfor_LinkEmail" xml:space="preserve">
+    <value>聯繫人電郵</value>
+  </data>
+  <data name="V_OrderInfor_LinkMan" xml:space="preserve">
+    <value>聯繫人名稱</value>
+  </data>
+  <data name="V_OrderInfor_LinkPhone" xml:space="preserve">
+    <value>聯繫人電話</value>
+  </data>
+  <data name="V_OrderInfor_MiddleTugNum" xml:space="preserve">
+    <value>5000BHP拖轮數量</value>
+  </data>
+  <data name="V_OrderInfor_WorkDate" xml:space="preserve">
+    <value>工作日期</value>
+  </data>
+  <data name="V_OrderInfor_ServiceNatureIDS" xml:space="preserve">
+    <value>服務內容ID</value>
+  </data>
+  <data name="V_OrderInfor_ServiceNatureNames" xml:space="preserve">
+    <value>服務內容名稱</value>
+  </data>
+  <data name="V_OrderInfor_ShipID" xml:space="preserve">
+    <value>客戶船ID</value>
+  </data>
+  <data name="V_OrderInfor_ShipName" xml:space="preserve">
+    <value>客戶船名稱</value>
+  </data>
+  <data name="V_OrderInfor_SmallTugNum" xml:space="preserve">
+    <value>小拖輪數量</value>
+  </data>
+  <data name="V_OrderInfor_WorkPlace" xml:space="preserve">
+    <value>工作地點</value>
+  </data>
+  <data name="V_OrderInfor_WorkStateID" xml:space="preserve">
+    <value>工作狀態ID</value>
+  </data>
+  <data name="V_OrderInfor_WorkStateLabel" xml:space="preserve">
+    <value>工作狀態</value>
+  </data>
+  <data name="V_OrderInfor_WorkStateValue" xml:space="preserve">
+    <value>工作狀態值</value>
+  </data>
+  <data name="V_OrderInfor_WorkTime" xml:space="preserve">
+    <value>工作時間</value>
+  </data>
+  <data name="V_OrderScheduler_ArrivalBaseTime" xml:space="preserve">
+    <value>到廠時間</value>
+  </data>
+  <data name="V_OrderScheduler_ArrivalShipSideTime" xml:space="preserve">
+    <value>到船時間</value>
+  </data>
+  <data name="V_OrderScheduler_CaptainConfirmTime" xml:space="preserve">
+    <value>船長確認時間</value>
+  </data>
+  <data name="V_OrderScheduler_ChooseTug" xml:space="preserve">
+    <value>選擇拖輪</value>
+  </data>
+  <data name="V_OrderScheduler_Name1" xml:space="preserve">
+    <value>拖輪名稱1</value>
+  </data>
+  <data name="V_OrderScheduler_DepartBaseTime" xml:space="preserve">
+    <value>離廠時間</value>
+  </data>
+  <data name="V_OrderScheduler_Name2" xml:space="preserve">
+    <value>拖輪名稱2</value>
+  </data>
+  <data name="V_OrderScheduler_IDX" xml:space="preserve">
+    <value>調度ID</value>
+  </data>
+  <data name="V_OrderScheduler_InformCaptainTime" xml:space="preserve">
+    <value>通知船長時間</value>
+  </data>
+  <data name="V_OrderScheduler_JobStateID" xml:space="preserve">
+    <value>調度作業狀態ID</value>
+  </data>
+  <data name="V_OrderScheduler_JobStateLabel" xml:space="preserve">
+    <value>調圖作業狀態</value>
+  </data>
+  <data name="V_OrderScheduler_OrderID" xml:space="preserve">
+    <value>調度關聯的訂單ID</value>
+  </data>
+  <data name="V_OrderScheduler_RopeNum" xml:space="preserve">
+    <value>使用拖纜數量</value>
+  </data>
+  <data name="V_OrderScheduler_RopeUsed" xml:space="preserve">
+    <value>是否使用拖纜</value>
+  </data>
+  <data name="V_OrderScheduler_ServiceNatureID" xml:space="preserve">
+    <value>服務內容ID</value>
+  </data>
+  <data name="V_OrderScheduler_ServiceNatureLabel" xml:space="preserve">
+    <value>服務內容</value>
+  </data>
+  <data name="V_OrderScheduler_SimpleName" xml:space="preserve">
+    <value>拖輪簡稱</value>
+  </data>
+  <data name="V_OrderScheduler_TugID" xml:space="preserve">
+    <value>分配的拖輪ID</value>
+  </data>
+  <data name="V_OrderScheduler_WorkCommencedTime" xml:space="preserve">
+    <value>開始工作時間</value>
+  </data>
+  <data name="V_OrderScheduler_WorkCompletedTime" xml:space="preserve">
+    <value>完成工作時間</value>
+  </data>
+  <data name="UserInfor_Name1" xml:space="preserve">
+    <value>中文名</value>
+  </data>
+  <data name="UserInfor_UserName" xml:space="preserve">
+    <value>用戶名</value>
+  </data>
+  <data name="Approve_Pass" xml:space="preserve">
+    <value>通過</value>
+  </data>
+  <data name="Approve_Reject" xml:space="preserve">
+    <value>駁回</value>
+  </data>
+  <data name="Billing_BillingCode" xml:space="preserve">
+    <value>編號</value>
+  </data>
+  <data name="Billing_BillingName" xml:space="preserve">
+    <value>名稱</value>
+  </data>
+  <data name="Billing_BillingType" xml:space="preserve">
+    <value>類型</value>
+  </data>
+  <data name="Billing_CreditAmount" xml:space="preserve">
+    <value>折扣</value>
+  </data>
+  <data name="Billing_CreditContent" xml:space="preserve">
+    <value>內容</value>
+  </data>
+  <data name="Billing_Month" xml:space="preserve">
+    <value>月份</value>
+  </data>
+  <data name="Task_NeedApprove" xml:space="preserve">
+    <value>待完成</value>
+  </data>
+  <data name="Task_Task" xml:space="preserve">
+    <value>任務</value>
+  </data>
+  <data name="Task_TaskManage" xml:space="preserve">
+    <value>任務管理</value>
+  </data>
+  <data name="UserInfor_BackLogin" xml:space="preserve">
+    <value>返回登陸頁面</value>
+  </data>
+  <data name="UserInfor_Email" xml:space="preserve">
+    <value>郵 箱</value>
+  </data>
+  <data name="UserInfor_Login" xml:space="preserve">
+    <value>登 錄</value>
+  </data>
+  <data name="UserInfor_Pwd" xml:space="preserve">
+    <value>密 碼</value>
+  </data>
+  <data name="UserInfor_Register" xml:space="preserve">
+    <value>註 冊</value>
+  </data>
+  <data name="UserInfor_RepeatPwd" xml:space="preserve">
+    <value>再次輸入新密碼</value>
+  </data>
+  <data name="UserInfor_SignUp" xml:space="preserve">
+    <value>註冊</value>
+  </data>
+  <data name="Task_Approved" xml:space="preserve">
+    <value>已完成</value>
+  </data>
+  <data name="UserInfor_Dept" xml:space="preserve">
+    <value>部 門</value>
+  </data>
+  <data name="UserInfor_Name2" xml:space="preserve">
+    <value>英文名</value>
+  </data>
+  <data name="UserInfor_OK" xml:space="preserve">
+    <value>確 定</value>
+  </data>
+  <data name="UserInfor_Sec" xml:space="preserve">
+    <value>科 室</value>
+  </data>
+  <data name="UserInfor_Sex" xml:space="preserve">
+    <value>性 別</value>
+  </data>
+  <data name="UserInfor_Tel" xml:space="preserve">
+    <value>電 話</value>
+  </data>
+  <data name="UserInfor_UserInfor" xml:space="preserve">
+    <value>個人信息</value>
+  </data>
+  <data name="UserInfor_WorkNumber" xml:space="preserve">
+    <value>工 號</value>
+  </data>
+  <data name="UserInfor_ChangePwd" xml:space="preserve">
+    <value>修改密碼</value>
+  </data>
+  <data name="UserInfor_NewPwd" xml:space="preserve">
+    <value>新密碼</value>
+  </data>
+  <data name="UserInfor_OriginalPwd" xml:space="preserve">
+    <value>原密碼</value>
+  </data>
+  <data name="Finance" xml:space="preserve">
+    <value>財務</value>
+  </data>
+  <data name="GenerateInvoice" xml:space="preserve">
+    <value>生成帳單</value>
+  </data>
+  <data name="SubmitForApproval" xml:space="preserve">
+    <value>提交審核</value>
+  </data>
+  <data name="V_OrderBilling_BillingCode" xml:space="preserve">
+    <value>帳單編號</value>
+  </data>
+  <data name="V_OrderBilling_BillingID" xml:space="preserve">
+    <value>帳單ID</value>
+  </data>
+  <data name="V_OrderBilling_BillingName" xml:space="preserve">
+    <value>帳單名稱</value>
+  </data>
+  <data name="V_OrderBilling_BillingRemark" xml:space="preserve">
+    <value>帳單備註</value>
+  </data>
+  <data name="V_OrderBilling_BillingTypeID" xml:space="preserve">
+    <value>帳單類型ID</value>
+  </data>
+  <data name="V_OrderBilling_BillingTypeLabel" xml:space="preserve">
+    <value>帳單類型</value>
+  </data>
+  <data name="V_OrderBilling_BillingTypeValue" xml:space="preserve">
+    <value>帳單類型值</value>
+  </data>
+  <data name="V_OrderBilling_Month" xml:space="preserve">
+    <value>帳單月份</value>
+  </data>
+  <data name="V_OrderBilling_Phase" xml:space="preserve">
+    <value>帳單階段</value>
+  </data>
+  <data name="V_OrderBilling_Status" xml:space="preserve">
+    <value>帳單狀態</value>
+  </data>
+  <data name="V_OrderBilling_TimesNo" xml:space="preserve">
+    <value>次序</value>
+  </data>
+  <data name="V_OrderBilling_TimeTypeID" xml:space="preserve">
+    <value>計時方式ID</value>
+  </data>
+  <data name="V_OrderBilling_TimeTypeLabel" xml:space="preserve">
+    <value>計時方式</value>
+  </data>
+  <data name="V_OrderBilling_TimeTypeValue" xml:space="preserve">
+    <value>計時方式值</value>
+  </data>
+  <data name="IsAdmin" xml:space="preserve">
+    <value>是管理員</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>角色</value>
+  </data>
+  <data name="RoleManage" xml:space="preserve">
+    <value>角色管理</value>
+  </data>
+  <data name="RoleMenu" xml:space="preserve">
+    <value>角色菜單</value>
+  </data>
+  <data name="RoleMenuManage" xml:space="preserve">
+    <value>角色菜單關聯</value>
+  </data>
+  <data name="RoleMenu_Menu" xml:space="preserve">
+    <value>菜單ID</value>
+  </data>
+  <data name="RoleMenu_MenuName" xml:space="preserve">
+    <value>菜單名</value>
+  </data>
+  <data name="RoleMenu_Page" xml:space="preserve">
+    <value>頁面</value>
+  </data>
+  <data name="RoleMenu_Visible" xml:space="preserve">
+    <value>是否可見</value>
+  </data>
+  <data name="RoleModule" xml:space="preserve">
+    <value>角色模塊</value>
+  </data>
+  <data name="RoleModuleManage" xml:space="preserve">
+    <value>角色模塊管理</value>
+  </data>
+  <data name="RoleUser" xml:space="preserve">
+    <value>角色用戶</value>
+  </data>
+  <data name="RoleUserManage" xml:space="preserve">
+    <value>角色用戶管理</value>
+  </data>
+  <data name="Role_Dept" xml:space="preserve">
+    <value>部門</value>
+  </data>
+  <data name="Role_RoleName" xml:space="preserve">
+    <value>角色名稱</value>
+  </data>
+  <data name="Role_System" xml:space="preserve">
+    <value>系統</value>
+  </data>
+  <data name="Customer_NewCustomer" xml:space="preserve">
+    <value>新增客戶</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>關閉</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>提交</value>
+  </data>
+  <data name="IsNull" xml:space="preserve">
+    <value>必填</value>
+  </data>
+  <data name="Task_RejectReason" xml:space="preserve">
+    <value>駁回原因</value>
+  </data>
+  <data name="UserInfor_LoginOut" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="UserInfor_ModuleManage" xml:space="preserve">
+    <value>模塊定義</value>
+  </data>
+  <data name="UserInfor_permissions" xml:space="preserve">
+    <value>權限管理</value>
+  </data>
+  <data name="UserInfor_RoleManage" xml:space="preserve">
+    <value>角色定義</value>
+  </data>
+  <data name="UserInfor_RoleMenuManage" xml:space="preserve">
+    <value>角色菜單</value>
+  </data>
+  <data name="UserInfor_RoleModuleManage" xml:space="preserve">
+    <value>角色模塊</value>
+  </data>
+  <data name="UserInfor_RoleUserManage" xml:space="preserve">
+    <value>角色用戶</value>
+  </data>
+  <data name="V_OrderScheduler_SchedulerWorkPlace" xml:space="preserve">
+    <value>調度地點</value>
+  </data>
+  <data name="V_OrderScheduler_ServiceWorkPlace" xml:space="preserve">
+    <value>服務地點</value>
+  </data>
+  <data name="Role_AddRole" xml:space="preserve">
+    <value>新增角色</value>
+  </data>
+  <data name="Module_AddModule" xml:space="preserve">
+    <value>新增模塊</value>
+  </data>
+  <data name="RoleUser_AddUser" xml:space="preserve">
+    <value>新增用戶</value>
+  </data>
+  <data name="V_OrderScheduler_ServiceWorkDate" xml:space="preserve">
+    <value>服務日期</value>
+  </data>
+  <data name="V_OrderBilling_Amount" xml:space="preserve">
+    <value>總計價格</value>
+  </data>
+  <data name="V_BillingItemTemplate_Discount" xml:space="preserve">
+    <value>折扣</value>
+  </data>
+  <data name="V_OrderInfor_OrdDate" xml:space="preserve">
+    <value>下單日期</value>
+  </data>
+  <data name="CustomerShip_NewShip" xml:space="preserve">
+    <value>新增客戶船</value>
+  </data>
+  <data name="TugInfor_NewTug" xml:space="preserve">
+    <value>增加拖輪</value>
+  </data>
+  <data name="Arrangement_TugName" xml:space="preserve">
+    <value>拖輪名稱</value>
+  </data>
+  <data name="UserInfor" xml:space="preserve">
+    <value>人員信息</value>
+  </data>
+  <data name="UserInforManage" xml:space="preserve">
+    <value>人員信息管理</value>
+  </data>
+  <data name="UserInfor_NewUser" xml:space="preserve">
+    <value>新增用戶</value>
+  </data>
+  <data name="BasicInformation" xml:space="preserve">
+    <value>綜合信息</value>
+  </data>
+  <data name="InvoiceManage" xml:space="preserve">
+    <value>普通帳單</value>
+  </data>
+  <data name="Credit" xml:space="preserve">
+    <value>回扣單</value>
+  </data>
+  <data name="Credit_BillingID" xml:space="preserve">
+    <value>回扣單關聯帳單ID</value>
+  </data>
+  <data name="Credit_CreditAmount" xml:space="preserve">
+    <value>回扣單金額</value>
+  </data>
+  <data name="Credit_CreditContent" xml:space="preserve">
+    <value>回扣單內容</value>
+  </data>
+  <data name="Credit_IDX" xml:space="preserve">
+    <value>回扣單ID</value>
+  </data>
+  <data name="Credit_CreditCode" xml:space="preserve">
+    <value>回扣單編號</value>
+  </data>
+  <data name="V_OrderBilling_JobNo" xml:space="preserve">
+    <value>作業號</value>
+  </data>
+  <data name="V_OrderInfor_HasInvoice" xml:space="preserve">
+    <value>是否已有帳單</value>
+  </data>
+  <data name="Report" xml:space="preserve">
+    <value>報表分析</value>
+  </data>
+  <data name="Report_BillType" xml:space="preserve">
+    <value>全包半包匯總</value>
+  </data>
+  <data name="Report_Customer" xml:space="preserve">
+    <value>客戶營業額匯總</value>
+  </data>
+  <data name="Report_Tug" xml:space="preserve">
+    <value>拖輪營業額匯總</value>
+  </data>
+  <data name="Fuelprice_EffectiveDate" xml:space="preserve">
+    <value>日期</value>
+  </data>
+  <data name="Fuelprice_Price" xml:space="preserve">
+    <value>價格</value>
+  </data>
+  <data name="Fuelprice_Type" xml:space="preserve">
+    <value>類別</value>
+  </data>
+  <data name="Fuelprice_Unit" xml:space="preserve">
+    <value>單位</value>
+  </data>
+  <data name="Fuelprice_FuelpriceManage" xml:space="preserve">
+    <value>燃油價格管理</value>
+  </data>
+  <data name="Custom_CustomManage" xml:space="preserve">
+    <value>自定義數據</value>
+  </data>
+  <data name="Custom_Name" xml:space="preserve">
+    <value>字段名称</value>
+  </data>
+  <data name="Custom_Value" xml:space="preserve">
+    <value>字段值</value>
+  </data>
+  <data name="CustomerName" xml:space="preserve">
+    <value>客戶名稱</value>
+  </data>
+  <data name="CustomerShip_Name" xml:space="preserve">
+    <value>客戶船名稱</value>
+  </data>
+  <data name="TugName" xml:space="preserve">
+    <value>拖輪名稱</value>
+  </data>
+  <data name="TugStatus" xml:space="preserve">
+    <value>拖輪狀態</value>
+  </data>
+  <data name="ServiceStatus" xml:space="preserve">
+    <value>服務狀態</value>
+  </data>
+  <data name="V_OrderScheduler_OrderServiceID" xml:space="preserve">
+    <value>訂單服務ID</value>
+  </data>
+  <data name="V_OrderScheduler_ServiceWorkTime" xml:space="preserve">
+    <value>服務時間</value>
+  </data>
+  <data name="V_OrderScheduler_IsCaptainConfirm" xml:space="preserve">
+    <value>船長是否確認</value>
+  </data>
+  <data name="V_OrderScheduler_ServiceJobStateID" xml:space="preserve">
+    <value>服務狀態ID</value>
+  </data>
+  <data name="V_OrderScheduler_ServiceJobStateLabel" xml:space="preserve">
+    <value>服務狀態</value>
+  </data>
+  <data name="V_BillingItemTemplate_ExpiryDate" xml:space="preserve">
+    <value>有效期</value>
+  </data>
+  <data name="V_BillingItemTemplate_ShipLength" xml:space="preserve">
+    <value>船長規則</value>
+  </data>
+  <data name="V_BillingItemTemplate_ShipTEUS" xml:space="preserve">
+    <value>箱量規則</value>
+  </data>
+  <data name="V_OrderInfor_HasInFlow" xml:space="preserve">
+    <value>是否在流程中</value>
+  </data>
+  <data name="SpecialInvoiceManage" xml:space="preserve">
+    <value>特殊帳單</value>
+  </data>
+  <data name="V_Billing_Amount" xml:space="preserve">
+    <value>總價</value>
+  </data>
+  <data name="V_Billing_BillingCode" xml:space="preserve">
+    <value>帳單編號</value>
+  </data>
+  <data name="V_Billing_BillingTemplateID" xml:space="preserve">
+    <value>計費方案模板ID</value>
+  </data>
+  <data name="V_Billing_BillingTemplateName" xml:space="preserve">
+    <value>計費方案模板名稱</value>
+  </data>
+  <data name="V_Billing_BillingTemplateTypeLabel" xml:space="preserve">
+    <value>計費類型</value>
+  </data>
+  <data name="V_Billing_IsShowShipLengthRule" xml:space="preserve">
+    <value>是否顯示船長規則</value>
+  </data>
+  <data name="V_Billing_IsShowShipTEUSRule" xml:space="preserve">
+    <value>是否顯示箱量規則</value>
+  </data>
+  <data name="V_Billing_Phase" xml:space="preserve">
+    <value>階段</value>
+  </data>
+  <data name="V_Billing_ShipLength" xml:space="preserve">
+    <value>計費方案船長規則</value>
+  </data>
+  <data name="V_Billing_ShipTEUS" xml:space="preserve">
+    <value>計費方案箱量規則</value>
+  </data>
+  <data name="V_Billing_Status" xml:space="preserve">
+    <value>狀態</value>
+  </data>
+  <data name="V_Billing_TimeTypeLabel" xml:space="preserve">
+    <value>計時方式</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>新增</value>
+  </data>
+  <data name="ClearSearchFilter" xml:space="preserve">
+    <value>清空搜索項</value>
+  </data>
+  <data name="DeleteSelectedRows" xml:space="preserve">
+    <value>刪除</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="SureDelete" xml:space="preserve">
+    <value>確定刪除所選記錄？</value>
+  </data>
+  <data name="Choose" xml:space="preserve">
+    <value>選擇</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>編輯</value>
+  </data>
+  <data name="Information_Tips_Select" xml:space="preserve">
+    <value>請選中一行記錄</value>
+  </data>
+  <data name="OrderManage_AddOrder" xml:space="preserve">
+    <value>訂單信息</value>
+  </data>
+  <data name="OrderManage_Serivces" xml:space="preserve">
+    <value>服務項</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>搜索</value>
+  </data>
+  <data name="ServiceStatus_AddScheduler" xml:space="preserve">
+    <value>新增拖輪調度</value>
+  </data>
+  <data name="ServiceStatus_ChooseTug" xml:space="preserve">
+    <value>選擇拖輪</value>
+  </data>
+  <data name="ServiceStatus_TugScheduler" xml:space="preserve">
+    <value>拖輪調度</value>
+  </data>
+  <data name="ServiceStatus_TugSchedulerStatus" xml:space="preserve">
+    <value>拖輪調度狀態</value>
+  </data>
+  <data name="BillingScheme_AddBillingScheme" xml:space="preserve">
+    <value>新增計費方案</value>
+  </data>
+  <data name="BillingScheme_AddBillingSchemeItem" xml:space="preserve">
+    <value>新增計費方案條目</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="Invoice2_BillingType" xml:space="preserve">
+    <value>帳單類型</value>
+    <comment>全包、半包、計時</comment>
+  </data>
+  <data name="Invoice2_ChooseBillingScheme" xml:space="preserve">
+    <value>選擇計費方案</value>
+  </data>
+  <data name="Invoice2_CreateFlow" xml:space="preserve">
+    <value>創建審核流程</value>
+  </data>
+  <data name="Invoice2_CustomerShipLength" xml:space="preserve">
+    <value>客戶船長</value>
+  </data>
+  <data name="Invoice2_CustomerShipTEUS" xml:space="preserve">
+    <value>客戶船箱量</value>
+  </data>
+  <data name="Invoice2_Discount" xml:space="preserve">
+    <value>折扣</value>
+  </data>
+  <data name="Invoice2_EditCommonInvoiceAndCredit" xml:space="preserve">
+    <value>編輯帳單和回扣單</value>
+  </data>
+  <data name="Invoice2_GenerateCommonInvoice" xml:space="preserve">
+    <value>新增帳單</value>
+  </data>
+  <data name="Invoice2_GenerateCredit" xml:space="preserve">
+    <value>新增回扣單</value>
+  </data>
+  <data name="Invoice2_InvoiceMonth" xml:space="preserve">
+    <value>帳單月份</value>
+  </data>
+  <data name="Invoice2_IsShowShipLengthRule" xml:space="preserve">
+    <value>帳單是否顯示船長規則</value>
+  </data>
+  <data name="Invoice2_IsShowShipTEUSRule" xml:space="preserve">
+    <value>帳單是否顯示箱量規則</value>
+  </data>
+  <data name="Invoice2_JobNo" xml:space="preserve">
+    <value>作業號(Job No.)</value>
+  </data>
+  <data name="Invoice2_ShipLengthRule" xml:space="preserve">
+    <value>船長規則</value>
+  </data>
+  <data name="Invoice2_ShipTEUSRule" xml:space="preserve">
+    <value>箱量規則</value>
+  </data>
+  <data name="Invoice2_TimeType" xml:space="preserve">
+    <value>計時方式</value>
+  </data>
+  <data name="Invoice2_ViewCommonInvoiceAndCredit" xml:space="preserve">
+    <value>查看帳單和回扣單</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>預覽</value>
+  </data>
+  <data name="ServiceScheduler" xml:space="preserve">
+    <value>服務調度</value>
+  </data>
+  <data name="Report_EndDate" xml:space="preserve">
+    <value>結束日期</value>
+  </data>
+  <data name="Report_StartDate" xml:space="preserve">
+    <value>起始日期</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>確定</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="TugInfor_Disable" xml:space="preserve">
+    <value>是否停用</value>
+  </data>
+  <data name="DiscountBill" xml:space="preserve">
+    <value>優惠單</value>
+  </data>
+  <data name="V_Billing4_BillingCode" xml:space="preserve">
+    <value>優惠單編號</value>
+  </data>
+  <data name="V_Billing4_Content" xml:space="preserve">
+    <value>內容</value>
+  </data>
+  <data name="V_Billing4_InvoiceType" xml:space="preserve">
+    <value>單據類型</value>
+  </data>
+  <data name="V_Billing4_Money" xml:space="preserve">
+    <value>金額</value>
+  </data>
+  <data name="V_Billing4_Title" xml:space="preserve">
+    <value>標題</value>
+  </data>
+</root>

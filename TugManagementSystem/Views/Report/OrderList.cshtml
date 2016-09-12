@@ -1,0 +1,17 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>订单报表</title>
+    @WebReportGlobals.Scripts()
+    @WebReportGlobals.Styles()
+</head>
+<body>
+    @ViewBag.WebReport.GetHtml()
+</body>
+</html>

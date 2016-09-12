@@ -1,0 +1,513 @@
+﻿@{
+    ViewBag.Title = "待完成";
+    ViewBag.MenuId = "menu7";
+    ViewBag.SubMenuIndex = 0;
+    ViewBag.user_name = User.Identity.Name;
+    Layout = "~/Views/Shared/_ContentLayout.cshtml";
+}
+<!-- SAMPLE BOX CONFIGURATION MODAL FORM-->
+<div class="modal fade" id="table-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div id="model-dlg" class="modal-dialog" style="width: 520px ;height:600px">
+        <div class="modal-content modal-table">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- BOX -->
+                        <div class="box border orange">
+                            <div class="box-title">
+                                <h4><i class="fa fa-bars"></i>@Resources.Language.Task_RejectReason</h4>
+                            </div>
+                            <div class="box-body">
+                                <div id="test">
+                                    <textarea id="RejectReason" rows="5" cols="50" style="width:100%" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /BOX -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="ok" type="button" class="btn btn-primary" data-dismiss="modal">@Resources.Language.UserInfor_OK</button>
+                <a href="#" class="btn btn-warning" data-dismiss="modal">@Resources.Language.Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /SAMPLE BOX CONFIGURATION MODAL FORM-->
+<div id="main-content">
+    <div class="container">
+        <div class="row">
+            <div id="content" class="col-lg-12">
+                <!-- PAGE HEADER-->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="">
+                            <!-- BREADCRUMBS -->
+                            <ul class="breadcrumb">
+                                <li>
+                                    <i class="fa fa-home"></i>
+                                    <a href="#">@Resources.Language.HomePage</a>
+                                </li>
+                                <li>
+                                    <i class="fa fa-tasks fa-fw"></i>
+                                    <a href="#">@Resources.Language.Task_Task  </a>
+                                </li>
+                                <li>
+                                    @Resources.Language.Task_TaskManage
+                                </li>
+                            </ul>
+                            <!-- /BREADCRUMBS -->
+                        
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- BOX -->
+                        <div class="box border orange">
+                            <div class="box-title">
+                                <h4><i class="fa fa-bars"></i>@Resources.Language.Task_NeedApprove</h4>
+                            </div>
+
+                            <div id="jqGridContainerBox" class="box-body">
+                                @*<input type="button" class='btn btn-primary btn-xs' id="Pass_btn" value="@Resources.Language.Approve_Pass" />
+                                <input type="button" class='btn btn-danger btn-xs' id="Reject_btn" value="@Resources.Language.Approve_Reject" onclick="$('#table-modal').modal()" />*@
+                                <table id="jqGrid"></table>
+                                <div id="jqGridPager"></div>
+                            </div>
+
+                            <!-- /BOX -->
+                        </div>
+                    </div>
+                    <!-- /SAMPLE -->
+                    <div class="footer-tools">
+                        <span class="go-top">
+                            <i class="fa fa-chevron-up"></i> Top
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var tableConfig = null;
+
+    $(document).ready(Init);
+
+    function Init() {
+        {
+            if (tableConfig == null) {
+                GetTableConfig();
+            }
+            $("#jqGrid").jqGrid({
+                //url: 'http://trirand.com/blog/phpjqgrid/examples/jsonp/getjsonp.php?callback=?&qwery=longorders',
+                url: "/Task/GetTaskData",
+                mtype: "GET",
+                datatype: "json",
+                colModel: tableConfig.columns,
+                viewrecords: true,
+                height: '100%', //350,
+                rowNum: 30,
+                autowidth: true,
+                pager: "#jqGridPager",
+                loadonce: true,
+                rowList: ['30', '50', '80', '100'],
+                rownumbers: true,
+                shrinkToFit: false,     //指定各列宽度
+                sortable: true,          //列可移动
+                colMenu: false,          //列菜单
+                multiselect: true,      //选择框
+                //toolbar: [true, "top"]   //按钮
+
+            });
+
+            //通过
+            $("#Pass_btn").click(function () {
+                var ids = [];
+                var rowData = $('#jqGrid').jqGrid('getGridParam', 'selarrrow');
+                if (rowData.length) {
+                    for (var i = 0; i < rowData.length; i++) {
+                        ids.push($('#jqGrid').jqGrid('getCell', rowData[i], 'IDX'));
+                    }
+                    $.ajax(
+                               {
+                                   type: "post",
+                                   url: "/Task/ApprovePass",
+                                   data: { 'passdata': ids },
+                                   traditional: true,
+                                   dataType: 'json',
+                                   success: function (result) {
+                                       alert(result.message);
+                                       $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                                   },
+                               });
+                }
+                else { alert("未选择需要操作的数据！"); }
+            })
+
+            //驳回
+            $("#ok").click(function () {
+                var RejectReason = document.getElementById("RejectReason").value;
+                var ids = [];
+                var rowData = $('#jqGrid').jqGrid('getGridParam', 'selarrrow');
+                if (rowData.length) {
+                    for (var i = 0; i < rowData.length; i++) {
+                        ids.push($('#jqGrid').jqGrid('getCell', rowData[i], 'IDX'));
+                    }
+                    $.ajax(
+                               {
+                                   type: "post",
+                                   url: "/Task/ApproveReject",
+                                   data: { 'rejectdata': ids, 'RejectReason': RejectReason },
+                                   traditional: true,
+                                   dataType: 'json',
+                                   success: function (result) {
+                                       alert(result.message);
+                                       $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                                   },
+                               });
+                }
+                else { alert("未选择需要操作的数据！"); }
+            })
+
+            $('#jqGrid').jqGrid('filterToolbar', { searchResult: true, searchOperators: true });//搜索框
+
+            $("#jqGrid").jqGrid('bindKeys');  //光标可以控制上下移动
+
+            $('#jqGridContainerBox').resize(function () {
+                var width = $('#jqGridContainerBox').width();
+                $("#jqGrid").setGridWidth(width);
+            });
+            $('#jqGrid').navGrid('#jqGridPager', { edit: false, add: false, del: false, refresh: false, view: false, search: false })
+               .navButtonAdd('#jqGridPager', {
+                   caption: "", title: '@Resources.Language.Refresh', buttonicon: "ui-icon-refresh",
+                   onClickButton: function () {
+                       $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                   }
+               })
+               .navButtonAdd('#jqGridPager', {
+                   caption: "", title: '@Resources.Language.ClearSearchFilter', buttonicon: "ui-icon-circle-minus",
+                   onClickButton: function () {
+                       var grid = $('#jqGrid')[0];
+                       grid.clearToolbar();
+                       $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                   }
+               })
+            $('#jqGrid').navGrid('#jqGridPager', { edit: false, add: false, del: false, refresh: false, view: false, search: false })
+
+                .navSeparatorAdd("#jqGridPager", { sepclass: "ui-separator", sepcontent: '' })
+                .navButtonAdd('#jqGridPager', {
+                    id: 'jqGrid_ilView',
+                    caption: "查看", title: "查看账单和回扣单", buttonicon: "ui-icon-search",
+                    onClickButton: function () {
+
+                        var rowid = jQuery('#jqGrid').jqGrid('getGridParam', 'selrow');
+
+                        var BillingID = jQuery('#jqGrid').jqGrid('getCell', rowid, "IDX"); //
+                        var InvoiceType = jQuery('#jqGrid').jqGrid('getCell', rowid, "InvoiceType"); //
+                        var TimeTypeValue = jQuery('#jqGrid').jqGrid('getCell', rowid, "TimeTypeValue"); //
+                        var BillingTemplateTypeLabel = jQuery('#jqGrid').jqGrid('getCell', rowid, "BillingTemplateTypeLabel"); //
+                        //alert(InvoiceType);
+                        if (InvoiceType == "普通账单" && (BillingTemplateTypeLabel == "全包" || BillingTemplateTypeLabel == "半包")) {
+                            //alert("全包或半包报表预览");
+                            //location.href = '/Report/Invoice_qborbb' + '?OrderID=' + orderId + '&TimeTypeValue=' + timeTypeId
+                            open('/Report/Invoice_qborbb' + '?BillingID=' + BillingID + '&TimeTypeValue=' + TimeTypeValue)
+                        }
+
+                        else if (InvoiceType == "普通账单" && BillingTemplateTypeLabel == "计时") {
+                            //alert("计时报表预览");
+                            open('/Report/Invoice_tk' + '?BillingID=' + BillingID + '&TimeTypeValue=' + TimeTypeValue)
+                        }
+                        else if (InvoiceType == "特殊账单") {
+                            open('/Report/Invoice_Special' + '?BillingID=' + BillingID)
+                        }
+                    },
+
+                })
+     .navButtonAdd('#jqGridPager', {
+         id: 'jqGrid_Pass',
+         caption: "通过", title: "通过", buttonicon: "ui-icon-check",
+         onClickButton: function () {
+             var ids = [];
+             var rowData = $('#jqGrid').jqGrid('getGridParam', 'selarrrow');
+             if (rowData.length) {
+                 for (var i = 0; i < rowData.length; i++) {
+                     //var t = $('#jqGrid').jqGrid('getCell', rowData[i], 'BillingID');
+                     //alert(t);
+                     ids.push($('#jqGrid').jqGrid('getCell', rowData[i], 'IDX'));
+                     //var selectedIDs = jQuery('#jqGrid').getGridParam("selarrrow");
+                     //var cell = jQuery('#jqGrid').jqGrid('getCell', selectedIDs[i], "BillingID"); //BillingID
+                 }
+                 //alert(ids);
+                 $.ajax(
+                            {
+                                type: "post",
+                                url: "/Task/ApprovePass",
+                                data: { 'passdata': ids },
+                                traditional: true,
+                                dataType: 'json',
+                                success: function (result) {
+                                    alert(result.message);
+                                    $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                                },
+                            });
+             }
+             else { alert("未选择需要操作的数据！"); }
+         },
+
+     })
+            .navButtonAdd('#jqGridPager', {
+                id: 'jqGrid_Reject',
+                caption: "驳回", title: "驳回", buttonicon: "ui-icon-shuffle",
+                onClickButton: function () {
+                    var RejectReason = document.getElementById("RejectReason").value;
+                    var ids = [];
+                    var rowData = $('#jqGrid').jqGrid('getGridParam', 'selarrrow');
+                    if (rowData.length) {
+                        for (var i = 0; i < rowData.length; i++) {
+                            ids.push($('#jqGrid').jqGrid('getCell', rowData[i], 'IDX'));
+                        }
+                        $.ajax(
+                                   {
+                                       type: "post",
+                                       url: "/Task/ApproveReject",
+                                       data: { 'rejectdata': ids, 'RejectReason': RejectReason },
+                                       traditional: true,
+                                       dataType: 'json',
+                                       success: function (result) {
+                                           alert(result.message);
+                                           $('#jqGrid').jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                                       },
+                                   });
+                    }
+                    else { alert("未选择需要操作的数据！"); }
+                },
+
+            });
+            $('#jqGrid').inlineNav('#jqGridPager',
+                {
+                    edit: false,
+                    add: false,
+                    del: false,
+                    cancel: false,
+                    save:false,
+                    editParams: {
+                        keys: true,
+                        successfunc: function (val) {
+                            if (val.responseText != "") {
+                                var ret = $.parseJSON(val.responseText);
+                                alert(ret.message);
+                                $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                            }
+                        },
+                        url: null, //'/api/values',
+                        mtype: 'POST'
+                    },
+
+                    addParams: {
+                        keys: true,
+                        successfunc: function (val) {
+                            if (val.responseText != "") {
+                                var ret = $.parseJSON(val.responseText);
+                                alert(ret.message);
+                                $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                            }
+                        },
+                        errorfunc: function (rowid, xhr) {
+                            alert(xhr.responseText);
+                            $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');
+                        }
+                    }
+                });
+
+            //最后调用，冻结列
+            //$("#jqGrid").jqGrid("setFrozenColumns");
+        }
+    }
+    function GetTableConfig() {
+        tableConfig = {
+            columns: [
+
+                 {
+                     align: 'center', label: '@Resources.Language.V_OrderBilling_BillingID', index: "IDX", name: "IDX", width: 80, editable: true, edittype: "text",
+                     hidden: true,
+                 },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderBilling_BillingTypeLabel', name: "InvoiceType", width: 100, editable: true, edittype: "text",
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                    hidden: false
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.CustomerName', name: "CustomerName", width: 200, editable: true, edittype: "text",
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                    hidden: false
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderInfor_ShipName', name: "ShipName", width: 200, editable: true, edittype: "text",
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                    hidden: false
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_OrderBilling_JobNo', name: "JobNo", width: 120, editable: true, edittype: "text",
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                    hidden: false
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_Billing_BillingCode', name: "BillingCode", width: 120, editable: true, edittype: "text",
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                    hidden: false
+                },
+                @*{
+                    align: 'center', label: '@Resources.Language.V_Billing_BillingTemplateName', name: "BillingTemplateName", width: 120, editable: true, edittype: "text",
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                    hidden: false
+                },*@
+
+                {
+                    align: 'center', label: '@Resources.Language.V_Billing_BillingTemplateTypeLabel', name: "BillingTemplateTypeLabel", width: 100, editable: true, edittype: "text",
+                    hidden: false,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    //stype: 'select',
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                    @*searchoptions: {
+                        dataUrl: '@Url.Action("GetCustomField", "Base", new { CustomName = "BillingTemplate.BillingTemplateType" })',
+                    },*@
+                },
+                {
+                    align: 'center', label: 'TimeTypeValue', name: "TimeTypeValue", width: 120, editable: true, edittype: "text",
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                    hidden: true
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_Billing_TimeTypeLabel', name: "TimeTypeLabel", width: 100, editable: true, edittype: "text",
+                    hidden: false,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    //stype: 'select',
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] }
+                    @*searchoptions: {
+                        dataUrl: '@Url.Action("GetCustomField", "Base", new { CustomName = "BillingTemplate.TimeTypeID" })',
+                    },*@
+                },
+                {
+                    align: 'center', label: '@Resources.Language.V_Billing_Amount', name: "Amount", width: 100, editable: true, edittype: "text",
+                    hidden: false,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["eq", "lt", "le", "gt", "ge"] },
+                },
+
+                {
+                    align: 'center', label: '@Resources.Language.V_Billing_Status', name: "Status", width: 120, editable: false, edittype: "text",
+                    hidden: false,
+                    coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                    searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                },
+                 {
+                     align: 'center', label: '@Resources.Language.Remark', name: "Remark", width: 200, editable: true, edittype: "textarea",
+                     hidden: false,
+                     coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                     searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                 },
+                 {
+                     align: 'center',
+                     label: '@Resources.Language.CreateDate', name: "CreateDate", width: 120, editable: false, edittype: "text",
+                     hidden: false,
+                     //formatter: 'date',
+                     //formatoptions: { srcformat: 'yyyy-mm-dd', newformat: 'yyyy-mm-dd' },
+                     datefmt: 'yyyy-mm-dd',
+                     sorttype: 'date',
+                     coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                     searchoptions: {
+                         sopt: ["eq", "lt", "le", "gt", "ge"],
+
+                         dataInit: function (element) {
+                             $(element).datetimepicker({
+                                 format: 'Y-m-d H:i:s',
+                                 step: 1,
+                                 //timepicker: false
+                             });
+                         },
+
+                         dataEvents: [
+                             {
+                                 type: 'change',
+                                 fn: function (e) {
+                                     var grid = $('#jqGrid')[0];
+                                     grid.triggerToolbar();
+
+                                 }
+                             }
+                         ]
+                     }
+                 },
+                 {
+                     align: 'center',
+                     label: '@Resources.Language.LastUpDate', name: "LastUpDate", width: 120, editable: false, edittype: "text",
+                     hidden: false,
+                     //formatter: 'date',
+                     datefmt: 'yyyy-mm-dd',
+                     sorttype: 'date',
+                     coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                     searchoptions: {
+                         sopt: ["eq", "lt", "le", "gt", "ge"],
+
+                         dataInit: function (element) {
+                             $(element).datetimepicker({
+                                 format: 'Y-m-d H:i:s',
+                                 step: 1,
+                                 //timepicker: false
+                             });
+                         },
+
+                         dataEvents: [
+                             {
+                                 type: 'change',
+                                 fn: function (e) {
+                                     var grid = $('#jqGrid')[0];
+                                     grid.triggerToolbar();
+
+                                 }
+                             }
+                         ]
+                     }
+                 },
+                 {
+                     align: 'center', label: 'MarkID', name: "MarkID", width: 80, editable: true, edittype: "text",
+                     hidden: true,
+                 },
+                 {
+                     align: 'center', label: 'Phase', name: "Phase", width: 80, editable: true, edittype: "text",
+                     hidden: true,
+                 },
+                 {
+                     align: 'center', label: 'Task', name: "Task", width: 120, editable: false, edittype: "text",
+                     hidden: true,
+                     coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                     searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                 },
+                 {
+                     align: 'center', label: 'FlowUserID', name: "FlowUserID", width: 80, editable: true, edittype: "text",
+                     hidden: true,
+                 },
+                  {
+                      align: 'center', label: 'System', name: "System", width: 120, editable: false, edittype: "text",
+                      hidden: true,
+                      coloptions: { sorting: false, columns: false, filtering: false, seraching: false, grouping: true, freeze: false },
+                      searchoptions: { sopt: ["cn", "eq", "bw", "ew"] },
+                  },
+            ]
+        };
+    }
+
+
+
+</script>
