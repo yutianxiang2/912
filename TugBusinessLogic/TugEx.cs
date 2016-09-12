@@ -7,6 +7,7 @@ namespace BusinessLogic
 {
     public class TugEx
     {
+
         public int TugID { get; set; }
         public string Code { get; set; }
         public string Name1 { get; set; }
